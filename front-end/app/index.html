@@ -35,8 +35,7 @@
     <div>
         <div class="button" ng-click="hideEFV = !hideEFV">Hide Earth Frame View</div>
         <div class="button" ng-click="toggleCamera()">Toggle Camera</div>
-        <div class="button" ng-click="toggleCamera()">Hide Camera</div>
-        <div class="button" ng-click='toggleCamera()'>Hide Video</div>
+        <div class="button" ng-click="hideVideo = !hideVideo">Hide Video</div>
         <div class="button" ng-click="hideVehicleAttitude = !hideVehicleAttitude">Hide Vehicle Attitude</div>
     </div>
 
@@ -45,20 +44,27 @@
         <div class="graphics" ng-hide="hideEFV">
             <img width="460" height="315" src="imgs/efv.png" / >
         </div>
-        <div class="graphics">
-            <iframe ng-hide="{{!VisibleCamera}}" width="560" height="315" src="https://www.youtube.com/embed/tMfQHzjNvRU?ecver=1" frameborder="0" allowfullscreen></iframe>
-	    <iframe ng-hide="{{VisibleCamera}}" width="560" height="315" src="https://www.youtube.com/embed/FzCsDVfPQqk" frameborder="0" allowfullscreen></iframe>
+        <div class="graphics" ng-hide="hideVideo">
+            <div class="videoStream" ng-hide="(VisibleCamera == 0)">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/tMfQHzjNvRU?ecver=1" frameborder="0" allowfullscreen></iframe>
+	    </div>
+            <div class="videoStream" ng-hide="(VisibleCamera == 1)">
+	        <iframe width="560" height="315" src="https://www.youtube.com/embed/FzCsDVfPQqk" frameborder="0" allowfullscreen></iframe>
+	    </div>
         </div>
-        <div class="graphics">
+        <div class="graphics" ng-hide="hideVehicleAttitude">
             <div class="buttons"></div>
             <img width="460" height="315" src="imgs/vehicleAttitude.gif" />
         </div>
     </div>
     
+    <!-- extra telemetry info not already displayed -->
     <div class="dataBoard" >
         <img width="160" height="160" src="imgs/telemetryplaceholder.png" / >
 
         <img width="160" height="160" src="imgs/telemetryplaceholder.jpeg" / >
+
+	some telemetry data here 
     </div>
 
     
