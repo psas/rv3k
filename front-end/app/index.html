@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html lang="en" ng-app="rvtk" class="no-js"> <!--<![endif]-->
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Rocket View 3000</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/normalize.css">
+  <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/main.css">
+  <link rel="stylesheet" href="app.css">
+    
+  <script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/angular-route/angular-route.js"></script>
+  
+  <script src="app.js"></script>
+  
+  <script src="controllers/main-controller.js"></script>
+  <script src="components/version/version.js"></script>
+  <script src="components/version/version-directive.js"></script>
+  <script src="components/version/interpolate-filter.js"></script>
+</head>
+<body ng-controller="MainController">
+    <!-- logo and title -->
+    <div class="topBar">
+        <img src="imgs/PSASLogo.png" />
+    </div>
+
+    <!-- navigation bar -->
+    <div>
+        <div class="button" ng-click="hideEFV = !hideEFV">Hide Earth Frame View</div>
+        <div class="button" ng-click="toggleCamera()">Toggle Camera</div>
+        <div class="button" ng-click="toggleCamera()">Hide Camera</div>
+        <div class="button" ng-click='toggleCamera()'>Hide Video</div>
+        <div class="button" ng-click="hideVehicleAttitude = !hideVehicleAttitude">Hide Vehicle Attitude</div>
+    </div>
+
+    <!-- -->
+    <div class="graphicsBoard"> 
+        <div class="graphics" ng-hide="hideEFV">
+            <img width="460" height="315" src="imgs/efv.png" / >
+        </div>
+        <div class="graphics">
+            <iframe ng-hide="{{!VisibleCamera}}" width="560" height="315" src="https://www.youtube.com/embed/tMfQHzjNvRU?ecver=1" frameborder="0" allowfullscreen></iframe>
+	    <iframe ng-hide="{{VisibleCamera}}" width="560" height="315" src="https://www.youtube.com/embed/FzCsDVfPQqk" frameborder="0" allowfullscreen></iframe>
+        </div>
+        <div class="graphics">
+            <div class="buttons"></div>
+            <img width="460" height="315" src="imgs/vehicleAttitude.gif" />
+        </div>
+    </div>
+    
+    <div class="dataBoard" >
+        <img width="160" height="160" src="imgs/telemetryplaceholder.png" / >
+
+        <img width="160" height="160" src="imgs/telemetryplaceholder.jpeg" / >
+    </div>
+
+    
+    <!-- In production use:
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
+  -->
+</body>
+</html>

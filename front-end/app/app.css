@@ -1,0 +1,26 @@
+/* app css stylesheet */
+
+.graphicsBoard {
+    display: inline-block;
+    width: 1480px;
+}
+
+.graphics {
+    float: left;
+}
+
+.button {
+    float: left;
+    color: #777;
+    padding: 10px;
+}
+
+.button:hover {
+    color: #000;
+}
+
+.button-menu {
+    display: inline-block;
+    width: 1480px;
+}
+
