@@ -12,7 +12,19 @@ angular.module('rvtk', [])
 	//to change the number of feeds to toggle through change the number of feeds variable
 	var numberOfFeeds = 2;
         $scope.VisibleCamera = ++$scope.VisibleCamera%numberOfFeeds;
-    }
-}]);
+    };
+
+    $scope.helloWorld = 'nothing';
+        var namespace = '/test';
+        var socket = io.connect('http://localhost:8080/test');
+        socket.on('connect', function() {});
+        socket.on('disconnect', function() {});
+        socket.on('my response', function(msg) {
+            console.log(msg.data);
+            $scope.helloWorld = msg.data;
+            $scope.$apply();
+        });
+
+    }]);
 
 
