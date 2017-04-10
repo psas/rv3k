@@ -16,6 +16,7 @@ angular.module('rvtk', [])
 
     $scope.helloWorld = 'nothing';
         var namespace = '/test';
+        // this port connects to port broadcast by ../unified/app.py
         var socket = io.connect('http://localhost:8080/test');
         socket.on('connect', function() {});
         socket.on('disconnect', function() {});
@@ -26,5 +27,3 @@ angular.module('rvtk', [])
         });
 
     }]);
-
-
