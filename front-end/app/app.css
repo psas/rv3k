@@ -23,4 +23,6 @@
     display: inline-block;
     width: 1480px;
 }
-
+a {
+    text-decoration: none;
+}
