@@ -1,14 +1,17 @@
 from psas_packet import io
 import socket
 import socketio
+from threading import Event
 
 class Telemetry:
     def __init__(self, sio):
-        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        sock.bind(("127.0.0.1", 35001))
-        net = io.Network(sock)
+        self.sio = sio
+        self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.socket.bind(("127.0.0.1", 35001))
+        self.network = io.Network(self.socket)
     
-    def listen():
-        while True:
-            for timestamp, data in net.listen():
-                #sio.emit("my response", {"data": ""}, namespace="/main")
+    def listen(event):
+        while event.is_set() == False:
+            for timestamp, data in self.network.listen():
+                #self.sio.emit("telemetry", {"data": ""}, namespace="/main")
+        return
