@@ -18,13 +18,13 @@ def background_thread():
     tel = Telemetry(sio)
     tel_thread = Thread(target=tel.listen, args=(event,))
     tel_thread.start()
-    while True:
-        try:
-            pass
-        except KeyboardInterrupt:
-            event.set()
-            tel_thread.join()
-            sys.exit()
+#    while True:
+#        try:
+#            pass
+#        except KeyboardInterrupt:
+#            event.set()
+#            tel_thread.join()
+#            sys.exit()
 
 @app.route('/')
 def index():
