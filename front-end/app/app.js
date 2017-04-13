@@ -6,3 +6,4 @@ var app = angular.module('rvtk', ['ngRoute']);
 app.config(['$locationProvider', '$routeProvider', '$scope', function($locationProvider, $routeProvider, $scope) {
     $locationProvider.hashPrefix('!');
 }]);
+
