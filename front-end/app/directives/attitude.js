@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module("rv3k").directive("attitude", function() {
+angular.module("rvtk").directive("attitude", function() {
   return {
-    restrict 'E',
+    restrict: 'E',
     scope: {},
     templateUrl: 'directives/attitude.html'
   };
