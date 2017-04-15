@@ -13,22 +13,21 @@ angular.module("rvtk").directive("attitude", function() {
             var mesh;
             var gyros = [];     // Gyroscopic data handling rotation. 
             $.ajax({
-              type: "GET",
-              url: "directives/components/ADIS.csv", // TODO: Real data. 
-              dataType: "text",
-              success: function(data) {
-                process(data);
-              }
+                type: "GET",
+                url: "directives/components/ADIS.csv", // TODO: Real data. 
+                dataType: "text",
+                success: function(data) {
+                    process(data);
+                }
             });
 
             // Get gyroscopic data out of ADIS.csv.
             function process(text){ 
-              var lines = text.split("\n");
-              for(var i = 1; i < lines.length-1; i++) {
-                var data = lines[i].split(",");
-                gyros.push([parseFloat(data[3]), parseFloat(data[4]), parseFloat(data[5])]);
-              }
-              console.log(gyros[0]);
+                var lines = text.split("\n");
+                for(var i = 1; i < lines.length-1; i++) {
+                    var data = lines[i].split(",");
+                    gyros.push([parseFloat(data[3]), parseFloat(data[4]), parseFloat(data[5])]);
+                }
             }
 
             init();
@@ -73,19 +72,18 @@ angular.module("rvtk").directive("attitude", function() {
             // Render the scene, and change the rocket's attitude every .1 seconds.
             var i = 0;
             function render() {
-              setTimeout(function() {
-                var x = gyros[i];
-                requestAnimationFrame(render);
-                mesh.rotation.x = x[0];
-                mesh.rotation.y = x[1];
-                mesh.rotation.z = x[2];
-                i += 1;
-                if(i == gyros.length - 1) {
-                  i = 0;
-                }
-                renderer.render(scene, camera);
-              }, 100);
+                setTimeout(function() {
+                    var x = gyros[i];
+                    mesh.rotation.x = x[0];
+                    mesh.rotation.y = x[1];
+                    mesh.rotation.z = x[2];
+                    i += 1;
+                    if(i == gyros.length - 1) {
+                        i = 0;
+                    }
+                    renderer.render(scene, camera);
+                }, 100);
             }
-      }
-  };
+        }
+    };
 });
