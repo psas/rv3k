@@ -55,6 +55,21 @@ app.controller('MainController', ['$scope', '$http', function($scope, $http) {
         url : 'https://assets.agi.com/stk-terrain/world'
     });
 
+
+    var rocket = viewer.entities.add({
+        name : 'Rocket',
+        position : Cesium.Cartesian3.fromDegrees(-120.6517673, 43.7961328),
+            point : {
+            pixelSize : 5,
+	        color : Cesium.Color.RED,
+	        outlineColor : Cesium.Color.WHITE,
+	        outlineWidth : 2
+        }
+    });
+
+    viewer.zoomTo(viewer.entities);
+
+/*
     //sets the camera to the launch site
     function lookAtLaunchSite() {
         var target = new Cesium.Cartesian3(-2351419.98752473, -3967847.6396402, 4396807.49924701);
@@ -64,6 +79,7 @@ app.controller('MainController', ['$scope', '$http', function($scope, $http) {
     }
     //calls the function to look at the launch site
     lookAtLaunchSite();
+*/
 
     //Gets rid of a developer tools error and allows cesium to work
     viewer.infoBox.frame.sandbox = "allow-same-origin allow-top-navigation allow-pointer-lock allow-popups allow-forms allow-scripts";
