@@ -2,7 +2,12 @@
 
 .graphicsBoard {
     display: inline-block;
-    width: 1480px;
+    width: 2580px;
+}
+
+#efv-container {
+    width: 625px;
+    float: left;
 }
 
 .graphics {

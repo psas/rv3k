@@ -19,6 +19,7 @@
   <script src="bower_components/angular/angular.js"></script>
   <script src="bower_components/angular-route/angular-route.js"></script>
 
+  <!-- These are necessary for the attitude visualization. -->
   <script src="directives/components/jquery-3.1.1.min.js"></script>
   <script src="directives/components/three.min.js"></script>
 
@@ -46,7 +47,7 @@
         <a class="button" href="at-a-glance/index.html">At A Glance View</a>
     </div>
 
-    <!-- -->
+    <!-- This graphics board holds the EFV, video, and vehicle attitude.-->
     <div class="graphicsBoard">
         <div class="graphics" ng-hide="hideEFV">
             <img width="460" height="315" src="imgs/efv.png" / >
