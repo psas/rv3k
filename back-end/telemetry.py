@@ -1,20 +1,25 @@
-import socketio
-import socket
 from psas_packet import io
+import socket
+import socketio
 
 class Telemetry:
-    def __init__(self):
-        self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self.sock.bind(('127.0.0.1', 35001))
-        self.net = io.Network(self.sock)
-
-
-    def run(self, sio):
-        sequence = 90501
-        while sequence < 93251:
-            for d in self.net.listen():
-                timestamp, values = d
-                fourcc, values = values
-                sio.emit('my response', {fourcc : dict({"recv" : timestamp}, **values)}, namespace='/test')
-                sio.sleep(0.100)
-                sequence += 1
+    def __init__(self, address, port, sio):
+        self.address = address
+        self.port = port
+        self.sio = sio
+    
+    def listen(self):
+        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        sock.bind((self.address, self.port))
+        network = io.Network(sock)
+        while True:
+            try:
+                for timestamp, data in network.listen():
+                    fourcc, data = data
+                    data["recv"] = timestamp
+                    self.sio.emit("telemetry", {fourcc: data},
+                                  namespace="/main")
+                self.sio.sleep(0.001)
+            except KeyboardInterrupt:
+                sock.close()
+                return
