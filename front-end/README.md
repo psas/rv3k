@@ -1,6 +1,5 @@
 # Front End Preliminary Directory
 
-
 ## Setup 
 
 To start off just clone the repo and install the dependancies:
@@ -28,8 +27,4 @@ The project is preconfigured to run the webserver, just run:
 ```
 npm start 
 ```
-Now browse to the app at [`localhost:8000/index.html`][local-app-url].
-
-
-
-
+Now open a browse and navigate to the app at [`localhost:8000/index.html`][local-app-url].
