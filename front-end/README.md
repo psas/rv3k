@@ -1,36 +1,16 @@
 # Front End Preliminary Directory
+This directory contains the webserver and front-end rendering components for rv3k
+## Requirements
+- Nodejs v.6.x.x (LTS)
 
-## Setup 
+_Note_: Debian-based Linux package managers don't have the latest version of Nodejs. Instead of using apt-get, download and install the latest LTS version from https://nodejs.org/
 
-To start off just clone the repo and install the dependancies:
+## Setup
+1. Create and navigate to a convenient working directory then clone the repository using command `git clone https://github.com/patter5/rv3k.git`.
+Alternatively, use GitHub desktop or some other tool to clone to your local machine. A bash-like shell is recommended.
+2. navigate to `<path-to>/rv3k/front-end`
+3. use command `npm install`. This will install dependencies specified in package.json and bower.json
 
-### Dependencies
-
- - [ ] Clone the Repository 
- - [ ] Install Nodejs
-
-### Clone
-Clone the repository:
-```
-git clone https://github.com/patter5/rv3k
-cd front-end
-```
-
-## Requirments 
- - You will need Nodejs c. 6.x.x
-Node: 
-Nodejs v. 6.x.x
-Note: Debian-based Linux package managers don't have the latest version of Nodejs. Instead of using apt-get, download and install the latest LTS version from https://nodejs.org/
-
-### Installing Project Dependencies
-We have npm setup to install all of the dependancies automatically, just run in the repo:
-```
-npm install
-```
-
-### Running Rocket View 3000
-The project is preconfigured to run the webserver, just run:
-```
-npm start 
-```
-Now open a browse and navigate to the app at [`localhost:8000/index.html`][local-app-url].
+### Running the Rocket View 3000 web server
+1. use command `npm start`
+2. open a browser and navigate to `localhost:8000/index.html`
