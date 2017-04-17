@@ -32,6 +32,7 @@ app.controller('MainController', ['$scope', '$http', function($scope, $http) {
     // -----------------------------
     // all 3D map stuff
     //creates the 3D map viewer
+    //TODO: add a Map legend
     var viewer = new Cesium.Viewer('cesiumContainer', {
         //choose a more true to earth map
         imageryProvider : new Cesium.TileMapServiceImageryProvider({
@@ -70,9 +71,11 @@ app.controller('MainController', ['$scope', '$http', function($scope, $http) {
         }
     });
 
-    //move the camera to where the dot is
-    viewer.zoomTo(rocket);
-      //viewer.entities);
+    //move the camera to where the rocket is:
+    //viewer.zoomTo(rocket);
+
+    //move the camera to the collection of entities:
+    viewr.zoomTo(viewer.entities);
 
 
 
