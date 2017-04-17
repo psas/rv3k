@@ -58,15 +58,14 @@ app.controller('MainController', ['$scope', '$http', function($scope, $http) {
     //Make a dot for the rocket
     var rocket = viewer.entities.add({
         name : 'Rocket',
-        //This is the launch site
-        position : Cesium.Cartesian3.fromDegrees(-120.6517673, 43.7961328),
-            point : {
-            pixelSize : 5,
-	        color : Cesium.Color.RED, //Make the dot red
-	        outlineColor : Cesium.Color.WHITE,  //Outline the dot with white
-	        outlineWidth : 2
+        position: Cesium.Cartesian3.fromDegrees(-120.6517673, 43.7961328, 30000.0),
+        ellipsoid : {
+            radii : new Cesium.Cartesian3(3000.0, 3000.0, 3000.0),
+            material : Cesium.Color.RED,
+            outline : false
         }
     });
+
     //move the camera to where the dot is
     viewer.zoomTo(viewer.entities);
 
