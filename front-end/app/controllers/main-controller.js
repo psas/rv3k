@@ -29,6 +29,7 @@ app.controller('MainController', ['$scope', '$http', function($scope, $http) {
         $scope.$apply();
     });
 
+/*
     // -----------------------------
     // all 3D map stuff
     //creates the 3D map viewer
@@ -72,6 +73,6 @@ app.controller('MainController', ['$scope', '$http', function($scope, $http) {
 
     //Gets rid of a developer tools error and allows cesium to work
     viewer.infoBox.frame.sandbox = "allow-same-origin allow-top-navigation allow-pointer-lock allow-popups allow-forms allow-scripts";
-
+*/
 }]);
    

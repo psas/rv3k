@@ -28,6 +28,7 @@
   <script src="components/version/version.js"></script>
   <script src="components/version/version-directive.js"></script>
   <script src="components/version/interpolate-filter.js"></script>
+  <script src="directives/earthFrameView.js"></script>
 </head>
 <body ng-controller="MainController">
     <!-- logo and title -->
@@ -60,7 +61,7 @@
             <img width="460" height="315" src="imgs/vehicleAttitude.gif" />
         </div>
         <div id="efv-container" ng-hide="hideEFV">
-            <div id="cesiumContainer"></div>
+            <earth-frame-view></earth-frame-view>
         </div>
     </div>
     
