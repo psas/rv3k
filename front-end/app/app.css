@@ -2,14 +2,12 @@
 
 .graphicsBoard {
     display: inline-block;
-    width: 2580px;
+    width: 1645px;
 }
-
 #efv-container {
     width: 625px;
     float: left;
 }
-
 .graphics {
     float: left;
 }
@@ -30,4 +28,16 @@
 }
 a {
     text-decoration: none;
+}
+
+
+
+.cesium-widget-credits {
+  /* hides credits */
+  visibility: hidden;
+}
+
+.cesium-viewer-toolbar {
+  /* hides search bar panel */
+  visibility:hidden;
 }
