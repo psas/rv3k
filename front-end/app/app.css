@@ -29,3 +29,15 @@
 a {
     text-decoration: none;
 }
+
+
+
+.cesium-widget-credits {
+  /* hides credits */
+  visibility: hidden;
+}
+
+.cesium-viewer-toolbar {
+  /* hides search bar panel */
+  visibility:hidden;
+}
