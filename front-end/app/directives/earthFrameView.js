@@ -14,7 +14,11 @@ angular.module("rvtk").directive("earthFrameView", function() {
                     url : '//cesiumjs.org/tilesets/imagery/naturalearthii'
                 }),
                 //gets rid of a menu to pick map type
-                baseLayerPicker : false
+                baseLayerPicker : false,
+                // hides clock, timeline bar, and home button
+                timeline: false,
+                animation: false,
+                homeButton: false
             });
 
             // set lighting to true - makes it look more realistic 
@@ -42,8 +46,8 @@ angular.module("rvtk").directive("earthFrameView", function() {
                 }
             });
 
-            //move the camera to where the dot is
-            viewer.zoomTo(viewer.entities);
+            //move the camera to where rocket is
+            viewer.zoomTo(rocket);
 
             //Gets rid of a developer tools error and allows cesium to work
             viewer.infoBox.frame.sandbox = "allow-same-origin allow-top-navigation allow-pointer-lock allow-popups allow-forms allow-scripts";
