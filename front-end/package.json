@@ -1,18 +1,10 @@
-/**
- * Copyright (c) 2017 Jeff Patterson, Amanda Murphy, Paolo Villanueva, Patrick Overton, Connor Picken, Yun Cong Chen, Seth Amundsen, Michael Ohl, Matthew Tighe
- * ALL RIGHTS RESERVED
- * [This program is licensed under the "GNU General Public License"]
- * Please see the file COPYING in the source
- * distribution of this software for license terms.
- */
-
 {
   "name": "angular-seed",
   "private": true,
   "version": "0.0.0",
   "description": "A starter project for AngularJS",
   "repository": "https://github.com/angular/angular-seed",
-  "license": "GPL-2.0",
+  "license": "MIT",
   "devDependencies": {
     "bower": "^1.7.7",
     "http-server": "^0.9.0",
