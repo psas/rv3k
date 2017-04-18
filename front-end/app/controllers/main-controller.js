@@ -32,16 +32,21 @@ app.controller('MainController', ['$scope', '$http', function($scope, $http) {
     // -----------------------------
     // all 3D map stuff
     //creates the 3D map viewer
+    //TODO: add a Map legend
     var viewer = new Cesium.Viewer('cesiumContainer', {
         //choose a more true to earth map
         imageryProvider : new Cesium.TileMapServiceImageryProvider({
             url : '//cesiumjs.org/tilesets/imagery/naturalearthii'
         }),
         //gets rid of a menu to pick map type
-        baseLayerPicker : false
+        baseLayerPicker : false,
+        // hides clock, timeline bar, and home button
+        timeline: false,
+        animation: false,
+        homeButton: false
     });
 
-    // set lighting to true - makes it look more realistic 
+    // set lighting to true - makes it look more realistic
     viewer.scene.globe.enableLighting = true;
 
     var cesiumTerrainProviderMeshes = new Cesium.CesiumTerrainProvider({
@@ -49,7 +54,7 @@ app.controller('MainController', ['$scope', '$http', function($scope, $http) {
         requestWaterMask : true,
         requestVertexNormals : true
     });
-    
+
     //makes the map more 3D with terrain
     viewer.terrainProvider = new Cesium.CesiumTerrainProvider({
         url : 'https://assets.agi.com/stk-terrain/world'
@@ -66,12 +71,14 @@ app.controller('MainController', ['$scope', '$http', function($scope, $http) {
         }
     });
 
-    //move the camera to where the dot is
-    viewer.zoomTo(viewer.entities);
+    //move the camera to where the rocket is:
+    //viewer.zoomTo(rocket);
+
+    //move the camera to the collection of entities:
+    viewr.zoomTo(viewer.entities);
+
 
 
     //Gets rid of a developer tools error and allows cesium to work
     viewer.infoBox.frame.sandbox = "allow-same-origin allow-top-navigation allow-pointer-lock allow-popups allow-forms allow-scripts";
-
 }]);
-   
