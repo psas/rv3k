@@ -14,7 +14,7 @@ angular.module("rvtk").directive("attitude", function() {
             var gyros = [];     // Gyroscopic data handling rotation. 
             $.ajax({
                 type: "GET",
-                url: "directives/components/ADIS.csv", // TODO: Real data. 
+                url: "assets/ADIS.csv", // TODO: Real data. 
                 dataType: "text",
                 success: function(data) {
                     process(data);
@@ -42,7 +42,7 @@ angular.module("rvtk").directive("attitude", function() {
                 });
             }
 
-            loadModel("directives/components/rocket_model2.js");
+            loadModel("assets/rocket_model2.js");
             animate();
 
             // Set up the camera and renderer and attach them to html.
