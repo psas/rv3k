@@ -15,16 +15,21 @@
   <link rel="stylesheet" href="app.css">
   <link rel="stylesheet" href="bower_components/cesiumjs/Cesium/Widgets/widgets.css">
 
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js"></script>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js"></script>
   <script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
   <script src="bower_components/angular/angular.js"></script>
   <script src="bower_components/angular-route/angular-route.js"></script>
 
-  <script src="bower_components/cesiumjs/Cesium/Cesium.js"></scrip> 
+  <!-- These are necessary for the attitude visualization. -->
+  <script src="assets/jquery-3.1.1.min.js"></script>
+  <script src="bower_components/threejs/build/three.min.js"></script>
+  <script src="bower_components/cesiumjs/Cesium/Cesium.js"></script> 
+
 
   <script src="app.js"></script>
 
   <script src="controllers/main-controller.js"></script>
+  <script src="directives/attitude.js"></script>
   <script src="components/version/version.js"></script>
   <script src="components/version/version-directive.js"></script>
   <script src="components/version/interpolate-filter.js"></script>
@@ -46,19 +51,18 @@
         <a class="button" href="at-a-glance/index.html">At A Glance View</a>
     </div>
 
-    <!-- -->
+    <!-- This graphics board holds the EFV, video, and vehicle attitude.-->
     <div class="graphicsBoard">
         <div class="graphics" ng-hide="hideVideo">
             <div class="videoStream" ng-hide="(VisibleCamera == 0)">
                 <iframe width="560" height="315" src="https://www.youtube.com/embed/tMfQHzjNvRU?ecver=1" frameborder="0" allowfullscreen></iframe>
-	    </div>
+	          </div>
             <div class="videoStream" ng-hide="(VisibleCamera == 1)">
-	        <iframe width="560" height="315" src="https://www.youtube.com/embed/FzCsDVfPQqk" frameborder="0" allowfullscreen></iframe>
-	    </div>
+	              <iframe width="560" height="315" src="https://www.youtube.com/embed/FzCsDVfPQqk" frameborder="0" allowfullscreen></iframe>
+	          </div>
         </div>
         <div class="graphics" ng-hide="hideVehicleAttitude">
-            <div class="buttons"></div>
-            <img width="460" height="315" src="imgs/vehicleAttitude.gif" />
+            <attitude></attitude>
         </div>
         <div id="efv-container" ng-hide="hideEFV">
             <earth-frame-view></earth-frame-view>

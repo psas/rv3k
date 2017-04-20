@@ -2,7 +2,7 @@
 
 .graphicsBoard {
     display: inline-block;
-    width: 1645px;
+    width: 1850px;
 }
 #efv-container {
     width: 625px;
@@ -29,7 +29,6 @@
 a {
     text-decoration: none;
 }
-
 
 
 .cesium-widget-credits {
