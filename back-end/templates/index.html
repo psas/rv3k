@@ -1,0 +1,69 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Testing</title>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js"></script>
+    <script type="text/javascript" charset="utf-8">
+        $(document).ready(function() {
+            namespace = "/main";
+            var socket = io.connect("http://" + document.domain + ':' + location.port + namespace);
+
+            socket.on("connect", function() {});
+            socket.on("disconnect", function() {});
+            socket.on("telemetry", function(data) {
+                for(var key in data) {
+                    update(key, data[key]);
+                }
+            });
+        });
+
+        function update(fourcc, data) {
+            for(var key in data) {
+                if(key == "recv") {
+                    $('#' + fourcc + "_recv").text(data[key]);
+                } else {
+                    $('#' + key).text(data[key]);
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="ADIS">
+        <div>VCC: <span id="VCC"></span></div>
+        <div>Gyro_X: <span id="Gyro_X"></span></div>
+        <div>Gyro_Y: <span id="Gyro_Y"></span></div>
+        <div>Gyro_Z: <span id="Gyro_Z"></span></div>
+        <div>Acc_X: <span id="Acc_X"></span></div>
+        <div>Acc_Y: <span id="Acc_Y"></span></div>
+        <div>Acc_Z: <span id="Acc_Z"></span></div>
+        <div>Magn_X: <span id="Magn_X"></span></div>
+        <div>Magn_Y: <span id="Magn_Y"></span></div>
+        <div>Magn_Z: <span id="Magn_Z"></span></div>
+        <div>Temp: <span id="Temp"></span></div>
+        <div>Aux_ADC: <span id="Aux_ADC"></span></div>
+        <div>recv: <span id="ADIS_recv"></span></div>
+    </div>
+    <div class="RNHP">
+        <div>Port1: <span id="Port1"></span></div>
+        <div>Port2: <span id="Port2"></span></div>
+        <div>Port3: <span id="Port3"></span></div>
+        <div>Port4: <span id="Port4"></span></div>
+        <div>Umbilical: <span id="Umbilical"></span></div>
+        <div>Port6: <span id="Port6"></span></div>
+        <div>Port7: <span id="Port7"></span></div>
+        <div>Port8: <span id="Port8"></span></div>
+        <div>recv: <span id="RNHP_recv"></span></div>
+    </div>
+    <div class="ROLL">
+        <div>Angle: <span id="Angle"></span></div>
+        <div>Disable: <span id="Disable"></span></div>
+        <div>recv: <span id="ROLL_recv"></span></div>
+    </div>
+    <div class="SEQN">
+        <div>Sequence: <span id="Sequence"></span></div>
+        <div>recv: <span id="SEQN_recv"></span></div>
+    </div>
+</body>
+</html>
