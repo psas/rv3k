@@ -10,12 +10,12 @@ This directory contains the Socket.IO server and supporting server modules for r
 3. Install the dependencies specified in requirements.txt. (ex: `pip install -r requirements.txt`)
 
 ### Running the Rocket View 3000 Socket.IO server
-APRS Mode: `python server.py -A`
-Telemetry Mode: `python server.py -T`
-Video Mode: `python server.py -V`
+- APRS Mode: `python server.py -A`
+- Telemetry Mode: `python server.py -T`
+- Video Mode: `python server.py -V`
 
 ### Testing notes
 Including the flag `-t` tells server.py to serve the testing webpage.
-APRS Testing Address: http://0.0.0.0:8081
-Telemetry Testing Address: http://0.0.0.0:8080
-Video Testing Address: http://0.0.0.0:8082
+- APRS Testing Address: http://0.0.0.0:8081
+- Telemetry Testing Address: http://0.0.0.0:8080
+- Video Testing Address: http://0.0.0.0:8082
