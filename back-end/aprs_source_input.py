@@ -23,7 +23,7 @@ class AprsSourceInput:
         while True:
             print(i)
             for raw_aprs in self.data:
-                sock.send(raw_aprs)
+                sock.send(raw_aprs.encode())
             time.sleep(1)
             i += 1
         sock.close()

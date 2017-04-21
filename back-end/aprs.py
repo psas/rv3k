@@ -40,7 +40,7 @@ class AprsReceiver:
         try:
             return aprslib.parse(aprs_packet.strip())
         except (aprslib.ParseError, aprslib.UnknownFormat) as error:
-            pass
+            print(error, aprs_packet)
 
     def listen(self):
         sock = socket.socket()
@@ -54,18 +54,10 @@ class AprsReceiver:
             try:
                 if data:
                     parsed_aprs = self.parse(data)
-                    self.sio.emit("recovery", parsed_aprs, namespace="/main")
-                    self.sio.sleep(0.1)
+                    if parsed_aprs:
+                        self.sio.emit("recovery", parsed_aprs, namespace="/main")
+                        self.sio.sleep(0.1)
             except KeyboardInterrupt:
                 return
 
 
-
-
-def main():
-    parsed_aprs = parse(raw_input())	
-    print(parsed_aprs)
-
-
-if __name__ == "__main__":
-	main()
