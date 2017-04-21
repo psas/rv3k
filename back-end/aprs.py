@@ -1,0 +1,63 @@
+import sys
+import os
+import json
+import aprslib
+import socket
+
+"""
+# Experiment
+
+API_KEY = "99303.dKx67VHTL2LPi"
+APRS_FI_API = "https://api.aprs.fi/api/get?apikey=" + API_KEY + "&what=loc&"
+
+
+def get(name):
+	url = APRS_FI_API + "name=" + name + "&format=json"
+	print(url)
+	return requests.get(url)
+
+
+def main():
+	response = get("CW6028")
+	print(response.json())
+"""
+
+class AprsReceiver:
+    def __init__(self, address, port, sio):
+        self.address = address
+        self.port = port
+        self.sio = sio
+
+    def parse(self, aprs_packet):
+        try:
+            return aprslib.parse(aprs_packet.strip())
+        except (aprslib.ParseError, aprslib.UnknownFormat) as error:
+            pass
+
+    def listen(self):
+        sock = socket.socket()
+        addr = (self.address, self.port)
+        sock.bind(addr)
+        print("aprs ready")
+        sock.listen(1)
+        conn, client_addr = sock.accept()
+        while True:
+            data = conn.recv(1024)
+            try:
+                if data:
+                    parsed_aprs = self.parse(data)
+                    self.sio.emit("recovery", parsed_aprs, namespace="/main")
+                    self.sio.sleep(0.1)
+            except KeyboardInterrupt:
+                return
+
+
+
+
+def main():
+    parsed_aprs = parse(raw_input())	
+    print(parsed_aprs)
+
+
+if __name__ == "__main__":
+	main()
