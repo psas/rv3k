@@ -38,6 +38,17 @@ a {
     text-decoration: none;
 }
 
+.telemetry-tile {
+    position: relative;
+    float: left;
+    border-radius: 25px;
+    border: 2px solid #73AD21;
+    padding: 20px;
+    text-align: center;
+    height: 140px;
+    width: 100px;
+}
+
 
 .cesium-widget-credits {
   /* hides credits */
