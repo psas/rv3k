@@ -11,17 +11,30 @@ import time
 
 class AprsSourceInput:
     def __init__(self):
+        """
+        Sets up source inputs for the APRS server.
+        """
         fileObj = open("aprs.raw", "r")
         self.data = fileObj.read().split("\n")
         fileObj.close()
         
 
     def send(self):
+        """
+        Sends all raw APRS data to the APRS server.
+
+        :return:
+        """
+
+        # set up socket and connect to sever
         sock = socket.socket()
         sock.connect(("127.0.0.1", 35002))
+
         i = 0
+
         while True:
             print(i)
+
             for raw_aprs in self.data:
                 sock.send(raw_aprs.encode())
             time.sleep(1)
