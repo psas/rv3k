@@ -53,9 +53,20 @@ def disconnect(sid):
 # and based on the arguments from the command line will create a
 # back ground thread that runs the foo()
 def main():
-    # Adding command line option support
+    
+    # parser is an object that holds the command line argument
+    # options
     parser = ArgumentParser()
     parser.add_argument("-t", "--test", action="store_true")
+    
+    # The group object holds a special set of options that 
+    # need to be mutually exclusive.  This ensures that a server
+    # will only be instanciated as either an APRS server, a
+    # telemetry server or a video server
+    
+    # Note that the test option ("-t") is not part of the mutually
+    # exclusive group. This is because we want to allow any
+    # type of server instanciation to have testing options
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument("-A", "--aprs", action="store_true")
     group.add_argument("-T", "--telemetry", action="store_true")
@@ -64,7 +75,12 @@ def main():
     # Parse command line arguments
     args = parser.parse_args()
 
+    # Creating the port and server variables with the 'global'
+    # keyword brings them into the scope of execution here
     global port, server
+    
+    # Choose which type of server to instanciate based on 
+    # the command line arguments 
     if args.aprs:
         port = 8081
         server = AprsReceiver("127.0.0.1", 35002, sio)
@@ -73,6 +89,7 @@ def main():
         server = Telemetry("127.0.0.1", 35001, sio)
     else:
         pass # Instantiate video server here!
+
     if args.test == False:
         global app, thread
         app = socketio.Middleware(sio)
