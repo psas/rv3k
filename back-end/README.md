@@ -24,4 +24,6 @@ Including the flag `-t` tells server.py to serve the testing webpage.
 These instructions assume that the Launch-12 and psas_packet repositories have been cloned to the same directory.
 1. Navigate to the scripts directory. (ex: `cd <path-to>/psas_packet/scripts/`)
 2. Replay the Launch-12 data. (ex: `./replaylog ../../Launch-12/data/LAUNCH/flightcomputer.log`)
-  - Run telemetry replay by typing ./replaylog.sh in the command promt
+  - 1. Ensure that the psas_packet repo has been downloaded to the home directory
+  - 2. Ensure that the Launch-12 repo has been downloaded to the home directory
+  - 3. Navigate to the directory that contains replaylog.sh and run it by typing ./replaylog.sh in the command prompt
