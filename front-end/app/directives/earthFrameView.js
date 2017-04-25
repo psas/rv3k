@@ -53,6 +53,39 @@ angular.module("rvtk").directive("earthFrameView", function() {
                     outline : false
                 }
             });
+			
+			//Variables for recovery crew location
+            var long1   = -121.0232;
+            var lat1    = 44.23123;
+            var alt1    = 593.34234;
+            var long2   = -121.54221;
+            var lat2    = 43.39004;
+            var alt2    = 591.243;
+
+            //Radius of recovery crew
+            var radius  = 3000.0
+
+            //Make a dot for recovery crew 1
+            var recoveryCrew1 = viewer.entities.add({
+                name : 'Crew1',
+                position: Cesium.Cartesian3.fromDegrees(long1, lat1, alt1),
+                ellipsoid : {
+                    radii : new Cesium.Cartesian3(radius, radius, radius),
+                    material : Cesium.Color.BLUE,
+                    outline : false
+                }
+            });
+
+            //Make a dot for recovery crew 2
+            var recoveryCrew2 = viewer.entities.add({
+                name : 'Crew2',
+                position: Cesium.Cartesian3.fromDegrees(long2, lat2, alt2),
+                ellipsoid : {
+                    radii : new Cesium.Cartesian3(radius, radius, radius),
+                    material : Cesium.Color.BLUE,
+                    outline : false
+                }
+            });
 
             //move the camera to where rocket is
             viewer.zoomTo(rocket);
