@@ -1,1 +1,1 @@
-python ~/psas_packet-master/scripts/replaylog ~/Launch-12-gh-pages/data/LAUNCH/flightcomputer.log
+replaylog Launch-12/data/LAUNCH/flightcomputer.log
