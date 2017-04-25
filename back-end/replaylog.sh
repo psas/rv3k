@@ -1,1 +1,1 @@
-replaylog Launch-12/data/LAUNCH/flightcomputer.log
+replaylog ~/Launch-12/data/LAUNCH/flightcomputer.log
