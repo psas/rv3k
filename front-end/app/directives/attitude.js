@@ -48,13 +48,17 @@ angular.module("rvtk").directive("attitude", function() {
             function allThis(){
             init();
             var loader1 = new THREE.JSONLoader();
+		
+		var group = new THREE.Object3D();	//TODO: Test code
 
             // Load the rocket model into the mesh variable.
             // The inner function is not called until loader1.load completes.
             function loadModel(modelUrl) {
                 loader1.load(modelUrl, function(geometry) {
                     mesh = new THREE.Mesh(geometry);
-                    scene.add(mesh);
+			group.add(mesh);	//TODO
+                    scene.add(group);		//TODO: Test code
+		    //scene.add(mesh);
                 });
             }
 
@@ -67,7 +71,7 @@ angular.module("rvtk").directive("attitude", function() {
                 camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, .1, 2000);
                 camera.position.set(0, 0, 10);
                 scene = new THREE.Scene();
-                renderer = new THREE.WebGLRenderer();
+                renderer = new THREE.WebGLRenderer({antialias: true});
                 renderer.setSize(window.innerWidth / 2, window.innerHeight / 1.5);     
                 elem[0].appendChild(renderer.domElement);
 
@@ -91,14 +95,40 @@ angular.module("rvtk").directive("attitude", function() {
             var targetRotY = 0;
             var targetRotZ = 0;
 
+	    var prevRotX = targetRotX;
+	    var prevRotY = targetRotY;
+	    var prevRotZ = targetRotZ;
+
             // Render the scene, and change the rocket's attitude at 30fps
             // Gets called recursively with the requestAnimationFrame function call
             function render() {
                 setTimeout(function() {
                     requestAnimationFrame(render);
+		    
+		    // TODO: After further testing with more data, we need to decide if the animation is choppy
+		    // and if so apply smoothing to the animation.
+		/*	
                     mesh.rotation.x = targetRotX;
                     mesh.rotation.y = targetRotY;
                     mesh.rotation.z = targetRotZ;
+		*/
+
+		    // TODO: Rotation is not about local objects rotation. NEED TO CONVERT TO LOCAL ORIENTATION
+
+		    var diffX = targetRotX - prevRotX;
+		    var diffY = targetRotY - prevRotY;
+		    var diffZ = targetRotZ - prevRotZ;
+		    prevRotX = targetRotX;
+		    prevRotY = targetRotY;
+		    prevRotZ = targetRotZ;
+	
+			group.rotateX(diffX);
+			group.rotateY(diffY);
+			group.rotateZ(diffZ);
+
+		    //group.rotation.y = rotY;
+		    //group.rotation.x = 1;
+		    //group.rotation.z = 1;
                     renderer.render(scene, camera);
                 }, 1000/30);	// run at 30fps
             }
@@ -111,8 +141,8 @@ angular.module("rvtk").directive("attitude", function() {
                 var imuYaw = 0;
                 
 		// Gyroscope data is in degrees/second. Need to convert to radians.
-		// Data is thus an angular displacement instead of an absolute angle or rotation,
-		// so data is added to target rotation instead of assigning the rotation.
+		// Data is an angular displacement instead of an absolute angle, so data is
+		// added to target rotation instead of assigning the rotation.
 		// For some reason it appears that the y axis values are actually in the x axis column
 		// so I am switching them here. 
 		// TODO: Currently do not know if x is really x axis or z axis because of the y values
@@ -123,16 +153,25 @@ angular.module("rvtk").directive("attitude", function() {
 
 		// Uses data from the accelerometer to obtain a pitch and yaw angle. Note that accelerometer
 		// cannot track roll.
+		//imuPitch = Math.atan2(x[5], x[3]);
                 imuPitch = Math.atan2(x[5], x[3]);
                 imuYaw = Math.atan2(x[4], x[3]);
+
+
+		var accMagn = Math.pow(x[3], 2) + Math.pow(x[4], 2) + Math.pow(x[5], 2);
+		if((i % 50) == 0){
+		    //console.log(accMagn);
+		}
 
 		// Combine the gyroscope data with the accelerometer data to ensure that the orientation is both
 		// accurate and free of any drift errors that are present with using gyroscopes.
 		// TODO: currently only correcting drift in the pitch and yaw axises and not the roll axis. 
 		// This would get fixed by using magnometer data, however, initial search into these calculations
 		// seems exceedingly complex and I am not if it is worth the effort. 
-                targetRotX = (0.98 * targetRotX) + (0.02 * imuPitch);
-                targetRotZ = (0.98 * targetRotZ) + (0.02 * imuYaw);
+		if(accMagn > 8000 && accMagn < 32000){
+                    targetRotX = (0.98 * targetRotX) + (0.02 * imuPitch);
+                    targetRotZ = (0.98 * targetRotZ) + (0.02 * imuYaw);
+		}
             }
 
             
@@ -156,6 +195,7 @@ angular.module("rvtk").directive("attitude", function() {
                     }
                     i += 1;
                     // TODO: Just commenting out this bit of debug logging code for the time being...
+                    // Will get removed all together by the end of the project.
                     /*
                     n += 1;
                     if(n >= 10){ // just trying to not flood the console while testing
@@ -166,6 +206,9 @@ angular.module("rvtk").directive("attitude", function() {
                     if(i == imuData.length - 1){ // in order to loop when at the end of the ADIS.csv file
                         i = 0;
                         firstData = true;
+			targetRotX = 0;
+			targetRotY = 0;
+			targetRotZ = 0;
                     }
                     loopDelay = dt * Math.pow(10, 3); // convert seconds to milliseconds since delay time is in milliseconds
                     loop();
