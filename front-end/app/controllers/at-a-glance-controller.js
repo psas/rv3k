@@ -8,6 +8,11 @@
 
 var app = angular.module('rvtk', []);
 
+
+// This filter will find  the matching entry in $scope.cards based on the data
+// type sent to it.
+// EG: $filter('getByType')($scope.cards, 'VCC') will find the object in cards
+// with format: ADIS, type: VCC, and display: Velocity.
 app.filter('getByType', function() {
     return function(input, type) {
         var i = 0, len = input.length;
@@ -22,6 +27,10 @@ app.filter('getByType', function() {
 
 app.controller('AtAGlanceController', ['$scope', '$http', '$filter', function($scope, $http, $filter) {
 
+    // Adding entries to this array will cause them to be displayed on the
+    // at-a-glance page, and if there is a telemetry object matching the type
+    // coming from the telemetry server, it will be updated every time data is
+    // received.
     $scope.cards = [
         {format: 'ADIS', type: 'VCC',       display: 'Velocity',            data: ''},
         {format: 'ADIS', type: 'Gyro_X',    display: 'Gyroscope - X',       data: ''},
@@ -29,7 +38,7 @@ app.controller('AtAGlanceController', ['$scope', '$http', '$filter', function($s
         {format: 'ADIS', type: 'Gyro_Z',    display: 'Gyroscope - Z',       data: ''},
         {format: 'ADIS', type: 'Acc_X',     display: 'Acceleration - X',    data: ''},
         {format: 'ADIS', type: 'Acc_Y',     display: 'Acceleration - Y',    data: ''},
-        {format: 'ADIS', type: 'Acc_Y',     display: 'Acceleration - Z',    data: ''},
+        {format: 'ADIS', type: 'Acc_Z',     display: 'Acceleration - Z',    data: ''},
         {format: 'ADIS', type: 'Magn_X',    display: 'Magnetometer - X',    data: ''},
         {format: 'ADIS', type: 'Magn_Y',    display: 'Magnetometer - Y',    data: ''},
         {format: 'ADIS', type: 'Magn_Z',    display: 'Magnetometer - Z',    data: ''},
@@ -70,28 +79,46 @@ app.controller('AtAGlanceController', ['$scope', '$http', '$filter', function($s
         {format: 'VSTE', type: 'Vel_up',        display: 'Current Velocity Upwards',        data: ''},
         {format: 'VSTE', type: 'Altitude',      display: 'Current Altitude',                data: ''},
         {format: 'VSTE', type: 'Roll_Rate',     display: 'Current Roll Rate',               data: ''},
-        {format: 'VSTE', type: 'Roll_Angle',    display: 'Current Roll Angle',              data: ''}
+        {format: 'VSTE', type: 'Roll_Angle',    display: 'Current Roll Angle',              data: ''},
+
+        {format: 'SEQN', type: 'Sequence',      display: 'Test Addtion', data: ''}
     ];
 
+    // Connect to the server.
     var namespace = '/main';
     var socket = io.connect('http://' + document.domain + ':8080' + namespace);
     socket.on('connect', function() {});
     socket.on('disconnect', function() {});
 
+    // Connect to the telemetry server specifically.
     socket.on('telemetry', function(data) {
+        // Key here is the packet format.
+        // data[key] will then be an object containing types and
+        // their respective data.
         for(var key in data) {
-            if(data[key] != 'recv') {
-                update(key, data[key]);
+            // TODO Update this to check for unimportant types as packet formats
+            // change.
+            if(data[key] == 'JGPS') { 
+                continue;
             }
+            update(data[key]);
         }
     });
     
-    function update(fourcc, data) {
+    function update(data) {
+        // key is now a type, such as VCC.
+        // data[key] will then be the numerical data.
         for(var key in data) {
+            if(key == 'timestamp' || key == 'recv') {
+                continue;
+            }
             var found = $filter('getByType')($scope.cards, key);
             if(found != null) {
                 $scope.cards[found].data = data[key];
                 $scope.$apply();
+            }
+            else {
+                console.log('At-A-Glance told to update a data type: ' + key + ' that was not expected.');
             }
         }
     }
