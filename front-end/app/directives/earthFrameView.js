@@ -35,12 +35,10 @@ angular.module("rvtk").directive("earthFrameView", function() {
                 url : 'https://assets.agi.com/stk-terrain/world'
             });
 
-            $scope.oldPosition = Cesium.Cartesian3.fromDegrees(-120.6517673, 43.7961328, 30000.0);
-
             //Make a dot for the rocket
             var rocket = viewer.entities.add({
                 name : 'Rocket',
-                position: $scope.oldPosition,
+                position: Cesium.Cartesian3.fromDegrees(-120.6517673, 43.7961328, 30000.0),
                 ellipsoid : {
                     radii : new Cesium.Cartesian3(300.0, 300.0, 300.0),
                     material : Cesium.Color.BLUE,
