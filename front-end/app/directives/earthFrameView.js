@@ -26,7 +26,8 @@ angular.module("rvtk").directive("earthFrameView", function() {
                 // hides clock, timeline bar, and home button
                 timeline: false,
                 animation: false,
-                homeButton: false
+                homeButton: false,
+                terrainExaggeration : 2.0
             });
 
             // set lighting to true - makes it look more realistic 
@@ -37,7 +38,8 @@ angular.module("rvtk").directive("earthFrameView", function() {
                 requestWaterMask : true,
                 requestVertexNormals : true
             });
-    
+            viewer.terrainProvider = cesiumTerrainProviderMeshes;
+
             //makes the map more 3D with terrain
             viewer.terrainProvider = new Cesium.CesiumTerrainProvider({
                 url : 'https://assets.agi.com/stk-terrain/world'
@@ -53,39 +55,61 @@ angular.module("rvtk").directive("earthFrameView", function() {
                     outline : false
                 }
             });
-			
-			//Variables for recovery crew location
-            var long1   = -121.0232;
-            var lat1    = 44.23123;
-            var alt1    = 593.34234;
-            var long2   = -121.54221;
-            var lat2    = 43.39004;
-            var alt2    = 591.243;
+
+            //Variables for recovery crew location
+            $scope.long1   = -121.0232;
+            $scope.lat1    = 44.23123;
+            $scope.long2   = -121.54221;
+            $scope.lat2    = 43.39004;
 
             //Radius of recovery crew
-            var radius  = 3000.0
+            $scope.radius  = 3000.0
 
             //Make a dot for recovery crew 1
             var recoveryCrew1 = viewer.entities.add({
                 name : 'Crew1',
-                position: Cesium.Cartesian3.fromDegrees(long1, lat1, alt1),
-                ellipsoid : {
-                    radii : new Cesium.Cartesian3(radius, radius, radius),
-                    material : Cesium.Color.BLUE,
-                    outline : false
+                position: Cesium.Cartesian3.fromDegrees(long1, lat1),
+                point : {
+                    pixelSize : 5,
+                    color : Cesium.Color.GREEN,
+                    outlineColor : Cesium.Color.WHITE,
+                    outlineWidth : 2
+                },
+                label : {
+                    text : 'Crew 1',
+                    font : '14pt monospace',
+                    style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+                    outlineWidth : 2,
+                    verticalOrigin : Cesium.VerticalOrigin.BOTTOM,
+                    pixelOffset : new Cesium.Cartesian2(0, -9)
                 }
             });
 
             //Make a dot for recovery crew 2
             var recoveryCrew2 = viewer.entities.add({
                 name : 'Crew2',
-                position: Cesium.Cartesian3.fromDegrees(long2, lat2, alt2),
-                ellipsoid : {
-                    radii : new Cesium.Cartesian3(radius, radius, radius),
-                    material : Cesium.Color.BLUE,
-                    outline : false
+                position: Cesium.Cartesian3.fromDegrees(long2, lat2),
+                point : {
+                    pixelSize : 5,
+                    color : Cesium.Color.BLUE,
+                    outlineColor : Cesium.Color.WHITE,
+                    outlineWidth : 2
+                },
+                label : {
+                    text : 'Crew 2',
+                    font : '14pt monospace',
+                    style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+                    outlineWidth : 2,
+                    verticalOrigin : Cesium.VerticalOrigin.BOTTOM,
+                    pixelOffset : new Cesium.Cartesian2(0, -9)
                 }
             });
+
+			//function to move recovery crew 1's longitude and latitude +1 degree
+            $scope.movePoints = function() {
+                recoveryCrew1.position = Cesium.Cartesian3.fromDegrees(long1++, lat1++);
+                console.log("buttonclicked");
+            };
 
             //move the camera to where rocket is
             viewer.zoomTo(rocket);
