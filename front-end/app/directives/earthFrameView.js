@@ -18,21 +18,17 @@ angular.module("rvtk").directive("earthFrameView", function() {
                 // hides clock, timeline bar, and home button
                 timeline: false,
                 animation: false,
-                homeButton: false
+                homeButton: false,
+                terrainExaggeration : 2.0
             });
 
             // set lighting to true - makes it look more realistic 
             viewer.scene.globe.enableLighting = true;
 
-            var cesiumTerrainProviderMeshes = new Cesium.CesiumTerrainProvider({
+            viewer.terrainProvider = new Cesium.CesiumTerrainProvider({
                 url : 'https://assets.agi.com/stk-terrain/world',
                 requestWaterMask : true,
                 requestVertexNormals : true
-            });
-    
-            //makes the map more 3D with terrain
-            viewer.terrainProvider = new Cesium.CesiumTerrainProvider({
-                url : 'https://assets.agi.com/stk-terrain/world'
             });
 
             //Make a dot for the rocket
@@ -87,7 +83,8 @@ angular.module("rvtk").directive("earthFrameView", function() {
                             })
                         }
                 });
-                $scope.$apply();
+                viewer.zoomTo(viewer.entities);
+
             }
 
 
