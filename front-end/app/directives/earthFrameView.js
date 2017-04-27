@@ -105,7 +105,7 @@ angular.module("rvtk").directive("earthFrameView", function() {
                 }
             });
 
-			//function to move recovery crew 1's longitude and latitude +1 degree
+            //function to move recovery crew 1's longitude and latitude +1 degree
             $scope.movePoints = function() {
                 recoveryCrew1.position = Cesium.Cartesian3.fromDegrees(long1++, lat1++);
                 console.log("buttonclicked");
