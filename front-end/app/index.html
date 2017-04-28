@@ -38,6 +38,7 @@ distribution of this software for license terms.
 
   <script src="controllers/main-controller.js"></script>
   <script src="directives/attitude.js"></script>
+  <script src="directives/telemetry.js"></script>
   <script src="components/version/version.js"></script>
   <script src="components/version/version-directive.js"></script>
   <script src="components/version/interpolate-filter.js"></script>
@@ -77,16 +78,7 @@ distribution of this software for license terms.
         </div>
     </div>
     
-
-    <!-- extra telemetry info not already displayed -->
-    <div class="dataBoard" >
-        <img width="160" height="160" src="imgs/telemetryplaceholder.png" / >
-
-        <img width="160" height="160" src="imgs/telemetryplaceholder.jpeg" / >
-    <!-- This comes from the unified app.py via the MainController -->
-        {{helloWorld}}
-    </div>
-
+    <div><telemetry></telemetry></div>
 
     <!-- In production use:
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
