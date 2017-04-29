@@ -117,9 +117,6 @@ app.controller('AtAGlanceController', ['$scope', '$http', '$filter', function($s
                 $scope.cards[found].data = data[key];
                 $scope.$apply();
             }
-            else {
-                console.log('At-A-Glance told to update a data type: ' + key + ' that was not expected.');
-            }
         }
     }
 }]);

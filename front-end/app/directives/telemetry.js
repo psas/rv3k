@@ -62,9 +62,6 @@ angular.module("rvtk").directive("telemetry", function() {
                         $scope.cards[found].data = data[key];
                         $scope.$apply();
                     }
-                    else {
-                        console.log('Telemetry module told to update a data type: ' + key + ' that was not expected.');
-                    }
                 }
             }
         }],

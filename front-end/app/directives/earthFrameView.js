@@ -63,7 +63,7 @@ angular.module("rvtk").directive("earthFrameView", function() {
             //Make a dot for recovery crew 1
             var recoveryCrew1 = viewer.entities.add({
                 name : 'Crew1',
-                position: Cesium.Cartesian3.fromDegrees(long1, lat1),
+                position: Cesium.Cartesian3.fromDegrees($scope.long1, $scope.lat1),
                 point : {
                     pixelSize : 5,
                     color : Cesium.Color.GREEN,
@@ -83,7 +83,7 @@ angular.module("rvtk").directive("earthFrameView", function() {
             //Make a dot for recovery crew 2
             var recoveryCrew2 = viewer.entities.add({
                 name : 'Crew2',
-                position: Cesium.Cartesian3.fromDegrees(long2, lat2),
+                position: Cesium.Cartesian3.fromDegrees($scope.long2, $scope.lat2),
                 point : {
                     pixelSize : 5,
                     color : Cesium.Color.BLUE,
@@ -102,8 +102,7 @@ angular.module("rvtk").directive("earthFrameView", function() {
 
             //function to move recovery crew 1's longitude and latitude +1 degree
             $scope.movePoints = function() {
-                recoveryCrew1.position = Cesium.Cartesian3.fromDegrees(long1++, lat1++);
-                console.log("buttonclicked");
+                recoveryCrew1.position = Cesium.Cartesian3.fromDegrees($scope.long1++, $scope.lat1++);
             };
 
             //move the camera to where rocket is
@@ -153,7 +152,6 @@ angular.module("rvtk").directive("earthFrameView", function() {
             var namespace = '/main';
             // this port connects to port broadcast by ../unified/app.py
             var socket = io.connect('http://' + document.domain + ':8080' + namespace);
-            console.log(socket);
             socket.on('connect', function() {});
             socket.on('disconnect', function() {});
             
