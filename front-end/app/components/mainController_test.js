@@ -29,7 +29,6 @@ describe('rvtk MainControlller', function() {
             var controller = $controller('MainController', {$scope: $scope});
             $scope.toggleCamera();
             expect($scope.VisibleCamera).toEqual(0);
-            expect(1).toEqual(0);
         });
     });
 
