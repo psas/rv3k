@@ -6,52 +6,51 @@
 # Please see the file COPYING in the source distribution of this
 # software for license terms.
 from psas_packet import io
+from Queue import Empty, Queue
 import socket
-import sched
-import time
-import threading
-import copy
-from Queue import Queue
+from threading import Event, Thread
 
 class Telemetry:
+    """Listens for psas packet data via listen() and emits them via sender()
+    """
     def __init__(self, address, port, sio):
+        """Initializes data members of an instance of the Telemetry class"""
         self.address = address
+        self.event = Event()
         self.port = port
+        self.queue = Queue()
         self.sio = sio
-        self.data = {}
+        self.thread = Thread(target=self.sender)
     
-    def sender(self, Q):
-        print("sender activate")
-        while True:
-            if Q:
-                data = Q.get()
-                self.sio.emit("telemetry", data, namespace="/main")
-
-
-    def start(self):
-        print("telemetry start")
-        Q = Queue()
-        sender_thread = threading.Thread(target=self.sender, args=(Q,))
+    def listen(self):
+        """Listens for incoming psas packets
         
-        thread = threading.Thread(target=self.listen, args=(Q,))
-        thread.start()
-        sender_thread.start()
-
-    def listen(self, Q):
-        print("listening")
+        network.listen() returns a tuple of timestamp and data
+        adds the tuple to the queue
+        """
+        print("The telemetry server is running.")
+        self.thread.start()
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         sock.bind((self.address, self.port))
         network = io.Network(sock)
         while True:
-            collection = []
             try:
                 for timestamp, data in network.listen():
-                    fourcc, data = data
-                    data["recv"] = timestamp
-                    collection.append({fourcc : data})
-
-                if len(collection) > 0:
-                    Q.put(collection)
+                    self.queue.put_nowait((timestamp, data))
             except KeyboardInterrupt:
                 sock.close()
+                self.event.set()
+                self.thread.join()
                 return
+    
+    def sender(self):
+        """Emits a socketio event for each message that listen receives"""
+        while self.event.is_set() == False:
+            try:
+                timestamp, data = self.queue.get_nowait()
+                fourcc, data = data
+                data["recv"] = timestamp
+                self.sio.emit("telemetry", {fourcc: data}, namespace="/main")
+            except Empty:
+                pass
+        return
