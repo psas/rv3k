@@ -9,7 +9,8 @@ module.exports = function(config) {
 
         preprocessors: {
             // source files, that you want to generate coverage for
-            'controllers/*.js': ['coverage']
+            'controllers/*.js': ['coverage'],
+            'directives/*.js': ['coverage']
         },
 
         files: [
@@ -19,7 +20,7 @@ module.exports = function(config) {
             'components/*.js',
             'app.js',
             'controllers/*.js',
-            'controllers/main-controller.js'
+            'directives/*.js'
         ],
 
         plugins: [
