@@ -13,23 +13,46 @@ angular.module("rvtk").directive("attitude", function() {
     return {
         restrict: 'E',
         scope: {},
-        templateUrl: '', 
-        link: function($scope, elem, attrs) {
+        controller: ['$scope', function earthFrameViewController($scope) {
             // Set up variables needed for the scene.
             var camera;
-            var scene;
+            $scope.scene;
             var renderer;
             var mesh;
             var imuData = [];     // IMU data handling rotation. 
             var time = [];	  // time stamps from the data packets
+/*
             $.ajax({
                 type: "GET",
                 url: "assets/ADIS.csv", 
                 dataType: "text",
                 success: function(data) {
-                    process(data);
-		    allThis();
+                    //process(data);
+		            //allThis();
                 }
+            });
+*/
+            var namespace = '/main';
+            // this port connects to port broadcast by ../unified/app.py
+            var socket = io.connect('http://' + document.domain + ':8080' + namespace);
+            socket.on('connect', function() {});
+            socket.on('disconnect', function() {});
+            
+            socket.on('telemetry', function(data) {
+                for(var key in data) {
+                    if(key == 'ADIS') {
+                        //console.log(data[key]);
+                        $scope.Gyro_X = data[key].Gyro_X;
+                        $scope.Gyro_Y = data[key].Gyro_Y;
+                        $scope.Gyro_Z = data[key].Gyro_Z;
+                        $scope.Acc_X = data[key].Acc_X;
+                        $scope.Acc_Y = data[key].Acc_Y;
+                        $scope.Acc_Z = data[key].Acc_Z;
+                        $scope.Time
+                        $scope.allThis();
+                    }
+                }
+
             });
 
             // Helper function to convert degrees into radians
@@ -37,6 +60,7 @@ angular.module("rvtk").directive("attitude", function() {
                 return degrees * Math.PI / 180;
             }
 
+/*
             // Get IMU data out of ADIS.csv.
             function process(text){ 
                 var lines = text.split("\n");
@@ -50,37 +74,41 @@ angular.module("rvtk").directive("attitude", function() {
                 }
 		//console.log(imuData[0]);
             }
+*/
+            $scope.init();
 
-	    // For some reason the imuData variable seems to fall out of scope and become undefined after the
-	    // call to process(). I don't know why this behaves this way, but having the rest of the code execute
-	    // within a function that is called in the $.ajax(... section fixes this scoping issue.
-            function allThis(){
-                init();
-                var loader1 = new THREE.JSONLoader();
+            $scope.loader1 = new THREE.JSONLoader();
 		
-                // Load the rocket model into the mesh variable.
-                // The inner function is not called until loader1.load completes.
-                function loadModel(modelUrl) {
-                    loader1.load(modelUrl, function(geometry) {
-                        mesh = new THREE.Mesh(geometry);
-		        scene.add(mesh);
-                    });
-                }
+            // Load the rocket model into the mesh variable.
+            // The inner function is not called until loader1.load completes.
+            $scope.loadModel = function (modelUrl) {
+                $scope.loader1.load(modelUrl, function(geometry) {
+                    mesh = new THREE.Mesh(geometry);
+                    $scope.scene.add(mesh);
+                });
+            }
 
-                loadModel("assets/rocket_model2.js");
+            $scope.loadModel("assets/rocket_model2.js");
 
-                // Set up the camera and renderer and attach them to html.
-                // Start a listener for window resizing.
-                function init() {
-                    camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, .1, 2000);
-                    camera.position.set(0, 0, 10);
-                    scene = new THREE.Scene();
-                    renderer = new THREE.WebGLRenderer({antialias: true});
-                    renderer.setSize(window.innerWidth / 2, window.innerHeight / 1.5);     
-                    elem[0].appendChild(renderer.domElement);
+            // Set up the camera and renderer and attach them to html.
+            // Start a listener for window resizing.
+            $scope.init = function () {
+                camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, .1, 2000);
+                camera.position.set(0, 0, 10);
+                $scope.scene = new THREE.Scene();
+                renderer = new THREE.WebGLRenderer({antialias: true});
+                renderer.setSize(window.innerWidth / 2, window.innerHeight / 1.5);     
+                //elem[0].appendChild(renderer.domElement);
+                $scope.attitude = renderer.domElement;
 
-                    //window.addEventListener('resize', onWindowResize, false);
-                }
+                //window.addEventListener('resize', onWindowResize, false);
+            }
+
+
+            // For some reason the imuData variable seems to fall out of scope and become undefined after the
+            // call to process(). I don't know why this behaves this way, but having the rest of the code execute
+            // within a function that is called in the $.ajax(... section fixes this scoping issue.
+            $scope.allThis = function (){
 
                 // TODO: According to Matt this may not be necessary. Consider removing this in the future
                 // Resize the renderer when the window resizes.
@@ -99,106 +127,114 @@ angular.module("rvtk").directive("attitude", function() {
                 var targetRotY = 0;
                 var targetRotZ = 0;
 
-		// The function that rotates the model expects a difference in angles to rotate by.
-		// So keep track of previous rotation in order to calculate the difference
-	        var prevRotX = targetRotX;
-	        var prevRotY = targetRotY;
-	        var prevRotZ = targetRotZ;
+                // The function that rotates the model expects a difference in angles to rotate by.
+                // So keep track of previous rotation in order to calculate the difference
+                var prevRotX = targetRotX;
+                var prevRotY = targetRotY;
+                var prevRotZ = targetRotZ;
 
                 // Render the scene, and change the rocket's attitude at 30fps
                 // Gets called recursively with the requestAnimationFrame function call
-                function render() {
+                $scope.render = function () {
                     setTimeout(function() {	// setTimeout used to run at 30 fps
                         requestAnimationFrame(render);
 		    
-			// Calculate difference in rotations
-		        var diffX = targetRotX - prevRotX;
-		        var diffY = targetRotY - prevRotY;
-		        var diffZ = targetRotZ - prevRotZ;
+                        // Calculate difference in rotations
+                        var diffX = targetRotX - prevRotX;
+                        var diffY = targetRotY - prevRotY;
+                        var diffZ = targetRotZ - prevRotZ;
 
-			// Update previous rotation
-		        prevRotX = targetRotX;
-		        prevRotY = targetRotY;
-		        prevRotZ = targetRotZ;
+                        // Update previous rotation
+                        prevRotX = targetRotX;
+                        prevRotY = targetRotY;
+                        prevRotZ = targetRotZ;
 	
-			// Rotate the model
-			mesh.rotateX(diffX);
-			mesh.rotateY(diffY);
-			mesh.rotateZ(diffZ);
+                        // Rotate the model
+                        mesh.rotateX(diffX);
+                        mesh.rotateY(diffY);
+                        mesh.rotateZ(diffZ);
 
-			// Three.js function call to render the scene
-                        renderer.render(scene, camera);
+                        // Three.js function call to render the scene
+                        renderer.render($scope.scene, camera);
                     }, 1000/30);	// run at 30fps
                 }
 
                 // This function will process a data packet and update the three targetRot variables
-		// Uses a complementary filter between the gyro and accelerometer data to ensure accuracy
-		// and avoid drift errors.
-                function calculateData(){
-		    // Grab current line of IMU data
+                // Uses a complementary filter between the gyro and accelerometer data to ensure accuracy
+                // and avoid drift errors.
+                $scope.calculateData = function (){
+                    // Grab current line of IMU data
                     var x = imuData[i];
 
-		    // Variables for calculating the pitch and yaw of the rocket from the accelerometer data
+                    // Variables for calculating the pitch and yaw of the rocket from the accelerometer data
                     var accPitch = 0;
                     var accYaw = 0;
                 
-		    // Gyroscope data is in degrees/second. Need to convert to radians.
-		    // Data is an angular displacement instead of an absolute angle, so data is
-		    // added to target rotation instead of assigning the rotation.
-		    // For some reason it appears that the y axis values are actually in the x axis column
-		    // so I am switching them here. 
-		    // TODO: Currently do not know if x is really x axis or z axis because of the y values
-		    // being in the x column. Need to investigate further. Currently looks fine 
-                    targetRotX += Math.radians(x[1]) * dt;
-                    targetRotY += Math.radians(x[0]) * dt;
-                    targetRotZ += Math.radians(x[2]) * dt;
-
-		    // Uses data from the accelerometer to obtain a pitch and yaw angle. Note that accelerometer
-		    // cannot track roll, so only calculating the pitch and yaw.
-                    accPitch = Math.atan2(x[5], x[3]);
-                    accYaw = Math.atan2(x[4], x[3]);
+                    $scope.dt = time[i] - time[i - 1];
+                    $scope.dt = dt * Math.pow(10, -9); // need to convert nanoseconds to seconds
 
 
-		    var accMagn = Math.pow(x[3], 2) + Math.pow(x[4], 2) + Math.pow(x[5], 2);
+                    // Gyroscope data is in degrees/second. Need to convert to radians.
+                    // Data is an angular displacement instead of an absolute angle, so data is
+                    // added to target rotation instead of assigning the rotation.
+                    // For some reason it appears that the y axis values are actually in the x axis column
+                    // so I am switching them here. 
+                    // TODO: Currently do not know if x is really x axis or z axis because of the y values
+                    // being in the x column. Need to investigate further. Currently looks fine 
+                    //targetRotX += Math.radians(x[1]) * dt;
+                    targetRotX += Math.radians($scope.Gyro_Y);
+                    //targetRotY += Math.radians(x[0]) * dt;
+                    targetRotY += Math.radians($scope.Gyro_X) * dt;
+                    //targetRotZ += Math.radians(x[2]) * dt;
+                    targetRotZ += Math.radians($scope.Gyro_Z) * dt;
 
-		    // Combine the gyroscope data with the accelerometer data to ensure that the orientation is both
-		    // accurate and free of any drift errors that are present with using gyroscopes.
-		    // TODO: currently only correcting drift in the pitch and yaw axises and not the roll axis. 
-		    // This would get fixed by using magnometer data, however, initial search into these calculations
-		    // seems exceedingly complex and I am not if it is worth the effort. 
+                    // Uses data from the accelerometer to obtain a pitch and yaw angle. Note that accelerometer
+                    // cannot track roll, so only calculating the pitch and yaw.
+                    //accPitch = Math.atan2(x[5], x[3]);
+                    accPitch = Math.atan2($scope.Acc_Z, $scope.Acc_X);
+                    //accYaw = Math.atan2(x[4], x[3]);
+                    accYaw = Math.atan2($scope.Acc_Y, $scope.Acc_X);
 
-		    // A check to factor in the accelerometer data when only within a certain range. If the data is too large
-		    // or too small it is not reliable since accelerometers are susceptible to outside forces which 
-		    // disturbs the data.
-		    if(accMagn > 8000 && accMagn < 32000){
-                        targetRotX = (0.98 * targetRotX) + (0.02 * accPitch);
-                        targetRotZ = (0.98 * targetRotZ) + (0.02 * accYaw);
-		    }
+
+                    //var accMagn = Math.pow(x[3], 2) + Math.pow(x[4], 2) + Math.pow(x[5], 2);
+                    var accMagn = Math.pow($scope.Acc_X, 2) + Math.pow($scope.Acc_Y, 2) + Math.pow($scope.Acc_Z, 2);
+
+                    // Combine the gyroscope data with the accelerometer data to ensure that the orientation is both
+                    // accurate and free of any drift errors that are present with using gyroscopes.
+                    // TODO: currently only correcting drift in the pitch and yaw axises and not the roll axis. 
+                    // This would get fixed by using magnometer data, however, initial search into these calculations
+                    // seems exceedingly complex and I am not if it is worth the effort. 
+
+                    // A check to factor in the accelerometer data when only within a certain range. If the data is too large
+                    // or too small it is not reliable since accelerometers are susceptible to outside forces which 
+                    // disturbs the data.
+                    if(accMagn > 8000 && accMagn < 32000){
+                                targetRotX = (0.98 * targetRotX) + (0.02 * accPitch);
+                                targetRotZ = (0.98 * targetRotZ) + (0.02 * accYaw);
+                    }
                 }
             
-	        // Function which is used to loop through the line of data in the ADIS.csv file (the contents of which
+	            // Function which is used to loop through the line of data in the ADIS.csv file (the contents of which
                 // are now currently in imuData with i being the current index for what line we are currently on).
                 // This function was added so that this program can go through data packets at the rate that the packets
-	        // came in at, so that its rate is independant of how often the model is being rendered.
-	        // TODO: This function will need to be changed in the future to receive data packets from the server instead
-	        // of looping through a file. Also should get rid of the recursive function call as well to avoid stack overflow.
+	            // came in at, so that its rate is independant of how often the model is being rendered.
+	            // TODO: This function will need to be changed in the future to receive data packets from the server instead
+	            // of looping through a file. Also should get rid of the recursive function call as well to avoid stack overflow.
                 function loop(){
                     setTimeout(function(){
-			// Process a line of data
+			            // Process a line of data
                         calculateData();
 			
-			// If it is the beginning of the log, set model's orientation to 0.
+			            // If it is the beginning of the log, set model's orientation to 0.
                         if(firstData == true){
-			    // TODO: This check should be used to initialize the target rotation with accelerometer data.
+			                // TODO: This check should be used to initialize the target rotation with accelerometer data.
                             firstData = false;
                         }
-			// If it isn't the beginning of the log, calculate new dt
+			            // If it isn't the beginning of the log, calculate new dt
                         else{
-                            dt = time[i] - time[i - 1];
-                            dt = dt * Math.pow(10, -9); // need to convert nanoseconds to seconds
                         }
 
-			// Increment the file index variable
+			            // Increment the file index variable
                         i += 1;
 
                         if(i == imuData.length - 1){ // in order to loop when at the end of the ADIS.csv file
@@ -212,10 +248,11 @@ angular.module("rvtk").directive("attitude", function() {
 	   				// This is done to try to simulate the rate at which the data packets came in during the live launch
                 }
 
-		// Call loop and render to process the data and render the scene
-                loop();
+		        // Call loop and render to process the data and render the scene
+                //loop();
                 render();
 	    }
-        }
+        }],
+        templateUrl: '{{attitude}}'
     };
 });
