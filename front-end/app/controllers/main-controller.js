@@ -9,7 +9,7 @@
 //This is the main controller, it handles the logic in on the main page (app/index.html)
 var app = angular.module('rvtk', []);
 
-app.controller('MainController', ['$scope', '$http', function($scope, $http) {
+app.controller('MainController', ['$scope', function($scope) {
 
     //initialize variables
     $scope.VisibleCamera = 1;
