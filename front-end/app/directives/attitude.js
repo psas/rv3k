@@ -21,6 +21,7 @@ angular.module("rvtk").directive("attitude", function() {
             var mesh;
             var imuData = [];     // IMU data handling rotation. 
             var time = [];	  // time stamps from the data packets
+
 /*
             $.ajax({
                 type: "GET",
@@ -48,7 +49,10 @@ angular.module("rvtk").directive("attitude", function() {
                         $scope.Acc_X = data[key].Acc_X;
                         $scope.Acc_Y = data[key].Acc_Y;
                         $scope.Acc_Z = data[key].Acc_Z;
-                        $scope.Time
+                        if($scope.TimeStamp) {
+                            $scope.PreviousTimeStamp = $scope.TimeStamp;
+                        }
+                        $scope.TimeStamp = data[key].recv;
                         $scope.allThis();
                     }
                 }
@@ -59,23 +63,6 @@ angular.module("rvtk").directive("attitude", function() {
             Math.radians = function(degrees){
                 return degrees * Math.PI / 180;
             }
-
-/*
-            // Get IMU data out of ADIS.csv.
-            function process(text){ 
-                var lines = text.split("\n");
-                for(var i = 1; i < lines.length-1; i++) {
-                    var data = lines[i].split(",");
-                    // Gyro data is in 4th-6th elements, Accelerometer is in 7th-9th elements
-                    imuData.push([parseFloat(data[3]), parseFloat(data[4]), parseFloat(data[5]),
-                                  parseFloat(data[6]), parseFloat(data[7]), parseFloat(data[8])]);
-                    // Timestamp data is in 2nd element
-                    time.push([parseFloat(data[1])]);
-                }
-		//console.log(imuData[0]);
-            }
-*/
-            $scope.init();
 
             $scope.loader1 = new THREE.JSONLoader();
 		
@@ -88,8 +75,6 @@ angular.module("rvtk").directive("attitude", function() {
                 });
             }
 
-            $scope.loadModel("assets/rocket_model2.js");
-
             // Set up the camera and renderer and attach them to html.
             // Start a listener for window resizing.
             $scope.init = function () {
@@ -99,11 +84,14 @@ angular.module("rvtk").directive("attitude", function() {
                 renderer = new THREE.WebGLRenderer({antialias: true});
                 renderer.setSize(window.innerWidth / 2, window.innerHeight / 1.5);     
                 //elem[0].appendChild(renderer.domElement);
-                $scope.attitude = renderer.domElement;
+                $scope.attitudeGraphic = renderer.domElement;
 
                 //window.addEventListener('resize', onWindowResize, false);
             }
 
+            $scope.init();
+
+            $scope.loadModel("assets/rocket_model2.js");
 
             // For some reason the imuData variable seems to fall out of scope and become undefined after the
             // call to process(). I don't know why this behaves this way, but having the rest of the code execute
@@ -170,8 +158,9 @@ angular.module("rvtk").directive("attitude", function() {
                     var accPitch = 0;
                     var accYaw = 0;
                 
-                    $scope.dt = time[i] - time[i - 1];
-                    $scope.dt = dt * Math.pow(10, -9); // need to convert nanoseconds to seconds
+                    //$scope.dt = $scope.time[i] - scope.time[i - 1];
+                    $scope.dt = $scope.PreviousTimeStamp - $scope.TimeStamp;
+                    $scope.dt = $scope.dt * Math.pow(10, -9); // need to convert nanoseconds to seconds
 
 
                     // Gyroscope data is in degrees/second. Need to convert to radians.
@@ -223,7 +212,7 @@ angular.module("rvtk").directive("attitude", function() {
                 function loop(){
                     setTimeout(function(){
 			            // Process a line of data
-                        calculateData();
+                        $scope.calculateData();
 			
 			            // If it is the beginning of the log, set model's orientation to 0.
                         if(firstData == true){
@@ -253,6 +242,6 @@ angular.module("rvtk").directive("attitude", function() {
                 render();
 	    }
         }],
-        templateUrl: '{{attitude}}'
+        templateUrl: '{{attitudeGraphic}}'
     };
 });
