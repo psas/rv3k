@@ -8,34 +8,65 @@
 
 /* app css stylesheet */
 
-.graphicsBoard {
-    display: inline-block;
-    width: 1850px;
-}
-#efv-container {
-    width: 625px;
-    float: left;
-}
-.graphics {
-    float: left;
+/* Attitude size determined in attitude.js line 81
+ * EarthFrameView size determined in
+ */
+
+ .view {
+     display: grid;
+     grid-template-columns: 3fr 1fr;
+     grid-template-rows: 50px 1fr 1fr 1fr 1fr;
+     border: 3px solid white;
+ }
+
+ .navBar-container {
+     grid-column-start: 1;
+     grid-column-end: 5;
+     border: 3px solid white;
+ }
+
+ .logo {
+     float: left;
+ }
+
+ .button {
+     float: left;
+     color: #777;
+     padding: 10px;
+ }
+
+ .button:hover {
+     color: #000;
+     background-color: #6B8B3D;
+ }
+
+#iframe {
+    grid-column: 1/2;
+    grid-row: 2/5;
 }
 
-.button {
-    float: left;
-    color: #777;
-    padding: 10px;
+.video-container {
+    grid-column: 1/2;
+    grid-row: 2/5;
+    align-self: stretch;
+    border: 3px solid white;
 }
 
-.button:hover {
-    color: #000;
+.efv-container {
+    grid-column: 2/3;
+    grid-row: 2/4;
+    border: 3px solid white;
 }
 
-.button-menu {
-    display: inline-block;
-    width: 1480px;
+.cesiumViewer {
+    width: 100%;
+    height: 100%;
 }
-a {
-    text-decoration: none;
+
+.attitude-container {
+    grid-column: 2/3;
+    grid-row: 4/6;
+    border: 3px solid white;
 }
 
 .telemetry-tile {
@@ -48,6 +79,18 @@ a {
     height: 140px;
     width: 100px;
 }
+
+.telemetry-container {
+    grid-column: 1/3;
+    grid-row: 5/6;
+    border: 3px solid white;
+}
+
+
+a {
+    text-decoration: none;
+}
+
 
 
 .cesium-widget-credits {

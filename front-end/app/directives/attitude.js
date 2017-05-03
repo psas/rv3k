@@ -13,18 +13,18 @@ angular.module("rvtk").directive("attitude", function() {
     return {
         restrict: 'E',
         scope: {},
-        templateUrl: '', 
+        templateUrl: 'directives/attitude.html',
         link: function($scope, elem, attrs) {
             // Set up variables needed for the scene.
             var camera;
             var scene;
             var renderer;
             var mesh;
-            var imuData = [];     // IMU data handling rotation. 
+            var imuData = [];     // IMU data handling rotation.
             var time = [];	  // time stamps from the data packets
             $.ajax({
                 type: "GET",
-                url: "assets/ADIS.csv", 
+                url: "assets/ADIS.csv",
                 dataType: "text",
                 success: function(data) {
                     process(data);
@@ -38,7 +38,7 @@ angular.module("rvtk").directive("attitude", function() {
             }
 
             // Get IMU data out of ADIS.csv.
-            function process(text){ 
+            function process(text){
                 var lines = text.split("\n");
                 for(var i = 1; i < lines.length-1; i++) {
                     var data = lines[i].split(",");
@@ -57,7 +57,7 @@ angular.module("rvtk").directive("attitude", function() {
             function allThis(){
                 init();
                 var loader1 = new THREE.JSONLoader();
-		
+
                 // Load the rocket model into the mesh variable.
                 // The inner function is not called until loader1.load completes.
                 function loadModel(modelUrl) {
@@ -76,7 +76,9 @@ angular.module("rvtk").directive("attitude", function() {
                     camera.position.set(0, 0, 10);
                     scene = new THREE.Scene();
                     renderer = new THREE.WebGLRenderer({antialias: true});
-                    renderer.setSize(window.innerWidth / 2, window.innerHeight / 1.5);     
+                    // This is where the size of the Attitude window is determined
+                    // setSize(int, int, optional boolean); Previously set to window.innerWidth / 3, window.innerHeight / 2
+                    renderer.setSize(300, 400);
                     elem[0].appendChild(renderer.domElement);
 
                     //window.addEventListener('resize', onWindowResize, false);
@@ -110,7 +112,7 @@ angular.module("rvtk").directive("attitude", function() {
                 function render() {
                     setTimeout(function() {	// setTimeout used to run at 30 fps
                         requestAnimationFrame(render);
-		    
+
 			// Calculate difference in rotations
 		        var diffX = targetRotX - prevRotX;
 		        var diffY = targetRotY - prevRotY;
@@ -120,7 +122,7 @@ angular.module("rvtk").directive("attitude", function() {
 		        prevRotX = targetRotX;
 		        prevRotY = targetRotY;
 		        prevRotZ = targetRotZ;
-	
+
 			// Rotate the model
 			mesh.rotateX(diffX);
 			mesh.rotateY(diffY);
@@ -141,14 +143,14 @@ angular.module("rvtk").directive("attitude", function() {
 		    // Variables for calculating the pitch and yaw of the rocket from the accelerometer data
                     var accPitch = 0;
                     var accYaw = 0;
-                
+
 		    // Gyroscope data is in degrees/second. Need to convert to radians.
 		    // Data is an angular displacement instead of an absolute angle, so data is
 		    // added to target rotation instead of assigning the rotation.
 		    // For some reason it appears that the y axis values are actually in the x axis column
-		    // so I am switching them here. 
+		    // so I am switching them here.
 		    // TODO: Currently do not know if x is really x axis or z axis because of the y values
-		    // being in the x column. Need to investigate further. Currently looks fine 
+		    // being in the x column. Need to investigate further. Currently looks fine
                     targetRotX += Math.radians(x[1]) * dt;
                     targetRotY += Math.radians(x[0]) * dt;
                     targetRotZ += Math.radians(x[2]) * dt;
@@ -163,19 +165,19 @@ angular.module("rvtk").directive("attitude", function() {
 
 		    // Combine the gyroscope data with the accelerometer data to ensure that the orientation is both
 		    // accurate and free of any drift errors that are present with using gyroscopes.
-		    // TODO: currently only correcting drift in the pitch and yaw axises and not the roll axis. 
+		    // TODO: currently only correcting drift in the pitch and yaw axises and not the roll axis.
 		    // This would get fixed by using magnometer data, however, initial search into these calculations
-		    // seems exceedingly complex and I am not if it is worth the effort. 
+		    // seems exceedingly complex and I am not if it is worth the effort.
 
 		    // A check to factor in the accelerometer data when only within a certain range. If the data is too large
-		    // or too small it is not reliable since accelerometers are susceptible to outside forces which 
+		    // or too small it is not reliable since accelerometers are susceptible to outside forces which
 		    // disturbs the data.
 		    if(accMagn > 8000 && accMagn < 32000){
                         targetRotX = (0.98 * targetRotX) + (0.02 * accPitch);
                         targetRotZ = (0.98 * targetRotZ) + (0.02 * accYaw);
 		    }
                 }
-            
+
 	        // Function which is used to loop through the line of data in the ADIS.csv file (the contents of which
                 // are now currently in imuData with i being the current index for what line we are currently on).
                 // This function was added so that this program can go through data packets at the rate that the packets
@@ -186,7 +188,7 @@ angular.module("rvtk").directive("attitude", function() {
                     setTimeout(function(){
 			// Process a line of data
                         calculateData();
-			
+
 			// If it is the beginning of the log, set model's orientation to 0.
                         if(firstData == true){
 			    // TODO: This check should be used to initialize the target rotation with accelerometer data.
