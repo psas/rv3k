@@ -13,8 +13,9 @@ angular.module("rvtk").directive("attitude", function() {
     return {
         restrict: 'E',
         scope: {},
-        controller: ['$scope', function earthFrameViewController($scope) {
+        controller: ['$scope', '$element', function earthFrameViewController($scope, $element) {
 
+            $scope.attitudeGraphic = "some string";
             var namespace = '/main';
             // this port connects to port broadcast by ../unified/app.py
             var socket = io.connect('http://' + document.domain + ':8080' + namespace);
@@ -38,13 +39,12 @@ angular.module("rvtk").directive("attitude", function() {
                             $scope.PreviousTimeStamp = $scope.TimeStamp;
                         }
                         $scope.TimeStamp = data[key].recv;
-                        $scope.allThis();
+                        //$scope.allThis();
                     }
                 }
 
             });
 
-            $scope.attitudeGraphic = "some string";
 
             // Helper function to convert degrees into radians
             Math.radians = function(degrees){
@@ -70,8 +70,10 @@ angular.module("rvtk").directive("attitude", function() {
                 $scope.scene = new THREE.Scene();
                 $scope.renderer = new THREE.WebGLRenderer({antialias: true});
                 $scope.renderer.setSize(window.innerWidth / 2, window.innerHeight / 1.5);     
-                //elem[0].appendChild($scope.renderer.domElement);
-                $scope.attitudeGraphic = $scope.renderer.domElement;
+                $element[0].appendChild($scope.renderer.domElement);
+                //$scope.attitudeGraphic = $scope.renderer.domElement;
+                //$scope.$apply();
+                //
 
                 //window.addEventListener('resize', onWindowResize, false);
             }
@@ -83,6 +85,7 @@ angular.module("rvtk").directive("attitude", function() {
             // For some reason the imuData variable seems to fall out of scope and become undefined after the
             // call to process(). I don't know why this behaves this way, but having the rest of the code execute
             // within a function that is called in the $.ajax(... section fixes this scoping issue.
+            /*
             $scope.allThis = function (){
 
                 // TODO: According to Matt this may not be necessary. Consider removing this in the future
@@ -91,8 +94,6 @@ angular.module("rvtk").directive("attitude", function() {
                     $scope.renderer.setSize(window.innerWidth / 2, window.innerHeight / 2);
                 }
 
-                var i = 0;			// index for line number in the csv data file
-                var n = 0;			// just a loop variable for testing, won't be needed when testing is done
                 $scope.dt = 0.0012;		// change in time between data packets
                 $scope.loopDelay = dt * Math.pow(10, 3);	// loop delays needs to be in milliseconds
                 var firstData = true;		// track whether this is the first data packet we have received
@@ -196,6 +197,7 @@ angular.module("rvtk").directive("attitude", function() {
 	            // came in at, so that its rate is independant of how often the model is being rendered.
 	            // TODO: This function will need to be changed in the future to receive data packets from the server instead
 	            // of looping through a file. Also should get rid of the recursive function call as well to avoid stack overflow.
+                /*
                 function loop(){
                     setTimeout(function(){
 			            // Process a line of data
@@ -227,8 +229,10 @@ angular.module("rvtk").directive("attitude", function() {
 		        // Call loop and render to process the data and render the scene
                 //loop();
                 render();
+
 	    }
+        */
         }],
-        templateUrl: 'directives/attitude.html'
+        templateUrl: ''
     };
 });
