@@ -7,17 +7,60 @@
 # software for license terms.
 
 import socket
+import os
+import sys
 import time
+import aprslib
+import json
+
+
 
 class AprsSourceInput:
-    def __init__(self):
+    def __init__(self, filename, is_parsed=False):
         """
         Sets up source inputs for the APRS server.
         """
-        fileObj = open("aprs.raw", "r")
+        fileObj = open(filename, "r")
         self.data = fileObj.read().split("\n")
         fileObj.close()
-        
+        self.is_parsed = is_parsed
+
+    def parse(self, aprs_packet):
+        """
+        Takes in a raw APRS packet and returns a parsed APRS data
+
+        :param aprs_packet:  Raw APRS data (str)
+        :return: Parsed APRS data (dict)
+        """
+
+        try:
+            return aprslib.parse(aprs_packet.strip())
+        except (aprslib.ParseError, aprslib.UnknownFormat) as error:
+            print(error, aprs_packet) # TODO: Log error instead of print out
+
+
+    def filter(self):
+        self.filteredAprs = []
+        counter = 1
+        for line in self.data:
+            if line:
+                message = {} 
+                name = "callsign" + str(counter)
+                if not self.is_parsed:
+                    parsedData = self.parse(line.strip())
+                    message["altitude"] = parsedData["altitude"]
+                    message["latitude"] = parsedData["latitude"]
+                    message["longitude"] = parsedData["longitude"]
+                else:
+                    parsedData = line.strip().split(",")
+                    name = parsedData[0]
+                    message["altitude"] = parsedData[3]
+                    message["latitude"] = parsedData[1]
+                    message["longitude"] = parsedData[2]
+                        
+                self.filteredAprs.append({name : message})
+                counter += 1
+
 
     def send(self):
         """
@@ -27,23 +70,26 @@ class AprsSourceInput:
         """
 
         # set up socket and connect to sever
-        sock = socket.socket()
-        sock.connect(("127.0.0.1", 35002))
+        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        #sock.connect(("127.0.0.1", 35002))
+        address = ("127.0.0.1", 35002) 
 
-        i = 0
+        try:        
+            while True:
+                self.filter()
+                for aprs in self.filteredAprs:
+                    print(aprs)
+                    sock.sendto(json.dumps(aprs).encode("utf-8"), address)
+                    time.sleep(3)
+                time.sleep(5)
 
-        while True:
-            print(i)
-
-            for raw_aprs in self.data:
-                sock.send(raw_aprs.encode())
-            time.sleep(1)
-            i += 1
-        sock.close()
-
+        finally:
+            print("closing socket")
+            sock.close()
+   
 
 def main():
-    AprsSourceInput().send()
+    AprsSourceInput("aprs.parsed", True).send()
 
 
 if __name__ == "__main__":
