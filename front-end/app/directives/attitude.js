@@ -14,25 +14,7 @@ angular.module("rvtk").directive("attitude", function() {
         restrict: 'E',
         scope: {},
         controller: ['$scope', function earthFrameViewController($scope) {
-            // Set up variables needed for the scene.
-            var camera;
-            $scope.scene;
-            var renderer;
-            var mesh;
-            var imuData = [];     // IMU data handling rotation. 
-            var time = [];	  // time stamps from the data packets
 
-/*
-            $.ajax({
-                type: "GET",
-                url: "assets/ADIS.csv", 
-                dataType: "text",
-                success: function(data) {
-                    //process(data);
-		            //allThis();
-                }
-            });
-*/
             var namespace = '/main';
             // this port connects to port broadcast by ../unified/app.py
             var socket = io.connect('http://' + document.domain + ':8080' + namespace);
@@ -51,6 +33,9 @@ angular.module("rvtk").directive("attitude", function() {
                         $scope.Acc_Z = data[key].Acc_Z;
                         if($scope.TimeStamp) {
                             $scope.PreviousTimeStamp = $scope.TimeStamp;
+                        } 
+                        else {
+                            $scope.PreviousTimeStamp = $scope.TimeStamp;
                         }
                         $scope.TimeStamp = data[key].recv;
                         $scope.allThis();
@@ -59,6 +44,8 @@ angular.module("rvtk").directive("attitude", function() {
 
             });
 
+            $scope.attitudeGraphic = "some string";
+
             // Helper function to convert degrees into radians
             Math.radians = function(degrees){
                 return degrees * Math.PI / 180;
@@ -66,25 +53,25 @@ angular.module("rvtk").directive("attitude", function() {
 
             $scope.loader1 = new THREE.JSONLoader();
 		
-            // Load the rocket model into the mesh variable.
+            // Load the rocket model into the $scope.mesh variable.
             // The inner function is not called until loader1.load completes.
             $scope.loadModel = function (modelUrl) {
                 $scope.loader1.load(modelUrl, function(geometry) {
-                    mesh = new THREE.Mesh(geometry);
-                    $scope.scene.add(mesh);
+                    $scope.mesh = new THREE.Mesh(geometry);
+                    $scope.scene.add($scope.mesh);
                 });
             }
 
-            // Set up the camera and renderer and attach them to html.
+            // Set up the $scope.camera and $scope.renderer and attach them to html.
             // Start a listener for window resizing.
             $scope.init = function () {
-                camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, .1, 2000);
-                camera.position.set(0, 0, 10);
+                $scope.camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, .1, 2000);
+                $scope.camera.position.set(0, 0, 10);
                 $scope.scene = new THREE.Scene();
-                renderer = new THREE.WebGLRenderer({antialias: true});
-                renderer.setSize(window.innerWidth / 2, window.innerHeight / 1.5);     
-                //elem[0].appendChild(renderer.domElement);
-                $scope.attitudeGraphic = renderer.domElement;
+                $scope.renderer = new THREE.WebGLRenderer({antialias: true});
+                $scope.renderer.setSize(window.innerWidth / 2, window.innerHeight / 1.5);     
+                //elem[0].appendChild($scope.renderer.domElement);
+                $scope.attitudeGraphic = $scope.renderer.domElement;
 
                 //window.addEventListener('resize', onWindowResize, false);
             }
@@ -99,27 +86,27 @@ angular.module("rvtk").directive("attitude", function() {
             $scope.allThis = function (){
 
                 // TODO: According to Matt this may not be necessary. Consider removing this in the future
-                // Resize the renderer when the window resizes.
+                // Resize the $scope.renderer when the window resizes.
                 function onWindowResize(event) {
-                    renderer.setSize(window.innerWidth / 2, window.innerHeight / 2);
+                    $scope.renderer.setSize(window.innerWidth / 2, window.innerHeight / 2);
                 }
 
                 var i = 0;			// index for line number in the csv data file
                 var n = 0;			// just a loop variable for testing, won't be needed when testing is done
-                var dt = 0.0012;		// change in time between data packets
-                var loopDelay = dt * Math.pow(10, 3);	// loop delays needs to be in milliseconds
+                $scope.dt = 0.0012;		// change in time between data packets
+                $scope.loopDelay = dt * Math.pow(10, 3);	// loop delays needs to be in milliseconds
                 var firstData = true;		// track whether this is the first data packet we have received
 						// for purposes of not using an invalid dt value on first calculation
                 // Target rotation values for the rocket model
-                var targetRotX = 0;
-                var targetRotY = 0;
-                var targetRotZ = 0;
+                $scope.targetRotX = 0;
+                $scope.targetRotY = 0;
+                $scope.targetRotZ = 0;
 
                 // The function that rotates the model expects a difference in angles to rotate by.
                 // So keep track of previous rotation in order to calculate the difference
-                var prevRotX = targetRotX;
-                var prevRotY = targetRotY;
-                var prevRotZ = targetRotZ;
+                $scope.prevRotX = $scope.targetRotX;
+                $scope.prevRotY = $scope.targetRotY;
+                $scope.prevRotZ = $scope.targetRotZ;
 
                 // Render the scene, and change the rocket's attitude at 30fps
                 // Gets called recursively with the requestAnimationFrame function call
@@ -128,35 +115,35 @@ angular.module("rvtk").directive("attitude", function() {
                         requestAnimationFrame(render);
 		    
                         // Calculate difference in rotations
-                        var diffX = targetRotX - prevRotX;
-                        var diffY = targetRotY - prevRotY;
-                        var diffZ = targetRotZ - prevRotZ;
+                        $scope.diffX = $scope.targetRotX - $scope.prevRotX;
+                        $scope.diffY = $scope.targetRotY - $scope.prevRotY;
+                        $scope.diffZ = $scope.targetRotZ - $scope.prevRotZ;
 
                         // Update previous rotation
-                        prevRotX = targetRotX;
-                        prevRotY = targetRotY;
-                        prevRotZ = targetRotZ;
+                        $scope.prevRotX = $scope.targetRotX;
+                        $scope.prevRotY = $scope.targetRotY;
+                        $scope.prevRotZ = $scope.targetRotZ;
 	
                         // Rotate the model
-                        mesh.rotateX(diffX);
-                        mesh.rotateY(diffY);
-                        mesh.rotateZ(diffZ);
+                        $scope.mesh.rotateX($scope.diffX);
+                        $scope.mesh.rotateY($scope.diffY);
+                        $scope.mesh.rotateZ($scope.diffZ);
 
                         // Three.js function call to render the scene
-                        renderer.render($scope.scene, camera);
+                        $scope.renderer.render($scope.scene, $scope.camera);
                     }, 1000/30);	// run at 30fps
                 }
 
-                // This function will process a data packet and update the three targetRot variables
+                // This function will process a data packet and update the three$scope.targetRot variables
                 // Uses a complementary filter between the gyro and accelerometer data to ensure accuracy
                 // and avoid drift errors.
                 $scope.calculateData = function (){
                     // Grab current line of IMU data
-                    var x = imuData[i];
+                    //var x = imuData[i];
 
                     // Variables for calculating the pitch and yaw of the rocket from the accelerometer data
-                    var accPitch = 0;
-                    var accYaw = 0;
+                    $scope.accPitch = 0;
+                    $scope.accYaw = 0;
                 
                     //$scope.dt = $scope.time[i] - scope.time[i - 1];
                     $scope.dt = $scope.PreviousTimeStamp - $scope.TimeStamp;
@@ -171,22 +158,22 @@ angular.module("rvtk").directive("attitude", function() {
                     // TODO: Currently do not know if x is really x axis or z axis because of the y values
                     // being in the x column. Need to investigate further. Currently looks fine 
                     //targetRotX += Math.radians(x[1]) * dt;
-                    targetRotX += Math.radians($scope.Gyro_Y);
+                   $scope.targetRotX += Math.radians($scope.Gyro_Y);
                     //targetRotY += Math.radians(x[0]) * dt;
-                    targetRotY += Math.radians($scope.Gyro_X) * dt;
+                   $scope.targetRotY += Math.radians($scope.Gyro_X) * dt;
                     //targetRotZ += Math.radians(x[2]) * dt;
-                    targetRotZ += Math.radians($scope.Gyro_Z) * dt;
+                   $scope.targetRotZ += Math.radians($scope.Gyro_Z) * dt;
 
                     // Uses data from the accelerometer to obtain a pitch and yaw angle. Note that accelerometer
                     // cannot track roll, so only calculating the pitch and yaw.
-                    //accPitch = Math.atan2(x[5], x[3]);
-                    accPitch = Math.atan2($scope.Acc_Z, $scope.Acc_X);
-                    //accYaw = Math.atan2(x[4], x[3]);
-                    accYaw = Math.atan2($scope.Acc_Y, $scope.Acc_X);
+                    //$scope.accPitch = Math.atan2(x[5], x[3]);
+                    $scope.accPitch = Math.atan2($scope.Acc_Z, $scope.Acc_X);
+                    //$scope.accYaw = Math.atan2(x[4], x[3]);
+                    $scope.accYaw = Math.atan2($scope.Acc_Y, $scope.Acc_X);
 
 
-                    //var accMagn = Math.pow(x[3], 2) + Math.pow(x[4], 2) + Math.pow(x[5], 2);
-                    var accMagn = Math.pow($scope.Acc_X, 2) + Math.pow($scope.Acc_Y, 2) + Math.pow($scope.Acc_Z, 2);
+                    //var $scope.accMagn = Math.pow(x[3], 2) + Math.pow(x[4], 2) + Math.pow(x[5], 2);
+                    $scope.accMagn = Math.pow($scope.Acc_X, 2) + Math.pow($scope.Acc_Y, 2) + Math.pow($scope.Acc_Z, 2);
 
                     // Combine the gyroscope data with the accelerometer data to ensure that the orientation is both
                     // accurate and free of any drift errors that are present with using gyroscopes.
@@ -197,9 +184,9 @@ angular.module("rvtk").directive("attitude", function() {
                     // A check to factor in the accelerometer data when only within a certain range. If the data is too large
                     // or too small it is not reliable since accelerometers are susceptible to outside forces which 
                     // disturbs the data.
-                    if(accMagn > 8000 && accMagn < 32000){
-                                targetRotX = (0.98 * targetRotX) + (0.02 * accPitch);
-                                targetRotZ = (0.98 * targetRotZ) + (0.02 * accYaw);
+                    if($scope.accMagn > 8000 && $scope.accMagn < 32000){
+                               $scope.targetRotX = (0.98 * $scope.targetRotX) + (0.02 * $scope.accPitch);
+                               $scope.targetRotZ = (0.98 * $scope.targetRotZ) + (0.02 * $scope.accYaw);
                     }
                 }
             
@@ -231,9 +218,9 @@ angular.module("rvtk").directive("attitude", function() {
                             firstData = true;
                         }
 
-                        loopDelay = dt * Math.pow(10, 3); // convert seconds to milliseconds since delay time is in milliseconds
+                        $scope.loopDelay = dt * Math.pow(10, 3); // convert seconds to milliseconds since delay time is in milliseconds
                         loop();
-                    }, loopDelay);	// loopDelay is calculated by the time between current data packet and last data packet.
+                    }, $scope.loopDelay);	// loopDelay is calculated by the time between current data packet and last data packet.
 	   				// This is done to try to simulate the rate at which the data packets came in during the live launch
                 }
 
@@ -242,6 +229,6 @@ angular.module("rvtk").directive("attitude", function() {
                 render();
 	    }
         }],
-        templateUrl: '{{attitudeGraphic}}'
+        templateUrl: 'directives/attitude.html'
     };
 });
