@@ -7,25 +7,51 @@
 # software for license terms.
 from psas_packet import io
 import socket
+import sched
+import time
+import threading
+import copy
+from Queue import Queue
 
 class Telemetry:
     def __init__(self, address, port, sio):
         self.address = address
         self.port = port
         self.sio = sio
+        self.data = {}
     
-    def listen(self):
+    def sender(self, Q):
+        print("sender activate")
+        while True:
+            if Q:
+                data = Q.get()
+                self.sio.emit("telemetry", data, namespace="/main")
+
+
+    def start(self):
+        print("telemetry start")
+        Q = Queue()
+        sender_thread = threading.Thread(target=self.sender, args=(Q,))
+        
+        thread = threading.Thread(target=self.listen, args=(Q,))
+        thread.start()
+        sender_thread.start()
+
+    def listen(self, Q):
+        print("listening")
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         sock.bind((self.address, self.port))
         network = io.Network(sock)
         while True:
+            collection = []
             try:
                 for timestamp, data in network.listen():
                     fourcc, data = data
                     data["recv"] = timestamp
-                    self.sio.emit("telemetry", {fourcc: data},
-                                  namespace="/main")
-                self.sio.sleep(0.001)
+                    collection.append({fourcc : data})
+
+                if len(collection) > 0:
+                    Q.put(collection)
             except KeyboardInterrupt:
                 sock.close()
                 return
