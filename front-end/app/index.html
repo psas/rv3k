@@ -21,6 +21,7 @@ distribution of this software for license terms.
     <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/main.css">
     <link rel="stylesheet" href="app.css">
     <link rel="stylesheet" href="bower_components/cesiumjs/Cesium/Widgets/widgets.css">
+    <link rel="stylesheet" href="bower_components/video.js/dist/video-js.min.css">
 
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js"></script>
     <script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
@@ -31,6 +32,9 @@ distribution of this software for license terms.
     <script src="assets/jquery-3.1.1.min.js"></script>
     <script src="bower_components/threejs/build/three.min.js"></script>
     <script src="bower_components/cesiumjs/Cesium/Cesium.js"></script>
+    <script src="bower_components/hls.js/dist/hls.min.js"></script>
+    <script src="bower_components/video.js/dist/video.min.js"></script>
+    <script src="bower_components/videojs-contrib-hls/dist/videojs-contrib-hls.min.js"></script>
 
     <script src="app.js"></script>
 
@@ -41,6 +45,8 @@ distribution of this software for license terms.
     <script src="components/version/version-directive.js"></script>
     <script src="components/version/interpolate-filter.js"></script>
     <script src="directives/earthFrameView.js"></script>
+    <script src="directives/hlsjsVideo.js"></script>
+    <script src="directives/videojsVideo.js"></script>
 </head>
 <body ng-controller="MainController">
 
@@ -59,11 +65,11 @@ distribution of this software for license terms.
 
         <div class="video-container" ng-hide="hideVideo" >
             <div class="videoStream" ng-hide="(VisibleCamera == 0)" style="height: 100%">
-                <iframe style="width:100%; height: 100%;" src="https://www.youtube.com/embed/tMfQHzjNvRU?ecver=1" frameborder="0" allowfullscreen></iframe>
-	          </div>
+                <hlsjs-video></hlsjs-video>
+	        </div>
             <div class="videoStream" ng-hide="(VisibleCamera == 1)" style="height: 100%">
-	              <iframe style="width:100%; height: 100%;" src="https://www.youtube.com/embed/FzCsDVfPQqk" frameborder="0" allowfullscreen></iframe>
-	          </div>
+	            <videojs-video></videojs-video>
+	        </div>
         </div>
         <div class="attitude-container" ng-hide="hideVehicleAttitude">
             <attitude></attitude>
