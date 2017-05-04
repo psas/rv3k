@@ -12,11 +12,10 @@ import eventlet
 import eventlet.wsgi
 from flask import Flask, render_template
 import socketio
-import threading
 from telemetry import Telemetry
 
 # Create and configure the server socket
-sio = socketio.Server(logger=False, async_mode="threading")
+sio = socketio.Server(logger=True, async_mode="threading")
 app = Flask(__name__)
 app.wsgi_app = socketio.Middleware(sio, app.wsgi_app)
 app.config["SECRET_KEY"] = "secret!"
@@ -37,10 +36,7 @@ thread = None
 def index():
     global thread
     if thread is None:
-        #thread = sio.start_background_task(server.start)
-        thread = threading.Thread(target=server.start, args=())
-        print("created server thread")
-        thread.start()
+        thread = sio.start_background_task(server.listen)
     return render_template("index.html")
 
 # Connection handler for incoming client connections

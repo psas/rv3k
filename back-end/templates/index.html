@@ -13,25 +13,23 @@
             socket.on("disconnect", function() {});
             socket.on("telemetry", function(data) {
                 for(var key in data) {
-                    update(data[key]);
+                    update(key, data[key]);
                 }
             });
         });
 
-        function update(data) {
-            for(var fourcc in data) {
-                if(fourcc == 'V8A8') {
-                    console.log(fourcc);
-                }
-
-                for(var key in data[fourcc]) {
+        function update(fourcc, data) {
+            if(fourcc == "V8A8") {
+                console.log(fourcc);
+            } else {
+                for(var key in data) {
                     if(key == "recv") {
-                        $('#' + fourcc + "_recv").text(data[fourcc][key]);
+                        $('#' + fourcc + "_recv").text(data[key]);
                     } else {
-                        $('#' + key).text(data[fourcc][key]);
+                        $('#' + key).text(data[key]);
                     }
+                }
             }
-        }
         }
     </script>
 </head>

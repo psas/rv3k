@@ -2,7 +2,7 @@
 This directory contains the Socket.IO server and supporting server modules for rv3k.
 
 ## Requirements
-- Python 3.5+
+- Python 2.7
 
 ## Setup
 1. Clone the rv3k repository to a convenient working directory. (ex: `git clone https://github.com/patter5/rv3k.git`)
