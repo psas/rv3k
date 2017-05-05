@@ -1,8 +1,16 @@
 /*
- * Copyright (c) 2017 Jeff Patterson, Amanda Murphy, Paolo Villanueva, Patrick Overton, Connor Picken, Yun Cong Chen, Seth Amundsen
+ * attitude.js will render a 3d model of a rocket and rotate it so that the model's rotation match the real rocket's rotation during a launch
+ * Copyright (C) 2017 Jeff Patterson, Amanda Murphy, Paolo Villanueva, Patrick Overton, Connor Picken, Yun Cong Chen, Seth Amundsen
  * Michael Ohl, Mathew Tighe
+ *
+ * This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either vesion 2 of the License, or (at our option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY of FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
  * ALL RIGHTS RESERVED
- * [This program is licensed under the "GNU General Public License"
+ * This program is licensed under the "GNU General Public License"
  * Please see the file COPYING in the source
  * distribution of this software for license terms.
  */
