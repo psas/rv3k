@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# server.py initializes a socketio server for the selected back-end module.
 # Copyright (c) 2017 Jeff Patterson, Amanda Murphy, Paolo Villanueva,
 # Patrick Overton, Connor Picken, Yun Cong Chen, Seth Amundsen, Michael
 # Ohl, Matthew Tighe
@@ -25,12 +26,13 @@ thread = None
 
 # foo() is a function that was created to test how well multiple servers
 # can communicate with a single front end client.
-#def foo(number):
-#    count = 0
-#    while True:
-#        sio.emit("foo", {"data": count}, namespace="/main")
-#        sio.sleep(random.random())
-#        count += 1
+# def foo(number):
+#     count = 0
+#     while True:
+#         sio.emit("foo", {"data": count}, namespace="/main")
+#         sio.sleep(random.random())
+#         count += 1
+
 
 @app.route('/')
 def index():
@@ -39,34 +41,37 @@ def index():
         thread = sio.start_background_task(server.listen)
     return render_template("index.html")
 
+
 # Connection handler for incoming client connections
 @sio.on("connect", namespace="/main")
 def connect(sid, environ):
     print("Client connected")
+
 
 # Connection handler for disconnecting client connections
 @sio.on("disconnect", namespace="/main")
 def disconnect(sid):
     print("Client disconnected")
 
+
 # main() takes a number and a port as command line arguments
 # and based on the arguments from the command line will create a
 # back ground thread that runs the foo()
 def main():
-    
+
     # parser is an object that holds the command line argument
     # options
     parser = ArgumentParser()
     parser.add_argument("-t", "--test", action="store_true")
-    
+
     # The group object holds a special set of options that 
     # need to be mutually exclusive.  This ensures that a server
-    # will only be instanciated as either an APRS server, a
+    # will only be instantiated as either an APRS server, a
     # telemetry server or a video server
-    
+
     # Note that the test option ("-t") is not part of the mutually
     # exclusive group. This is because we want to allow any
-    # type of server instanciation to have testing options
+    # type of server instance to have testing options
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument("-A", "--aprs", action="store_true")
     group.add_argument("-T", "--telemetry", action="store_true")
@@ -78,8 +83,8 @@ def main():
     # Creating the port and server variables with the 'global'
     # keyword brings them into the scope of execution here
     global port, server
-    
-    # Choose which type of server to instanciate based on 
+
+    # Choose which type of server to instantiate based on
     # the command line arguments 
     if args.aprs:
         port = 8081
@@ -88,7 +93,7 @@ def main():
         port = 8080
         server = Telemetry("127.0.0.1", 35001, sio)
     else:
-        pass # Instantiate video server here!
+        pass  # Instantiate video server here!
 
     if args.test == False:
         global app, thread
