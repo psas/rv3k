@@ -13,7 +13,7 @@ angular.module("rvtk").directive("attitude", function() {
     return {
         restrict: 'E',
         scope: {},
-        controller: ['$scope', '$element', function earthFrameViewController($scope, $element) {
+        controller: ['$scope', '$element', function attitudeController($scope, $element) {
 
             $scope.attitudeGraphic = "some string";
             var namespace = '/main';
@@ -32,13 +32,19 @@ angular.module("rvtk").directive("attitude", function() {
                         $scope.Acc_X = data[key].Acc_X;
                         $scope.Acc_Y = data[key].Acc_Y;
                         $scope.Acc_Z = data[key].Acc_Z;
+                        // TODO: seems like this if statement does nothing?
                         if($scope.TimeStamp) {
                             $scope.PreviousTimeStamp = $scope.TimeStamp;
                         } 
                         else {
                             $scope.PreviousTimeStamp = $scope.TimeStamp;
                         }
+                        // TODO: The timestamp is not the recv value from the packet. Needs the timestamp
+                        // value from the data packet. Once the FE architecture gets reworked we should
+                        // be able to access it as:
+                        //$scope.TimeStamp = data[key].timestamp;
                         $scope.TimeStamp = data[key].recv;
+                        $scope.calculateData();
                         //$scope.allThis();
                     }
                 }
@@ -52,7 +58,7 @@ angular.module("rvtk").directive("attitude", function() {
             }
 
             $scope.loader1 = new THREE.JSONLoader();
-		
+
             // Load the rocket model into the $scope.mesh variable.
             // The inner function is not called until loader1.load completes.
             $scope.loadModel = function (modelUrl) {
@@ -82,6 +88,106 @@ angular.module("rvtk").directive("attitude", function() {
 
             $scope.loadModel("assets/rocket_model2.js");
 
+            // This function will process a data packet and update the three $scope.targetRot variables
+            // Uses a complementary filter between the gyro and accelerometer data to ensure accuracy
+            // and avoid drift errors.
+            $scope.calculateData = function (){
+                // Variables for calculating the pitch and yaw of the rocket from the accelerometer data
+                $scope.accPitch = 0;
+                $scope.accYaw = 0;
+                
+                //$scope.dt = $scope.time[i] - scope.time[i - 1];
+                $scope.dt = $scope.TimeStamp - $scope.PreviousTimeStamp;
+                $scope.dt = $scope.dt * Math.pow(10, -9); // need to convert nanoseconds to seconds
+
+                // Gyroscope data is in degrees/second. Need to convert to radians.
+                // Data is an angular displacement instead of an absolute angle, so data is
+                // added to target rotation instead of assigning the rotation.
+                // For some reason it appears that the y axis values are actually in the x axis column
+                // so I am switching them here. 
+                // TODO: Currently do not know if x is really x axis or z axis because of the y values
+                // being in the x column. Need to investigate further. Currently looks fine 
+                //targetRotX += Math.radians(x[1]) * dt;
+                $scope.targetRotX += Math.radians($scope.Gyro_Y) * dt;
+                //targetRotY += Math.radians(x[0]) * dt;
+                $scope.targetRotY += Math.radians($scope.Gyro_X) * dt;
+                //targetRotZ += Math.radians(x[2]) * dt;
+                $scope.targetRotZ += Math.radians($scope.Gyro_Z) * dt;
+
+                // Uses data from the accelerometer to obtain a pitch and yaw angle. Note that accelerometer
+                // cannot track roll, so only calculating the pitch and yaw.
+                //$scope.accPitch = Math.atan2(x[5], x[3]);
+                $scope.accPitch = Math.atan2($scope.Acc_Z, $scope.Acc_X);
+                //$scope.accYaw = Math.atan2(x[4], x[3]);
+                $scope.accYaw = Math.atan2($scope.Acc_Y, $scope.Acc_X);
+
+
+                //var $scope.accMagn = Math.pow(x[3], 2) + Math.pow(x[4], 2) + Math.pow(x[5], 2);
+                $scope.accMagn = Math.pow($scope.Acc_X, 2) + Math.pow($scope.Acc_Y, 2) + Math.pow($scope.Acc_Z, 2);
+
+                // Combine the gyroscope data with the accelerometer data to ensure that the orientation is both
+                // accurate and free of any drift errors that are present with using gyroscopes.
+                // TODO: currently only correcting drift in the pitch and yaw axises and not the roll axis. 
+                // This would get fixed by using magnometer data, however, initial search into these calculations
+                // seems exceedingly complex and I am not if it is worth the effort. 
+
+                // A check to factor in the accelerometer data when only within a certain range. If the data is too large
+                // or too small it is not reliable since accelerometers are susceptible to outside forces which 
+                // disturbs the data.
+                if($scope.accMagn > 8000 && $scope.accMagn < 32000){
+                    $scope.targetRotX = (0.98 * $scope.targetRotX) + (0.02 * $scope.accPitch);
+                    $scope.targetRotZ = (0.98 * $scope.targetRotZ) + (0.02 * $scope.accYaw);
+                }
+            }
+
+            $scope.dt = 0.0012;	// change in time between data packets
+            $scope.loopDelay = $scope.dt * Math.pow(10, 3); // loop delays needs to be in milliseconds
+            // TODO: This variable is probably not necessary any more
+            $scope.firstData = true; // track whether this is the first data packet we have received
+				     // for purposes of not using an invalid dt value on first calculation
+            // Target rotation values for the rocket model
+            $scope.targetRotX = 0;
+            $scope.targetRotY = 0;
+            $scope.targetRotZ = 0;
+
+            // The function that rotates the model expects a difference in angles to rotate by.
+            // So keep track of previous rotation in order to calculate the difference
+            $scope.prevRotX = $scope.targetRotX;
+            $scope.prevRotY = $scope.targetRotY;
+            $scope.prevRotZ = $scope.targetRotZ;
+
+            // Render the scene, and change the rocket's attitude at 30fps
+            // Gets called recursively with the requestAnimationFrame function call
+            $scope.render = function () {
+                setTimeout(function() { // setTimeout used to run at 30 fps
+                    // TODO: should be requestAnimationFrame($scope.render);?
+                    requestAnimationFrame($scope.render);
+
+                    // Calculate difference in rotations
+                    $scope.diffX = $scope.targetRotX - $scope.prevRotX;
+                    $scope.diffY = $scope.targetRotY - $scope.prevRotY;
+                    $scope.diffZ = $scope.targetRotZ - $scope.prevRotZ;
+
+                    // Update previous rotation
+                    $scope.prevRotX = $scope.targetRotX;
+                    $scope.prevRotY = $scope.targetRotY;
+                    $scope.prevRotZ = $scope.targetRotZ;
+
+                    // Rotate the model
+                    $scope.mesh.rotateX($scope.diffX);
+                    $scope.mesh.rotateY($scope.diffY);
+                    $scope.mesh.rotateZ($scope.diffZ);
+
+                    // Three.js function call to render the scene
+                    $scope.renderer.render($scope.scene, $scope.camera);
+                }, 1000/30); // run at 30fps
+            }
+
+            // Render will call it self 30 times a second to render the scene.
+            $scope.render();
+            // The socket.io function at the beginning of the file will continuously receive and the data packets
+            // so no need for the loop() function.
+
             // For some reason the imuData variable seems to fall out of scope and become undefined after the
             // call to process(). I don't know why this behaves this way, but having the rest of the code execute
             // within a function that is called in the $.ajax(... section fixes this scoping issue.
@@ -93,21 +199,6 @@ angular.module("rvtk").directive("attitude", function() {
                 function onWindowResize(event) {
                     $scope.renderer.setSize(window.innerWidth / 2, window.innerHeight / 2);
                 }
-
-                $scope.dt = 0.0012;		// change in time between data packets
-                $scope.loopDelay = dt * Math.pow(10, 3);	// loop delays needs to be in milliseconds
-                var firstData = true;		// track whether this is the first data packet we have received
-						// for purposes of not using an invalid dt value on first calculation
-                // Target rotation values for the rocket model
-                $scope.targetRotX = 0;
-                $scope.targetRotY = 0;
-                $scope.targetRotZ = 0;
-
-                // The function that rotates the model expects a difference in angles to rotate by.
-                // So keep track of previous rotation in order to calculate the difference
-                $scope.prevRotX = $scope.targetRotX;
-                $scope.prevRotY = $scope.targetRotY;
-                $scope.prevRotZ = $scope.targetRotZ;
 
                 // Render the scene, and change the rocket's attitude at 30fps
                 // Gets called recursively with the requestAnimationFrame function call
