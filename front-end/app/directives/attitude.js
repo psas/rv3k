@@ -40,23 +40,18 @@ angular.module("rvtk").directive("attitude", function() {
                         $scope.Acc_X = data[key].Acc_X;
                         $scope.Acc_Y = data[key].Acc_Y;
                         $scope.Acc_Z = data[key].Acc_Z;
-                        // TODO: seems like this if statement does nothing?
                         if($scope.TimeStamp) {
                             $scope.PreviousTimeStamp = $scope.TimeStamp;
                         } 
                         else {
-                            $scope.PreviousTimeStamp = $scope.TimeStamp;
+                            $scope.PreviousTimeStamp = data[key].timestamp;
                         }
-                        // TODO: The timestamp is not the recv value from the packet. Needs the timestamp
-                        // value from the data packet. Once the FE architecture gets reworked we should
-                        // be able to access it as:
-                        //$scope.TimeStamp = data[key].timestamp;
-                        $scope.TimeStamp = data[key].recv;
+
+                        $scope.TimeStamp = data[key].timestamp;
                         $scope.calculateData();
                         //$scope.allThis();
                     }
                 }
-
             });
 
 
@@ -104,9 +99,9 @@ angular.module("rvtk").directive("attitude", function() {
                 $scope.accPitch = 0;
                 $scope.accYaw = 0;
                 
-                //$scope.dt = $scope.time[i] - scope.time[i - 1];
-                $scope.dt = $scope.TimeStamp - $scope.PreviousTimeStamp;
-                $scope.dt = $scope.dt * Math.pow(10, -9); // need to convert nanoseconds to seconds
+                //$scope.deltaTime = $scope.time[i] - scope.time[i - 1];
+                $scope.deltaTime = $scope.TimeStamp - $scope.PreviousTimeStamp;
+                $scope.deltaTime = $scope.deltaTime * Math.pow(10, -9); // need to convert nanoseconds to seconds
 
                 // Gyroscope data is in degrees/second. Need to convert to radians.
                 // Data is an angular displacement instead of an absolute angle, so data is
@@ -116,11 +111,11 @@ angular.module("rvtk").directive("attitude", function() {
                 // TODO: Currently do not know if x is really x axis or z axis because of the y values
                 // being in the x column. Need to investigate further. Currently looks fine 
                 //targetRotX += Math.radians(x[1]) * dt;
-                $scope.targetRotX += Math.radians($scope.Gyro_Y) * dt;
+                $scope.targetRotX += Math.radians($scope.Gyro_Y) * $scope.deltaTime;
                 //targetRotY += Math.radians(x[0]) * dt;
-                $scope.targetRotY += Math.radians($scope.Gyro_X) * dt;
+                $scope.targetRotY += Math.radians($scope.Gyro_X) * $scope.deltaTime;
                 //targetRotZ += Math.radians(x[2]) * dt;
-                $scope.targetRotZ += Math.radians($scope.Gyro_Z) * dt;
+                $scope.targetRotZ += Math.radians($scope.Gyro_Z) * $scope.deltaTime;
 
                 // Uses data from the accelerometer to obtain a pitch and yaw angle. Note that accelerometer
                 // cannot track roll, so only calculating the pitch and yaw.
@@ -148,8 +143,8 @@ angular.module("rvtk").directive("attitude", function() {
                 }
             }
 
-            $scope.dt = 0.0012;	// change in time between data packets
-            $scope.loopDelay = $scope.dt * Math.pow(10, 3); // loop delays needs to be in milliseconds
+            $scope.deltaTime = 0.0012;	// change in time between data packets
+            $scope.loopDelay = $scope.deltaTime * Math.pow(10, 3); // loop delays needs to be in milliseconds
             // TODO: This variable is probably not necessary any more
             $scope.firstData = true; // track whether this is the first data packet we have received
 				     // for purposes of not using an invalid dt value on first calculation
@@ -245,9 +240,9 @@ angular.module("rvtk").directive("attitude", function() {
                     $scope.accPitch = 0;
                     $scope.accYaw = 0;
                 
-                    //$scope.dt = $scope.time[i] - scope.time[i - 1];
-                    $scope.dt = $scope.PreviousTimeStamp - $scope.TimeStamp;
-                    $scope.dt = $scope.dt * Math.pow(10, -9); // need to convert nanoseconds to seconds
+                    //$scope.deltaTime = $scope.time[i] - scope.time[i - 1];
+                    $scope.deltaTime = $scope.PreviousTimeStamp - $scope.TimeStamp;
+                    $scope.deltaTime = $scope.dt * Math.pow(10, -9); // need to convert nanoseconds to seconds
 
 
                     // Gyroscope data is in degrees/second. Need to convert to radians.
