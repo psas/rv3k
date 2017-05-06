@@ -30,7 +30,7 @@ angular.module("rvtk").directive("earthFrameView", function() {
                 terrainExaggeration : 2.0
             });
 
-            // set lighting to true - makes it look more realistic 
+            // set lighting to true - makes it look more realistic
             viewer.scene.globe.enableLighting = true;
 
             viewer.terrainProvider = new Cesium.CesiumTerrainProvider({
@@ -102,7 +102,7 @@ angular.module("rvtk").directive("earthFrameView", function() {
 
             //function to move recovery crew 1's longitude and latitude +1 degree
             $scope.movePoints = function() {
-                recoveryCrew1.position = Cesium.Cartesian3.fromDegrees($scope.long1++, $scope.lat1++);
+                recoveryCrew1.position = Cesium.Cartesian3.fromDegrees(++$scope.long1, ++$scope.lat1);
             };
 
             //move the camera to where rocket is
@@ -110,14 +110,14 @@ angular.module("rvtk").directive("earthFrameView", function() {
 
             //Gets rid of a developer tools error and allows cesium to work
             viewer.infoBox.frame.sandbox = "allow-same-origin allow-top-navigation allow-pointer-lock allow-popups allow-forms allow-scripts";
-            
+
             //the array of longitude, latitude and altitude points sent in from the back-end
             var trajectoryPoints = [];
 
 
-            //helper function, used to update the rockets position 
+            //helper function, used to update the rockets position
             $scope.moveRocket = function(x, y, z) {
-                //add a new point to the list of points for the line that creates the actual trajectory 
+                //add a new point to the list of points for the line that creates the actual trajectory
                 trajectoryPoints = trajectoryPoints.concat([x, y, z]);
                 //store the new position in a variable
                 $scope.position = Cesium.Cartesian3.fromDegrees(x, y, z);
@@ -145,7 +145,9 @@ angular.module("rvtk").directive("earthFrameView", function() {
                         }
                 });
                 viewer.zoomTo(viewer.entities);
-
+                if(trajectoryPoints.length == 2) {
+                    trajectoryPoints.split(1, 1);
+                }
             }
 
 
@@ -154,11 +156,11 @@ angular.module("rvtk").directive("earthFrameView", function() {
             var socket = io.connect('http://' + document.domain + ':8080' + namespace);
             socket.on('connect', function() {});
             socket.on('disconnect', function() {});
-            
+
             socket.on('telemetry', function(data) {
                 for(var key in data) {
                     if(key == 'V8A8') {
-                        //update anything that uses V8A8 data in cesium 
+                        //update anything that uses V8A8 data in cesium
                         $scope.moveRocket(data[key].Longitude, data[key].Latitude, data[key].MSL_Altitude);                    }
                 }
 

@@ -52,13 +52,10 @@ angular.module("rvtk").directive("attitude", function() {
                     }
                 }
             });
-
-
             // Helper function to convert degrees into radians
             Math.radians = function(degrees){
                 return degrees * Math.PI / 180;
             }
-
             $scope.loader1 = new THREE.JSONLoader();
 
             // Load the rocket model into the $scope.mesh variable.
@@ -182,7 +179,6 @@ angular.module("rvtk").directive("attitude", function() {
             $scope.render();
             // The socket.io function at the beginning of the file will continuously receive and the data packets
             // so no need for the loop() function.
-
         }],
         templateUrl: ''
     };
