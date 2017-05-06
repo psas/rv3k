@@ -29,6 +29,8 @@ class Telemetry:
         self.sio = sio
         # Instantiates the sender thread.
         self.thread = Thread(target=self.sender)
+        self.thread.daemon = True
+    
 
     def listen(self):
         """Listens for incoming psas packets
