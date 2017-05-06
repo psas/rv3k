@@ -23,7 +23,6 @@ angular.module("rvtk").directive("attitude", function() {
         scope: {},
         controller: ['$scope', '$element', function attitudeController($scope, $element) {
 
-            $scope.attitudeGraphic = "some string";
             var namespace = '/main';
             // this port connects to port broadcast by ../unified/app.py
             var socket = io.connect('http://' + document.domain + ':8080' + namespace);
@@ -33,13 +32,14 @@ angular.module("rvtk").directive("attitude", function() {
             socket.on('telemetry', function(data) {
                 for(var key in data) {
                     if(key == 'ADIS') {
-                        //console.log(data[key]);
                         $scope.Gyro_X = data[key].Gyro_X;
                         $scope.Gyro_Y = data[key].Gyro_Y;
                         $scope.Gyro_Z = data[key].Gyro_Z;
                         $scope.Acc_X = data[key].Acc_X;
                         $scope.Acc_Y = data[key].Acc_Y;
                         $scope.Acc_Z = data[key].Acc_Z;
+                        // If TimeStamp has not been initialized we set previous to current,
+                        // deltaTime will be 0
                         if($scope.TimeStamp) {
                             $scope.PreviousTimeStamp = $scope.TimeStamp;
                         } 
