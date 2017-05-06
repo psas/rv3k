@@ -145,7 +145,9 @@ angular.module("rvtk").directive("earthFrameView", function() {
                         }
                 });
                 viewer.zoomTo(viewer.entities);
-
+                if(trajectoryPoints.length == 2) {
+                    trajectoryPoints.split(1, 1);
+                }
             }
 
 
