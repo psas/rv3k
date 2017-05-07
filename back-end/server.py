@@ -35,17 +35,13 @@ thread = None
 #         count += 1
 
 
-
 @app.route('/')
 def index():
     global thread
     if thread is None:
-        # thread = sio.start_background_task(server.listen)
         thread = threading.Thread(target=server.listen)
         thread.daemon = True
         thread.start()
-
-
     return render_template("index.html")
 
 
@@ -105,13 +101,15 @@ def main():
     if args.test == False:
         global app, thread
         app = socketio.Middleware(sio)
-        #thread = sio.start_background_task(server.listen)
         thread = threading.Thread(target=server.listen)
         thread.daemon = True
         thread.start()
-
-    # Sets the server to listen on a specific port for incoming connections
-    eventlet.wsgi.server(eventlet.listen(('', port)), app)
+    try:
+        # Sets the server to listen on a specific port for incoming
+        # connections
+        eventlet.wsgi.server(eventlet.listen(('', port)), app)
+    except KeyboardInterrupt:
+        return
 
 # Runs main()
 if __name__ == "__main__":
