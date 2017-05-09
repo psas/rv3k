@@ -23,7 +23,7 @@ Including the flag `-t` tells server.py to serve the testing webpage.
 ### Telemetry Replay instructions
 1. Navigate to the `back-end directory`
 1. Clone Launch-12 to your home directory. `pushd ~/ && git clone https://github.com/psas/Launch-12` then `popd` to return to your working directory.
-1. Ensure that python 3 is the default for the current environment, else explicitly call python 3 using `python3 <program.py>` in place of any python commands below.
+1. Ensure that python 2.7 is the default for the current environment, else explicitly call python 2.7 using `python2 <program.py>` in place of any python commands below. Better yet use a virtual environment.
 1. Open another terminal window: One terminal for replay, and another terminal for the server.
 1. In one terminal type `python server.py -t -T`
 1. In the other terminal type `bash replaylog.sh`
