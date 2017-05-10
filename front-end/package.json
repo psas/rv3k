@@ -1,9 +1,9 @@
 {
-  "name": "angular-seed",
+  "name": "rv3k",
   "private": true,
-  "version": "0.0.0",
-  "description": "A starter project for AngularJS",
-  "repository": "https://github.com/angular/angular-seed",
+  "version": "0.0.3",
+  "description": "A telemetry viewer for PSAS",
+  "repository": "https://github.com/patter5/rv3k",
   "license": "MIT",
   "devDependencies": {
     "bower": "^1.7.7",
