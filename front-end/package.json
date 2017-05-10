@@ -4,7 +4,7 @@
   "version": "0.0.3",
   "description": "A telemetry viewer for PSAS",
   "repository": "https://github.com/patter5/rv3k",
-  "license": "MIT",
+  "license": "gpl v2",
   "devDependencies": {
     "bower": "^1.7.7",
     "http-server": "^0.9.0",
