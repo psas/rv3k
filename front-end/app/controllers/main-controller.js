@@ -8,7 +8,7 @@
 
 //This is the main controller, it handles the logic in on the main page (app/index.html)
 
-app.controller('MainController', function($scope) {
+app.controller('MainController', ['$scope', function($scope) {
 
     //initialize variables
     $scope.VisibleCamera = 1;
@@ -21,4 +21,4 @@ app.controller('MainController', function($scope) {
         $scope.VisibleCamera = ++$scope.VisibleCamera%numberOfFeeds;
     };
 
-});
+}]);
