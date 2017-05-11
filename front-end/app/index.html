@@ -12,73 +12,70 @@ distribution of this software for license terms.
 <!--[if IE 8]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html lang="en" ng-app="rvtk" class="no-js"> <!--<![endif]-->
 <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Rocket View 3000</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/normalize.css">
+    <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/main.css">
+    <link rel="stylesheet" href="app.css">
+    <link rel="stylesheet" href="bower_components/cesiumjs/Cesium/Widgets/widgets.css">
+    <link rel="stylesheet" href="bower_components/video.js/dist/video-js.min.css">
 
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Rocket View 3000</title>
-  <meta name="description" content="">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/normalize.css">
-  <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/main.css">
-  <link rel="stylesheet" href="app.css">
-  <link rel="stylesheet" href="bower_components/cesiumjs/Cesium/Widgets/widgets.css">
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js"></script>
+    <script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
 
-  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js"></script>
-  <script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
-  <script src="bower_components/angular/angular.js"></script>
-  <script src="bower_components/angular-route/angular-route.js"></script>
+    <!-- These are necessary for the attitude visualization. -->
+    <script src="assets/jquery-3.1.1.min.js"></script>
+    <script src="bower_components/threejs/build/three.min.js"></script>
+    <script src="bower_components/cesiumjs/Cesium/Cesium.js"></script>
+    <script src="bower_components/hls.js/dist/hls.min.js"></script>
+    <script src="bower_components/video.js/dist/video.min.js"></script>
+    <script src="bower_components/videojs-contrib-hls/dist/videojs-contrib-hls.min.js"></script>
 
-  <!-- These are necessary for the attitude visualization. -->
-  <script src="assets/jquery-3.1.1.min.js"></script>
-  <script src="bower_components/threejs/build/three.min.js"></script>
-  <script src="bower_components/cesiumjs/Cesium/Cesium.js"></script> 
+    <script src="app.js"></script>
 
-
-  <script src="app.js"></script>
-
-  <script src="controllers/main-controller.js"></script>
-  <script src="directives/attitude.js"></script>
-  <script src="directives/telemetry.js"></script>
-  <script src="components/version/version.js"></script>
-  <script src="components/version/version-directive.js"></script>
-  <script src="components/version/interpolate-filter.js"></script>
-  <script src="directives/earthFrameView.js"></script>
+    <script src="controllers/main-controller.js"></script>
+    <script src="directives/attitude.js"></script>
+    <script src="directives/telemetry.js"></script>
+    <script src="directives/earthFrameView.js"></script>
+    <script src="directives/hlsjsVideo.js"></script>
+    <script src="directives/videojsVideo.js"></script>
 </head>
 <body ng-controller="MainController">
-    <!-- logo and title -->
-    <div class="topBar">
-        <img src="imgs/PSASLogo.png" />
-    </div>
-
-    <!-- navigation bar -->
-    <div>
-        <div class="button" ng-click="hideEFV = !hideEFV">Hide Earth Frame View</div>
-        <div class="button" ng-click="toggleCamera()">Toggle Camera</div>
-        <div class="button" ng-click="hideVideo = !hideVideo">Hide Video</div>
-        <div class="button" ng-click="hideVehicleAttitude = !hideVehicleAttitude">Hide Vehicle Attitude</div>
-        <!-- link to at a glance page -->
-        <a class="button" href="at-a-glance/index.html">At A Glance View</a>
-    </div>
 
     <!-- This graphics board holds the EFV, video, and vehicle attitude.-->
-    <div class="graphicsBoard">
-        <div class="graphics" ng-hide="hideVideo">
-            <div class="videoStream" ng-hide="(VisibleCamera == 0)">
-                <iframe width="560" height="315" src="https://www.youtube.com/embed/tMfQHzjNvRU?ecver=1" frameborder="0" allowfullscreen></iframe>
-	          </div>
-            <div class="videoStream" ng-hide="(VisibleCamera == 1)">
-	              <iframe width="560" height="315" src="https://www.youtube.com/embed/FzCsDVfPQqk" frameborder="0" allowfullscreen></iframe>
-	          </div>
+    <div class="view">
+        <!-- navigation bar -->
+        <div class="navBar-container">
+            <div class="logo"><img src="imgs/PSASLogo.png" style="width:40px;height:40px"></div>
+            <div class="button" ng-click="hideEFV = !hideEFV">Hide Earth Frame View</div>
+            <div class="button" ng-click="toggleCamera()">Toggle Camera</div>
+            <div class="button" ng-click="hideVideo = !hideVideo">Hide Video</div>
+            <div class="button" ng-click="hideVehicleAttitude = !hideVehicleAttitude">Hide Vehicle Attitude</div>
+            <!-- link to at a glance page -->
+            <a class="button" href="at-a-glance/index.html">At A Glance View</a>
         </div>
-        <div class="graphics" ng-hide="hideVehicleAttitude">
+
+        <div class="video-container" ng-hide="hideVideo" >
+            <div class="videoStream" ng-hide="(VisibleCamera == 0)" style="height: 100%">
+                <hlsjs-video></hlsjs-video>
+	        </div>
+            <div class="videoStream" ng-hide="(VisibleCamera == 1)" style="height: 100%">
+	            <videojs-video></videojs-video>
+	        </div>
+        </div>
+        <div class="attitude-container" ng-hide="hideVehicleAttitude">
             <attitude></attitude>
         </div>
-        <div id="efv-container" ng-hide="hideEFV">
+        <div class="efv-container" ng-hide="hideEFV">
             <earth-frame-view></earth-frame-view>
         </div>
+        <div class="telemetry-container"><telemetry></telemetry></div>
     </div>
-    
-    <div><telemetry></telemetry></div>
 
     <!-- In production use:
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>

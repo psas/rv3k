@@ -1,3 +1,11 @@
+<!--
+index.html is a webpage that facilitates back-end testing.
+Copyright (c) 2017 Jeff Patterson, Amanda Murphy, Paolo Villanueva, Patrick Overton, Connor Picken, Yun Cong Chen, Seth Amundsen, Michael Ohl, Matthew Tighe
+ALL RIGHTS RESERVED
+[This program is licensed under the "GNU General Public License"]
+Please see the file COPYING in the source
+distribution of this software for license terms.
+-->
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -19,11 +27,15 @@
         });
 
         function update(fourcc, data) {
-            for(var key in data) {
-                if(key == "recv") {
-                    $('#' + fourcc + "_recv").text(data[key]);
-                } else {
-                    $('#' + key).text(data[key]);
+            if(fourcc == "V8A8") {
+                console.log(fourcc);
+            } else {
+                for(var key in data) {
+                    if(key == "recv") {
+                        $('#' + fourcc + "_recv").text(data[key]);
+                    } else {
+                        $('#' + key).text(data[key]);
+                    }
                 }
             }
         }
