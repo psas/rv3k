@@ -7,9 +7,8 @@
  */
 
 //This is the main controller, it handles the logic in on the main page (app/index.html)
-var app = angular.module('rvtk', []);
 
-app.controller('MainController', ['$scope', function($scope) {
+app.controller('MainController', function($scope) {
 
     //initialize variables
     $scope.VisibleCamera = 1;
@@ -22,4 +21,4 @@ app.controller('MainController', ['$scope', function($scope) {
         $scope.VisibleCamera = ++$scope.VisibleCamera%numberOfFeeds;
     };
 
-}]);
+});
