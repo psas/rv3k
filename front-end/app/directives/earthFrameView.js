@@ -114,6 +114,20 @@ angular.module("rvtk").directive("earthFrameView", function() {
             //the array of longitude, latitude and altitude points sent in from the back-end
             var trajectoryPoints = [];
 
+	    //The point on the ground under the rocket
+	    var groundPos = Cesium.Cartesian3.fromDegrees(-120.6517673, 43.7961328);
+	    var rocketPos = Cesium.Cartesian3.fromDegrees(-120.6517673, 43.7961328, 30000);
+	    //The projected trajectory of the rocket.
+	    //TODO: It should be possible to just use rocket.position instead of a whole separate variable
+	    //rocketPos for the first point in this line. For some reason it is giving me compiler errors though.
+	    var projTraj = viewer.entities.add({
+	        name : "Projected Trajectory",
+		polyline : {
+		    positions : [rocketPos, groundPos],
+		    	width : 3,
+			material : Cesium.Color.WHITE
+		}
+	    });
 
             //helper function, used to update the rockets position
             $scope.moveRocket = function(x, y, z) {
@@ -145,9 +159,16 @@ angular.module("rvtk").directive("earthFrameView", function() {
                         }
                 });
                 viewer.zoomTo(viewer.entities);
+
+		//Update the start and end positions of the projected trajectory line
+		rocketPos = Cesium.Cartesian3.fromDegrees(x, y, z);
+		groundPos = Cesium.Cartesian3.fromDegrees(x, y);
+		projTraj.polyline.positions = [rocketPos, groundPos];
+
                 if(trajectoryPoints.length == 2) {
                     trajectoryPoints.split(1, 1);
                 }
+
             }
 
 
