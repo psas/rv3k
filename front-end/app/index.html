@@ -16,25 +16,44 @@ distribution of this software for license terms.
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Rocket View 3000</title>
     <meta name="description" content="">
+    <!-- Commented out to test angular-material
     <meta name="viewport" content="width=device-width, initial-scale=1">
+  -->
+
+    <!-- angular-material setting -->
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+
+    <!-- STYLESHEETS -->
     <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/normalize.css">
     <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/main.css">
     <link rel="stylesheet" href="app.css">
     <link rel="stylesheet" href="bower_components/cesiumjs/Cesium/Widgets/widgets.css">
     <link rel="stylesheet" href="bower_components/video.js/dist/video-js.min.css">
+    <link rel="stylesheet" href="/bower_components/angular-material/angular-material.css">
 
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js"></script>
     <script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
+
+    <!-- ANGULAR core -->
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/angular-route/angular-route.js"></script>
+
+
 
     <!-- These are necessary for the attitude visualization. -->
     <script src="assets/jquery-3.1.1.min.js"></script>
     <script src="bower_components/threejs/build/three.min.js"></script>
+
+    <!-- Eearth Frame View Scripts -->
     <script src="bower_components/cesiumjs/Cesium/Cesium.js"></script>
+
+    <!-- Video Module Scripts -->
     <script src="bower_components/hls.js/dist/hls.min.js"></script>
     <script src="bower_components/video.js/dist/video.min.js"></script>
+    <!-- 'dist' directory appears to be missing
     <script src="bower_components/videojs-contrib-hls/dist/videojs-contrib-hls.min.js"></script>
+    -->
+
 
     <script src="app.js"></script>
 
@@ -45,26 +64,42 @@ distribution of this software for license terms.
     <script src="directives/hlsjsVideo.js"></script>
     <script src="directives/videojsVideo.js"></script>
 </head>
-<body ng-controller="MainController">
-
+<body ng-controller="MainController" ng-cloak>
+  <md-content class = "md-padding">
+    <md-nav-bar
+      md-selected-nav-item="currentNavItem"
+      nav-bar-aria-label="navigation links">
+      <md-button class="md-fab">
+        PSAS
+        <!--
+        <img class="logo-image" src="imgs/PSASLogo.png" style="width:40px;height:40px" name="PSAS logo">
+      -->
+      </md-button>
+      <md-nav-item md-nav-click="toggleEfv()" name="hideEFV">
+        Toggle Earth Frame View
+      </md-nav-item>
+      <md-nav-item md-nav-click="toggleVideo()" name="Hide video">
+        Toggle Video Module
+      </md-nav-item>
+  </md-nav-bar>
     <!-- This graphics board holds the EFV, video, and vehicle attitude.-->
     <div class="view">
-        <!-- navigation bar -->
+        <!-- OLD navigation bar
         <div class="navBar-container">
             <div class="logo"><img src="imgs/PSASLogo.png" style="width:40px;height:40px"></div>
             <div class="button" ng-click="hideEFV = !hideEFV">Hide Earth Frame View</div>
             <div class="button" ng-click="toggleCamera()">Toggle Camera</div>
             <div class="button" ng-click="hideVideo = !hideVideo">Hide Video</div>
             <div class="button" ng-click="hideVehicleAttitude = !hideVehicleAttitude">Hide Vehicle Attitude</div>
-            <!-- link to at a glance page -->
+
             <a class="button" href="at-a-glance/index.html">At A Glance View</a>
         </div>
-
+        -->
         <div class="video-container" ng-hide="hideVideo" >
-            <div class="videoStream" ng-hide="(VisibleCamera == 0)" style="height: 100%">
+            <div class="videoStream" ng-hide="(VisibleCamera == 0)" >
                 <hlsjs-video></hlsjs-video>
 	        </div>
-            <div class="videoStream" ng-hide="(VisibleCamera == 1)" style="height: 100%">
+            <div class="videoStream" ng-hide="(VisibleCamera == 1)" >
 	            <videojs-video></videojs-video>
 	        </div>
         </div>
@@ -80,5 +115,10 @@ distribution of this software for license terms.
     <!-- In production use:
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
   -->
+  <!-- Angular Material Dependencies -->
+  <script src="/bower_components/angular-aria/angular-aria.js"></script>
+  <script src="/bower_components/angular-animate/angular-animate.js"></script>
+  <script src="/bower_components/angular-material/angular-material.js"></script>
+</md-content>
 </body>
 </html>

@@ -1,5 +1,5 @@
 /*
- * attitude.js will render a 3d model of a rocket and rotate it so that the model's rotation match the real rocket's rotation during a launch
+ * attitude.js renders a 3d model of a rocket and rotate it so that the model's rotation match the real rocket's rotation during a launch
  * Copyright (C) 2017 Jeff Patterson, Amanda Murphy, Paolo Villanueva, Patrick Overton, Connor Picken, Yun Cong Chen, Seth Amundsen
  * Michael Ohl, Mathew Tighe
  *
@@ -28,7 +28,7 @@ angular.module("rvtk").directive("attitude", function() {
             var socket = io.connect('http://' + document.domain + ':8080' + namespace);
             socket.on('connect', function() {});
             socket.on('disconnect', function() {});
-            
+
             socket.on('telemetry', function(data) {
                 for(var key in data) {
                     if(key == 'ADIS') {
@@ -42,7 +42,7 @@ angular.module("rvtk").directive("attitude", function() {
                         // deltaTime will be 0
                         if($scope.TimeStamp) {
                             $scope.PreviousTimeStamp = $scope.TimeStamp;
-                        } 
+                        }
                         else {
                             $scope.PreviousTimeStamp = data[key].timestamp;
                         }
@@ -74,7 +74,7 @@ angular.module("rvtk").directive("attitude", function() {
                 $scope.camera.position.set(0, 0, 10);
                 $scope.scene = new THREE.Scene();
                 $scope.renderer = new THREE.WebGLRenderer({antialias: true});
-                $scope.renderer.setSize(window.innerWidth / 2, window.innerHeight / 1.5);     
+                $scope.renderer.setSize(window.innerWidth / 2, window.innerHeight / 1.5);
                 $element[0].appendChild($scope.renderer.domElement);
                 //$scope.attitudeGraphic = $scope.renderer.domElement;
                 //$scope.$apply();
@@ -92,7 +92,7 @@ angular.module("rvtk").directive("attitude", function() {
                 // Variables for calculating the pitch and yaw of the rocket from the accelerometer data
                 $scope.accPitch = 0;
                 $scope.accYaw = 0;
-                
+
                 //$scope.deltaTime = $scope.time[i] - scope.time[i - 1];
                 $scope.deltaTime = $scope.TimeStamp - $scope.PreviousTimeStamp;
                 $scope.deltaTime = $scope.deltaTime * Math.pow(10, -9); // need to convert nanoseconds to seconds
@@ -101,9 +101,9 @@ angular.module("rvtk").directive("attitude", function() {
                 // Data is an angular displacement instead of an absolute angle, so data is
                 // added to target rotation instead of assigning the rotation.
                 // For some reason it appears that the y axis values are actually in the x axis column
-                // so I am switching them here. 
+                // so I am switching them here.
                 // TODO: Currently do not know if x is really x axis or z axis because of the y values
-                // being in the x column. Need to investigate further. Currently looks fine 
+                // being in the x column. Need to investigate further. Currently looks fine
                 //targetRotX += Math.radians(x[1]) * dt;
                 $scope.targetRotX += Math.radians($scope.Gyro_Y) * $scope.deltaTime;
                 //targetRotY += Math.radians(x[0]) * dt;
@@ -124,12 +124,12 @@ angular.module("rvtk").directive("attitude", function() {
 
                 // Combine the gyroscope data with the accelerometer data to ensure that the orientation is both
                 // accurate and free of any drift errors that are present with using gyroscopes.
-                // TODO: currently only correcting drift in the pitch and yaw axises and not the roll axis. 
+                // TODO: currently only correcting drift in the pitch and yaw axises and not the roll axis.
                 // This would get fixed by using magnometer data, however, initial search into these calculations
-                // seems exceedingly complex and I am not if it is worth the effort. 
+                // seems exceedingly complex and I am not if it is worth the effort.
 
                 // A check to factor in the accelerometer data when only within a certain range. If the data is too large
-                // or too small it is not reliable since accelerometers are susceptible to outside forces which 
+                // or too small it is not reliable since accelerometers are susceptible to outside forces which
                 // disturbs the data.
                 if($scope.accMagn > 8000 && $scope.accMagn < 32000){
                     $scope.targetRotX = (0.98 * $scope.targetRotX) + (0.02 * $scope.accPitch);
