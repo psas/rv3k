@@ -21,10 +21,20 @@ Including the flag `-t` tells server.py to serve the testing webpage.
 - Video Testing Address: http://0.0.0.0:8082
 
 ### Telemetry Replay instructions
-1. Navigate to the `back-end directory`
+1. Navigate to the `back-end` directory
 1. Clone Launch-12 to your home directory. `pushd ~/ && git clone https://github.com/psas/Launch-12` then `popd` to return to your working directory.
-1. Ensure that python 2.7 is the default for the current environment, else explicitly call python 2.7 using `python2 <program.py>` in place of any python commands below. Better yet use a virtual environment.
+1. Ensure that python 2.7 is the default for the current environment, else explicitly call python 2.7 using `python2.7 <program.py>` in place of any python commands below. Better yet use a virtual environment.
 1. Open another terminal window: One terminal for replay, and another terminal for the server.
 1. In one terminal type `python server.py -t -T`
 1. In the other terminal type `bash replaylog.sh`
 1. Open a browser to `localhost:8080`
+
+
+### APRS simulation instructions
+1. Navigate to the `back-end` directory
+1. Ensure that python 2.7 is the default for the current environment, else explicitly call python 2.7 using python 2.7 <script.py> in the place of any python commands below.
+1. Open another terminal window: One terminal for simulation, and another terminal for the server.
+1. In one terminal type `python server.py -t -A`
+1. In another terminal type `python aprs_source_input.py`
+1. Open a browser to `localhost:8081`
+
