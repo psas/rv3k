@@ -44,11 +44,12 @@ distribution of this software for license terms.
     <script src="directives/earthFrameView.js"></script>
     <script src="directives/hlsjsVideo.js"></script>
     <script src="directives/videojsVideo.js"></script>
+    <script src="directives/atAGlance.js"></script>
 </head>
 <body ng-controller="MainController">
 
     <!-- This graphics board holds the EFV, video, and vehicle attitude.-->
-    <div class="view">
+    <div class="view" ng-cloak>
         <!-- navigation bar -->
         <div class="navBar-container">
             <div class="logo"><img src="imgs/PSASLogo.png" style="width:40px;height:40px"></div>
@@ -57,7 +58,7 @@ distribution of this software for license terms.
             <div class="button" ng-click="hideVideo = !hideVideo">Hide Video</div>
             <div class="button" ng-click="hideVehicleAttitude = !hideVehicleAttitude">Hide Vehicle Attitude</div>
             <!-- link to at a glance page -->
-            <a class="button" href="at-a-glance/index.html">At A Glance View</a>
+            <div class="button" ng-click="hideEFV = !hideEFV; hideVideo = !hideVideo; hideVehicleAttitude = !hideVehicleAttitude; hideTelemetry = !hideTelemetry; hideAtAGlance = !hideAtAGlance">At A Glance View</div>
         </div>
 
         <div class="video-container" ng-hide="hideVideo" >
@@ -74,7 +75,8 @@ distribution of this software for license terms.
         <div class="efv-container" ng-hide="hideEFV">
             <earth-frame-view></earth-frame-view>
         </div>
-        <div class="telemetry-container"><telemetry></telemetry></div>
+        <div class="telemetry-container" ng-hide="hideTelemetry"><telemetry></telemetry></div>
+        <div class="atAGlance-container" ng-show="hideAtAGlance"><at-a-glance></at-a-glance></div>
     </div>
 
     <!-- In production use:
