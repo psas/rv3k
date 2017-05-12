@@ -1,3 +1,6 @@
+# This file is responsible for receiving raw/parsed APRS and sends
+# a parsed APRS data (in JSON format) to the front-end.
+#
 # Copyright (c) 2017 Jeff Patterson, Amanda Murphy, Paolo Villanueva,
 # Patrick Overton, Connor Picken, Yun Cong Chen, Seth Amundsen, Michael
 # Ohl, Matthew Tighe
@@ -6,8 +9,6 @@
 # Please see the file COPYING in the source distribution of this
 # software for license terms.
 
-import sys
-import os
 import json
 import socket
 import aprs_source_input
@@ -41,7 +42,7 @@ class AprsReceiver:
         try:
             return aprslib.parse(aprs_packet.strip())
         except (aprslib.ParseError, aprslib.UnknownFormat) as error:
-            print(error, aprs_packet) # TODO: Log error instead of print out
+            print(error, aprs_packet) # TODO: log error or print in std err
 
 
     def listen(self):
@@ -65,25 +66,32 @@ class AprsReceiver:
             # Receive data from the socket. Returns data in string format
             # and address of the socket sending the data
             data_received, address = sock.recvfrom(1024)
-            print("==")
             data = {}
             try:
+                # Expecting data received is in JSON format is 
+                # is_parsed is true
                 if data_received and is_parsed:
-                    # Send parsed APRS data to front-end in JSON format
                     data_received = json.loads(data_received.decode('utf-8'))
                     data["callsign"] = data_received["callsign"]
-                else:
+
+                # Expecting data received is a raw APRS if is_parsed is false
+                elif data_received:
                     data_received = self.parse(data_received)
                     if not data_received:
                         continue
                     data["callsign"] = data_received["from"]
-                # Stdout log
+                else:
+                    continue
+
 
                 data["latitude"] = data_received["latitude"]
                 data["longitude"] = data_received["longitude"]
                 data["altitude"] = data_received["altitude"]
 
+                # Stdout log
                 print(data) 
+
+                # Send parsed APRS data to front-end in JSON format
                 self.sio.emit("recovery", data, namespace="/main")
                 self.sio.sleep(0.1)
             except KeyboardInterrupt:
