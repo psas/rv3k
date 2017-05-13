@@ -1,5 +1,5 @@
 /*
- * atAGlance.js will display the information received by the PSAS telemetry packet in easy to read cards that describe the information
+ * atAGlance.js displays the information received by the PSAS telemetry packet in easy to read cards that describe the information
  * of the rocket in real-time.
  * Copyright (C) 2017 Jeff Patterson, Amanda Murphy, Paolo Villanueva, Patrick Overton, Connor Picken, Yun Cong Chen, Seth Amundsen
  * Michael Ohl, Mathew Tighe
