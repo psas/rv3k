@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# This file is a work in progress...
+# script.py is a startup script for the various back-end servers.
 # Copyright (c) 2017 Jeff Patterson, Amanda Murphy, Paolo Villanueva,
 # Patrick Overton, Connor Picken, Yun Cong Chen, Seth Amundsen, Michael
 # Ohl, Matthew Tighe
@@ -13,26 +13,37 @@ from subprocess import Popen
 
 def main():
     parser = ArgumentParser()
+    parser.add_argument("-t", "--test", action="store_true")
     parser.add_argument("-A", "--aprs", action="store_true")
     parser.add_argument("-T", "--telemetry", action="store_true")
-    #parser.add_argument("-V", "--video", action="store_true")
+    # parser.add_argument("-V", "--video", action="store_true")
 
     args = parser.parse_args()
 
+    # The testing flag is only applied to the telemetry server. This is
+    # appropriate because the test webpage only supports the telemetry server.
+    tel_args = ["python", "server.py", "-T"]
+    if args.test:
+        tel_args = ["python", "server.py", "-t", "-T"]
     if args.aprs:
         a_pid = Popen(["python", "server.py", "-A"])
     if args.telemetry:
-        t_pid = Popen(["python", "server.py", "-T"])
-    #if args.video:
-    #    v_pid = Popen(["python", "server.py", "-V"])
+        t_pid = Popen(tel_args)
+    # if args.video:
+    #     v_pid = Popen(["python", "server.py", "-V"])
 
     try:
         while True:
-            pass
+            if a_pid.poll() is not None:
+                a_pid = Popen(["python", "server.py", "-A"])
+            if t_pid.poll() is not None:
+                t_pid = Popen(tel_args)
+            # if v_pid.poll() is not None:
+            #     v_pid = Popen(["python", "server.py", "-V"])
     except KeyboardInterrupt:
         a_pid.terminate()
         t_pid.terminate()
-        #v_pid.terminate()
+        # v_pid.terminate()
         return
 
 if __name__ == "__main__":
