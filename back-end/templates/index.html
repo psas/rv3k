@@ -19,6 +19,9 @@ distribution of this software for license terms.
 
             socket.on("connect", function() {});
             socket.on("disconnect", function() {});
+            socket.on("recovery", function(data) {
+                console.log(data)
+            });
             socket.on("telemetry", function(data) {
                 for(var key in data) {
                     update(key, data[key]);
