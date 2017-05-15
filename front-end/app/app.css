@@ -108,8 +108,6 @@ a {
     text-decoration: none;
 }
 
-
-
 .cesium-widget-credits {
   /* hides credits */
   visibility: hidden;
@@ -119,3 +117,11 @@ a {
   /* hides search bar panel */
   visibility:hidden;
 }
+
+#efvCameraDropDown {
+    position: absolute;
+    z-index: 1;
+}
+
+
+
