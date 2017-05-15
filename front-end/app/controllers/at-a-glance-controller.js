@@ -6,8 +6,6 @@
  * distribution of this software for license terms.
  */
 
-var app = angular.module('rvtk', []);
-
 
 // This filter will find  the matching entry in $scope.cards based on the data
 // type sent to it.

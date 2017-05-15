@@ -1,3 +1,6 @@
+# This file is responsible for receiving raw/parsed APRS and sends
+# a parsed APRS data (in JSON format) to the front-end.
+#
 # Copyright (c) 2017 Jeff Patterson, Amanda Murphy, Paolo Villanueva,
 # Patrick Overton, Connor Picken, Yun Cong Chen, Seth Amundsen, Michael
 # Ohl, Matthew Tighe
@@ -6,30 +9,14 @@
 # Please see the file COPYING in the source distribution of this
 # software for license terms.
 
-import sys
-import os
 import json
-import aprslib
 import socket
-
-"""
-# Experiment
-
-API_KEY = "99303.dKx67VHTL2LPi"
-APRS_FI_API = "https://api.aprs.fi/api/get?apikey=" + API_KEY + "&what=loc&"
+import aprs_source_input
+import aprslib
 
 
-def get(name):
-	url = APRS_FI_API + "name=" + name + "&format=json"
-	print(url)
-	return requests.get(url)
 
-
-def main():
-	response = get("CW6028")
-	print(response.json())
-"""
-
+is_parsed = aprs_source_input.is_parsed
 
 class AprsReceiver:
     def __init__(self, address, port, sio):
@@ -55,8 +42,7 @@ class AprsReceiver:
         try:
             return aprslib.parse(aprs_packet.strip())
         except (aprslib.ParseError, aprslib.UnknownFormat) as error:
-            print(error, aprs_packet) # TODO: Log error instead of print out
-
+            print(error, aprs_packet) # TODO: log error or print in std err
 
 
     def listen(self):
@@ -68,28 +54,46 @@ class AprsReceiver:
         """
 
         # Set up socket connection
-        sock = socket.socket()
+        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         addr = (self.address, self.port)
 
         # Binds address to this socket
         sock.bind(addr)
-        print("aprs ready")
 
-        # Listen for connection and accept
-        sock.listen(1)
-        conn, client_addr = sock.accept()
 
         # Start receiving data
         while True:
-            data = conn.recv(1024)
+            # Receive data from the socket. Returns data in string format
+            # and address of the socket sending the data
+            data_received, address = sock.recvfrom(1024)
+            data = {}
             try:
-                if data:
-                    parsed_aprs = self.parse(data)
+                # Expecting data received is in JSON format is 
+                # is_parsed is true
+                if data_received and is_parsed:
+                    data_received = json.loads(data_received.decode('utf-8'))
+                    data["callsign"] = data_received["callsign"]
 
-                    # Send parsed APRS data to front-end
-                    if parsed_aprs:
-                        self.sio.emit("recovery", parsed_aprs, namespace="/main")
-                        self.sio.sleep(0.1)
+                # Expecting data received is a raw APRS if is_parsed is false
+                elif data_received:
+                    data_received = self.parse(data_received)
+                    if not data_received:
+                        continue
+                    data["callsign"] = data_received["from"]
+                else:
+                    continue
+
+
+                data["latitude"] = data_received["latitude"]
+                data["longitude"] = data_received["longitude"]
+                data["altitude"] = data_received["altitude"]
+
+                # Stdout log
+                print(data) 
+
+                # Send parsed APRS data to front-end in JSON format
+                self.sio.emit("recovery", data, namespace="/main")
+                self.sio.sleep(0.1)
             except KeyboardInterrupt:
                 return None
 
