@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# script.py is a startup script for the various back-end servers.
+# startup.py is a startup script for the various back-end servers.
 # Copyright (c) 2017 Jeff Patterson, Amanda Murphy, Paolo Villanueva,
 # Patrick Overton, Connor Picken, Yun Cong Chen, Seth Amundsen, Michael
 # Ohl, Matthew Tighe
@@ -33,6 +33,8 @@ def main():
     #     v_pid = Popen(["python", "server.py", "-V"])
 
     try:
+        # This loop checks if each subprocess is still running. If any of the
+        # subprocesses have stopped, then they're restarted.
         while True:
             if a_pid.poll() is not None:
                 a_pid = Popen(["python", "server.py", "-A"])
