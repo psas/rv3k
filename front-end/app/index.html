@@ -1,4 +1,4 @@
-<!-- index.html handles the layout for the rv3k UI 
+<!-- index.html handles the layout for the rv3k UI
 Copyright (c) 2017 Jeff Patterson, Amanda Murphy, Paolo Villanueva, Patrick Overton, Connor Picken, Yun Cong Chen, Seth Amundsen, Michael Ohl, Matthew Tighe
 ALL RIGHTS RESERVED
 [This program is licensed under the "GNU General Public License"]
@@ -67,6 +67,7 @@ distribution of this software for license terms.
     <script src="directives/earthFrameView.js"></script>
     <script src="directives/hlsjsVideo.js"></script>
     <script src="directives/videojsVideo.js"></script>
+    <script src="directives/atAGlance.js"></script>
 </head>
 <body ng-controller="MainController" ng-cloak>
   <md-content class = "md-padding">
@@ -89,11 +90,15 @@ distribution of this software for license terms.
         Toggle Attitude Module Visibility
       </md-nav-item>
       <md-nav-item md-nav-click="toggleCamera()" name="Switch Video feeds">
-        Change Video Feeds 
+        Change Video Feeds
       </md-nav-item>
-  </md-nav-bar>
+      <md-nav-item md-nav-click="toggleView()" name ="Switch Views">
+          Toggle at-a-glance view
+      </md-nav-item>
+    </md-nav-bar>
+
     <!-- This graphics board holds the EFV, video, and vehicle attitude.-->
-    <div class="view">
+    <div class="view" ng-hide="hideView">
         <!-- OLD navigation bar
         <div class="navBar-container">
             <div class="logo"><img src="imgs/PSASLogo.png" style="width:40px;height:40px"></div>
@@ -108,7 +113,7 @@ distribution of this software for license terms.
         <div class="video-container" ng-hide="hideVideo" >
             <div class="videoStream" ng-hide="(VisibleCamera == 0)" >
                 <hlsjs-video></hlsjs-video>
-	          </div>
+	        </div>
             <div class="videoStream" ng-hide="(VisibleCamera == 1)" >
 	            <videojs-video></videojs-video>
 	        </div>
@@ -119,8 +124,16 @@ distribution of this software for license terms.
         <div class="efv-container" ng-hide="hideEFV">
             <earth-frame-view></earth-frame-view>
         </div>
-        <div class="telemetry-container"><telemetry></telemetry></div>
+        <div class="telemetry-container">
+            <telemetry></telemetry>
+        </div>
+
     </div>
+
+    <div class="atAGlanceContainer" ng-hide="hideAtAGlance">
+        <at-a-glance></at-a-glance>
+    </div>
+
 
     <!-- In production use:
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
