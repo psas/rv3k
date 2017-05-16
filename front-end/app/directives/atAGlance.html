@@ -16,8 +16,11 @@
  -->
 
 <h1>At A Glance</h1>
+<!-- for each card containing data -->
 <div class="telemetry-tile" ng-repeat='card in cards'>
-  {{card.display}}
+  <!-- Display its name -->
+  {{ card.display }}
   <br></br>
-  {{card.data | number:5}}
+  <!-- display its data with precision 5 -->
+  {{ card.data | number:5 }}
 </div>
