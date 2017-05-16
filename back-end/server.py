@@ -9,6 +9,7 @@
 # software for license terms.
 from aprs import AprsReceiver
 from argparse import ArgumentParser
+from ConfigParser import ConfigParser
 import eventlet
 import eventlet.wsgi
 from flask import Flask, render_template
@@ -83,6 +84,9 @@ def main():
     # Parse command line arguments
     args = parser.parse_args()
 
+    config = ConfigParser()
+    config.read("config.cfg")
+
     # Creating the port and server variables with the 'global'
     # keyword brings them into the scope of execution here
     global port, server
@@ -90,11 +94,13 @@ def main():
     # Choose which type of server to instantiate based on
     # the command line arguments 
     if args.aprs:
-        port = 8081
-        server = AprsReceiver("127.0.0.1", 35002, sio)
+        aprs_rx = int(config.get("Ports", "aprs_rx"))
+        port = int(config.get("Ports", "aprs_tx"))
+        server = AprsReceiver("127.0.0.1", aprs_rx, sio)
     elif args.telemetry:
-        port = 8080
-        server = Telemetry("127.0.0.1", 35001, sio)
+        telemetry_rx = int(config.get("Ports", "telemetry_rx"))
+        port = int(config.get("Ports", "telemetry_tx"))
+        server = Telemetry("127.0.0.1", telemetry_rx, sio)
     else:
         pass  # Instantiate video server here!
 

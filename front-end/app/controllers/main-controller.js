@@ -7,13 +7,31 @@
  */
 
 //This is the main controller, it handles the logic in on the main page (app/index.html)
-var app = angular.module('rvtk', []);
+
+var app = angular.module('rvtk', [ 
+    'ngMaterial' 
+    ]);
+
 
 app.controller('MainController', ['$scope', function($scope) {
 
     //initialize variables
     $scope.VisibleCamera = 1;
     $scope.hideEFV = false;
+    $scope.hideVideo = false;
+    $scope.hideAtt = false;
+
+    $scope.showHideVideo = function() {
+      $scope.hideVideo = !$scope.hideVideo;
+    }
+
+    $scope.showHideEfv = function() {
+      $scope.hideEFV = !$scope.hideEFV;
+    }
+
+    $scope.showHideAtt = function() {
+      $scope.hideVehicleAttitude = !$scope.hideVehicleAttitude;
+    }
 
     //This funtion changes which video stream appears on the page when the button is clicked
     $scope.toggleCamera = function() {
