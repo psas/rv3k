@@ -1,4 +1,4 @@
-# Back End Preliminary Directory
+# Back End Directory
 This directory contains the Socket.IO server and supporting server modules for rv3k.
 
 ## Requirements
