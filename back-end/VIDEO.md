@@ -65,16 +65,19 @@
 	
 ### How to live stream (example):
 
-1. Install avconv
+1. Install avconv:
 	`sudo apt-get install libav-tools`
 	
-1. Download launch video
+1. Download launch video:
 	`wget http://annex.psas.pdx.edu/Launch-12/Video/<name>.mp4`
 
-1. Stream video to RTMP server
+1. Change the argument of hls.loadSource in rv3k/front-end/app/directives/hlsjsVideo.js: `http://<host>/hls/<stream_name>.m3u8`
+    - <stream_name> can be a name of your choosing
+
+1. Ensure that nginx is running: 
+	`sudo /usr/local/nginx/sbin/nginx
+	`
+1. Stream video to RTMP server:
 	`avconv -re -i <name>.mp4 -c copy -f flv rtmp://<host>/hls/<stream name>`
 	
-1. Edit the URL to manifest file in rv3k front-end web app (see ../front-end/ for instructions)
-	m3u8 manifest file: `http://<host>/hls/<stream name>.m3u8`
-
 1. Run front-end web app (see ../front-end/ for instructions)
