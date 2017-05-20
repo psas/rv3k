@@ -1,5 +1,5 @@
 /*
- * hljsVideo.js will initialize a hls.js video player to play streaming video from a video server url that is compatible with the html5 <video> tag
+ * hljsVideo.js initializes an hls.js video player to play streaming video from a video server url that is compatible with the html5 <video> tag
  * Copyright (C) 2017 Jeff Patterson, Amanda Murphy, Paolo Villanueva, Patrick Overton, Connor Picken, Yun Cong Chen, Seth Amundsen
  * Michael Ohl, Mathew Tighe
  *
@@ -25,7 +25,7 @@ angular.module("rvtk").directive("hlsjsVideo", function() {
             if(Hls.isSupported()) {
                 var video = document.getElementById('video');
                 var hls = new Hls();
-                hls.loadSource('https://paolo215.paolov435.com/hls/live.m3u8');
+                hls.loadSource('http://paolo215.paolov435.com/hls/live.m3u8');
                 hls.attachMedia(video);
                 hls.on(Hls.Events.MANIFEST_PARSED,function() {
                     video.play();

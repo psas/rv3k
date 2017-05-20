@@ -40,7 +40,7 @@
      background-color: #6B8B3D;
  }
 
-//
+
 #iframe {
     grid-column: 1/2;
     grid-row: 2/5;
@@ -72,7 +72,7 @@
 .efv-container {
     grid-column: 2/3;
     grid-row: 2/4;
-    border: 3px solid white;
+    border: 3p solid white;
 }
 
 .cesiumViewer {

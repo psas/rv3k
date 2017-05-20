@@ -1,5 +1,5 @@
 /*
- * videojsVideo.js will initialize a video.js video player to play streaming video from a video server url that is compatible with the html5 <video> tag
+ * videojsVideo.js initializes a video.js video player to play streaming video from a video server url that is compatible with the html5 <video> tag
  * Copyright (C) 2017 Jeff Patterson, Amanda Murphy, Paolo Villanueva, Patrick Overton, Connor Picken, Yun Cong Chen, Seth Amundsen
  * Michael Ohl, Mathew Tighe
  *

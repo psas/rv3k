@@ -1,5 +1,5 @@
 <!--
- * hljsVideo.html attaches the id of the video to the html5 <video> tag
+ * atAGlance.html manages the display of cards through angular's ng-repeat.
  * Copyright (C) 2017 Jeff Patterson, Amanda Murphy, Paolo Villanueva, Patrick Overton, Connor Picken, Yun Cong Chen, Seth Amundsen
  * Michael Ohl, Mathew Tighe
  *
@@ -15,4 +15,12 @@
  * distribution of this software for license terms.
  -->
 
-<video id="video" controls></video>
+<h1>At A Glance</h1>
+<!-- for each card containing data -->
+<div class="telemetry-tile" ng-repeat='card in cards'>
+  <!-- Display its name -->
+  {{ card.display }}
+  <br></br>
+  <!-- display its data with precision 5 -->
+  {{ card.data | number:5 }}
+</div>
