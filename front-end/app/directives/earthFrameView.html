@@ -1,4 +1,6 @@
 <!--
+This file is the template for the earth frame view. It works in conjunction with the earth frame view javaScript file to render a 3D map and all items that appear on that map. Any layout or html for the earth frame view will be in this file.
+
 Copyright (c) 2017 Jeff Patterson, Amanda Murphy, Paolo Villanueva, Patrick Overton, Connor Picken, Yun Cong Chen, Seth Amundsen, Michael Ohl, Matthew Tighe
 ALL RIGHTS RESERVED
 [This program is licensed under the "GNU General Public License"]
@@ -6,6 +8,16 @@ Please see the file COPYING in the source
 distribution of this software for license terms.
 -->
 
+<!-- drop down menu that changes the camera location and direction -->
+<div id="efvCameraDropDown"> 
+    <select ng-change="changeCameraView()" ng-model="selected" class="cesium-button">
+        <option value="top">Top View </option>
+        <option value="side">Side View </option>
+    </select>
+</div>
+
+<!-- Cesium replaces this div with the 3D map -->
 <div class="cesiumViewer" id="cesiumContainer"></div>
 
+<!-- this will go away when APRS is coming in from the backend -->
 <div ng-click="movePoints()">movePoints</div>
