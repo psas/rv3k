@@ -19,8 +19,9 @@
 <!-- for each card containing data -->
 
 <div class='telemetry-holders' ng-repeat='(name, format) in formats' >
-    {{name}} <br />
-    <div class="telemetry-tile inline" ng-repeat='(type, data) in format'>
+    <h2> {{name}} </h2>
+    <br />
+    <div class="md-whiteframe-6dp cards inline" ng-repeat='(type, data) in format'>
         {{type}}
         <br />
         {{data | number: 5}}
