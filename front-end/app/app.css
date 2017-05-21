@@ -12,34 +12,39 @@
  * EarthFrameView size determined in
  */
 
- .view {
-     display: grid;
-     grid-template-columns: 3fr 1fr;
-     grid-template-rows: 50px 1fr 1fr 1fr 1fr;
-     border: 3px solid white;
- }
+.view {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    grid-template-rows: 50px 1fr 1fr 1fr 1fr;
+    border: 3px solid white;
+}
 
- .navBar-container {
-     grid-column-start: 1;
-     grid-column-end: 5;
-     border: 3px solid white;
- }
+.navBar-container {
+    grid-column-start: 1;
+    grid-column-end: 5;
+    border: 3px solid white;
+}
 
- .logo {
-     float: left;
- }
+.logo {
+    float: left;
+}
 
- .button {
-     float: left;
-     color: #777;
-     padding: 10px;
- }
+/* handles anything that needs to be an inline block */
+.inline {
+    vertical-align:top;
+    display: inline-block;
+}
 
- .button:hover {
-     color: #000;
-     background-color: #6B8B3D;
- }
+.button {
+    float: left;
+    color: #777;
+    padding: 10px;
+}
 
+.button:hover {
+    color: #000;
+    background-color: #6B8B3D;
+}
 
 #iframe {
     grid-column: 1/2;
@@ -86,10 +91,15 @@
     border: 3px solid white;
 }
 
+.telemetry-holders {
+    padding: 20px;
+    text-align: center;
+}
+
 .telemetry-tile {
     position: relative;
-    float: left;
     border-radius: 25px;
+    float: left;
     border: 2px solid #73AD21;
     padding: 20px;
     text-align: center;
@@ -102,7 +112,12 @@
     grid-row: 5/6;
     border: 3px solid white;
 }
-
+/* blue telemetry cards */
+.cards {
+    background-color: #a4bbfc;
+    padding: 30px;
+    margin: 20px;
+}
 
 a {
     text-decoration: none;

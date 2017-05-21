@@ -17,10 +17,14 @@
 
 <h1>At A Glance</h1>
 <!-- for each card containing data -->
-<div class="telemetry-tile" ng-repeat='card in cards'>
-  <!-- Display its name -->
-  {{ card.display }}
-  <br></br>
-  <!-- display its data with precision 5 -->
-  {{ card.data | number:5 }}
-</div>
+
+<div class='telemetry-holders' ng-repeat='(name, format) in formats' >
+    <h2> {{name}} </h2>
+    <br />
+    <div class="md-whiteframe-6dp cards inline" ng-repeat='(type, data) in format'>
+        {{type}}
+        <br />
+        {{data | number: 5}}
+    </div>
+</div><br />
+
