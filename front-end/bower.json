@@ -14,8 +14,6 @@
     "threejs": "r79",
     "cesiumjs": "~1.15.0",
     "hls.js": "^0.7.6",
-    "video.js": "videojs#~5.19.2",
-    "videojs-contrib-hls": "^5.5.0",
     "angular-material": "^1.1.4"
   },
   "resolutions": {
