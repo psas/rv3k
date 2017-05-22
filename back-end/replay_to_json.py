@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# This file is a work in progress...
+# replay_to_json.py is a script that dumps telemetry data into sent.txt.
 # Copyright (c) 2017 Jeff Patterson, Amanda Murphy, Paolo Villanueva,
 # Patrick Overton, Connor Picken, Yun Cong Chen, Seth Amundsen, Michael
 # Ohl, Matthew Tighe
@@ -10,6 +10,7 @@
 import json
 from psas_packet import io
 import socket
+
 
 def main():
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -25,6 +26,12 @@ def main():
         except KeyboardInterrupt:
             sock.close()
             file = open("sent.txt", 'w')
+            # Lines 36-58 format the output strings to match the JavaScript
+            # formatting. Here are the formatting differences I observed.
+            # 1. Python includes a space after each colon and comma.
+            # 2. JavaScript converts "simple" floats into ints (ex: 0.0 -> 0).
+            # 3. JavaScript: 0.0000015 Python: 1.5e-06
+            # 4. JavaScript: 1.5e-7 Python: 1.5e-07
             for packet in packets:
                 if "ADIS" in packet:
                     for key in ["Magn_X", "Magn_Y", "Magn_Z"]:
@@ -34,9 +41,11 @@ def main():
                                 if int(repr(value)[-1]) < 7:
                                     if '.' in repr(value):
                                         if value < 0:
-                                            dps = (len(repr(value)) - 7) + int(repr(value)[-1])
+                                            dps = (len(repr(value)) - 7) +\
+                                                  int(repr(value)[-1])
                                         else:
-                                            dps = (len(repr(value)) - 6) + int(repr(value)[-1])
+                                            dps = (len(repr(value)) - 6) +\
+                                                  int(repr(value)[-1])
                                     else:
                                         dps = int(repr(value)[-1])
                                     packet["ADIS"][key] = format(value, ('.' + str(dps) + 'f'))
