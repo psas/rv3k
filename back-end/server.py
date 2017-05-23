@@ -24,7 +24,7 @@ app.wsgi_app = socketio.Middleware(sio, app.wsgi_app)
 app.config["SECRET_KEY"] = "secret!"
 port = None
 server = None
-thread = None
+threads = []
 
 # foo() is a function that was created to test how well multiple servers
 # can communicate with a single front end client.
@@ -38,11 +38,6 @@ thread = None
 
 @app.route('/')
 def index():
-    global thread
-    if thread is None:
-        thread = threading.Thread(target=server.listen)
-        thread.daemon = True
-        thread.start()
     return render_template("index.html")
 
 
@@ -56,6 +51,7 @@ def connect(sid, environ):
 @sio.on("disconnect", namespace="/main")
 def disconnect(sid):
     print("Client disconnected")
+
 
 
 # main() takes a number and a port as command line arguments
@@ -76,10 +72,9 @@ def main():
     # Note that the test option ("-t") is not part of the mutually
     # exclusive group. This is because we want to allow any
     # type of server instance to have testing options
-    group = parser.add_mutually_exclusive_group(required=True)
-    group.add_argument("-A", "--aprs", action="store_true")
-    group.add_argument("-T", "--telemetry", action="store_true")
-    group.add_argument("-V", "--video", action="store_true")
+    #group = parser.add_mutually_exclusive_group(required=True)
+    parser.add_argument("-A", "--aprs", action="store_true")
+    parser.add_argument("-T", "--telemetry", action="store_true")
 
     # Parse command line arguments
     args = parser.parse_args()
@@ -89,7 +84,7 @@ def main():
 
     # Creating the port and server variables with the 'global'
     # keyword brings them into the scope of execution here
-    global port, server
+    global port, server, threads
 
     # Choose which type of server to instantiate based on
     # the command line arguments 
@@ -97,23 +92,31 @@ def main():
         aprs_rx = int(config.get("Ports", "aprs_rx"))
         port = int(config.get("Ports", "aprs_tx"))
         server = AprsReceiver("127.0.0.1", aprs_rx, sio)
-    elif args.telemetry:
+        thread = threading.Thread(target=server.listen)
+        thread.daemon = True
+        threads.append(thread)
+        
+    if args.telemetry:
         telemetry_rx = int(config.get("Ports", "telemetry_rx"))
         port = int(config.get("Ports", "telemetry_tx"))
         server = Telemetry("127.0.0.1", telemetry_rx, sio)
+        thread = threading.Thread(target=server.listen)
+        thread.daemon = True
+        threads.append(thread)
     else:
         pass  # Instantiate video server here!
 
     if args.test == False:
-        global app, thread
+        global app
         app = socketio.Middleware(sio)
-        thread = threading.Thread(target=server.listen)
-        thread.daemon = True
+
+    for thread in threads:
         thread.start()
+
     try:
         # Sets the server to listen on a specific port for incoming
         # connections
-        eventlet.wsgi.server(eventlet.listen(('', port)), app)
+        eventlet.wsgi.server(eventlet.listen(('', 8080)), app)
     except KeyboardInterrupt:
         return
 
