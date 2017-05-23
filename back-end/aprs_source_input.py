@@ -79,8 +79,7 @@ class AprsSourceInput:
                 for aprs in self.data:
                     print(aprs)
                     sock.sendto(aprs, address)
-                    time.sleep(2)
-                time.sleep(4)
+                time.sleep(1)
 
         finally:
             print("closing socket")
