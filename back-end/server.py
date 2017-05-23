@@ -15,25 +15,18 @@ import eventlet.wsgi
 from flask import Flask, render_template
 import socketio
 import threading
+from threading import Lock
 from telemetry import Telemetry
+
 
 # Create and configure the server socket
 sio = socketio.Server(logger=False, async_mode="threading")
 app = Flask(__name__)
 app.wsgi_app = socketio.Middleware(sio, app.wsgi_app)
 app.config["SECRET_KEY"] = "secret!"
-port = None
-server = None
+lock = Lock()
+log = open("telemetry.log", "w")
 threads = []
-
-# foo() is a function that was created to test how well multiple servers
-# can communicate with a single front end client.
-# def foo(number):
-#     count = 0
-#     while True:
-#         sio.emit("foo", {"data": count}, namespace="/main")
-#         sio.sleep(random.random())
-#         count += 1
 
 
 @app.route('/')
@@ -86,12 +79,10 @@ def main():
     # keyword brings them into the scope of execution here
     global port, server, threads
 
-    # Choose which type of server to instantiate based on
-    # the command line arguments 
     if args.aprs:
         aprs_rx = int(config.get("Ports", "aprs_rx"))
         port = int(config.get("Ports", "aprs_tx"))
-        server = AprsReceiver("127.0.0.1", aprs_rx, sio)
+        server = AprsReceiver("127.0.0.1", aprs_rx, sio, lock, log)
         thread = threading.Thread(target=server.listen)
         thread.daemon = True
         threads.append(thread)
@@ -99,25 +90,30 @@ def main():
     if args.telemetry:
         telemetry_rx = int(config.get("Ports", "telemetry_rx"))
         port = int(config.get("Ports", "telemetry_tx"))
-        server = Telemetry("127.0.0.1", telemetry_rx, sio)
+        server = Telemetry("127.0.0.1", telemetry_rx, sio, lock, log)
         thread = threading.Thread(target=server.listen)
         thread.daemon = True
         threads.append(thread)
-    else:
-        pass  # Instantiate video server here!
 
+
+    
+    # Use socketio as middleware is test flag is false
     if args.test == False:
         global app
         app = socketio.Middleware(sio)
 
+    # Start up all servers
     for thread in threads:
         thread.start()
 
     try:
         # Sets the server to listen on a specific port for incoming
         # connections
-        eventlet.wsgi.server(eventlet.listen(('', 8080)), app)
+        eventlet.wsgi.server(eventlet.listen(('', 8080)), app, log=None, log_output=False)
     except KeyboardInterrupt:
+        log.close()
+        for thread in threads:
+            thread.join() 
         return
 
 # Runs main()
