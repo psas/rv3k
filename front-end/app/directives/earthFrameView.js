@@ -19,10 +19,6 @@ angular.module("rvtk").directive("earthFrameView", function() {
             // all 3D map stuff
             // creates the 3D map viewer
             var viewer = new Cesium.Viewer('cesiumContainer', {
-                //choose a more true to earth map
-                imageryProvider : new Cesium.TileMapServiceImageryProvider({
-                    url : '//cesiumjs.org/tilesets/imagery/naturalearthii'
-                }),
                 // gets rid of a menu to pick map type
                 baseLayerPicker : false,
                 // hides clock, timeline bar, and home button
