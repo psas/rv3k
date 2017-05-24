@@ -1,3 +1,20 @@
+/*
+ * config.js creates a Constant variable for the app and allows its varaibles to be injected into each directive's scope
+ * It will allow for the toggleVideo to stop the current feed and start a new feed with a new url from outside the directive
+ * Copyright (C) 2017 Jeff Patterson, Amanda Murphy, Paolo Villanueva, Patrick Overton, Connor Picken, Yun Cong Chen, Seth Amundsen
+ * Michael Ohl, Mathew Tighe
+ *
+ * This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either vesion 2 of the License, or (at our option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY of FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ * ALL RIGHTS RESERVED
+ * This program is licensed under the "GNU General Public License"
+ * Please see the file COPYING in the source
+ * distribution of this software for license terms.
+ */
 
 "use strict";
 
@@ -20,7 +37,12 @@ app.constant('config', {
     'Acc_Y':        'Acc_Y',
     'Acc_Z':        'Acc_Z',
 
-    'serverSource': document.domain, // 'paolo215.paolov435.com', //
+    'serverSource': document.domain, // 'paolo215.paolov435.com', // 
+
+    // Vehicle Attitude Configuration
+    'FOV':                  50,
+    'AttitudeWidthRatio':   4.09,   // for 16:9
+    'AttitudeHeightRatio':  2.15,    // for 16:9
 
     // Video Configuration
     'videoFeeds':   [

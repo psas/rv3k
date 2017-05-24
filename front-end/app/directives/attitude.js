@@ -1,5 +1,5 @@
 /*
- * attitude.js renders a 3d model of a rocket and rotate it so that the model's rotation match the real rocket's rotation during a launch
+ * attitude.js renders a 3d model of a rocket and rotates it so that the model's rotation matches the real rocket's rotation during a launch
  * Copyright (C) 2017 Jeff Patterson, Amanda Murphy, Paolo Villanueva, Patrick Overton, Connor Picken, Yun Cong Chen, Seth Amundsen
  * Michael Ohl, Mathew Tighe
  *
@@ -15,31 +15,48 @@
  * distribution of this software for license terms.
  */
 
-'use strict';
+"use strict";
 
-angular.module("rvtk").directive("attitude", function() {
+app.directive("attitude", function() {
     return {
         restrict: 'E',
         scope: {},
-        controller: ['$scope', '$element', function attitudeController($scope, $element) {
+        controller: ['$scope', '$element', 'config', function attitudeController($scope, $element, config) {
 
             var namespace = '/main';
             // this port connects to port broadcast by ../unified/app.py
-            var socket = io.connect('http://' + document.domain + ':8080' + namespace);
+            var socket = io.connect('http://' + config.serverSource + ':8080' + namespace);
             socket.on('connect', function() {});
             socket.on('disconnect', function() {});
 
             socket.on('telemetry', function(data) {
                 for(var key in data) {
-                    if(key == 'ADIS') {
-                        $scope.Gyro_X = data[key].Gyro_X;
-                        $scope.Gyro_Y = data[key].Gyro_Y;
-                        $scope.Gyro_Z = data[key].Gyro_Z;
-                        $scope.Acc_X = data[key].Acc_X;
-                        $scope.Acc_Y = data[key].Acc_Y;
-                        $scope.Acc_Z = data[key].Acc_Z;
+                    if(key == config.ADIS) {
+                        for (var type in data[key]) {
+                            switch (type) {
+                                case config.Gyro_X:
+                                    $scope.Gyro_X = data[key][type];
+                                    break;
+                                case config.Gyro_Y:
+                                    $scope.Gyro_Y = data[key][type];
+                                    break;
+                                case config.Gyro_Z:
+                                    $scope.Gyro_Z = data[key][type];
+                                    break;
+                                case config.Acc_X:
+                                    $scope.Acc_X = data[key][type];
+                                    break;
+                                case config.Acc_Y:
+                                    $scope.Acc_Y = data[key][type];
+                                    break;
+                                case config.Acc_Z:
+                                    $scope.Acc_Z = data[key][type];
+                                    break;
+                                default:
+                            }
+                        }
                         // If TimeStamp has not been initialized we set previous to current,
-                        // deltaTime will be 0
+                        // deltaTime will be 0 for very first calculateData call.
                         if($scope.TimeStamp) {
                             $scope.PreviousTimeStamp = $scope.TimeStamp;
                         }
@@ -52,38 +69,92 @@ angular.module("rvtk").directive("attitude", function() {
                     }
                 }
             });
+
             // Helper function to convert degrees into radians
             Math.radians = function(degrees){
                 return degrees * Math.PI / 180;
             }
+
             $scope.loader1 = new THREE.JSONLoader();
 
             // Load the rocket model into the $scope.mesh variable.
             // The inner function is not called until loader1.load completes.
             $scope.loadModel = function (modelUrl) {
-                $scope.loader1.load(modelUrl, function(geometry) {
-                    $scope.mesh = new THREE.Mesh(geometry);
+                $scope.loader1.load(modelUrl, function(geometry, materials) {
+                    $scope.material = new THREE.MeshFaceMaterial(materials);
+                    $scope.mesh = new THREE.Mesh(geometry, $scope.material);
+                    $scope.mesh.position.y += 5;
                     $scope.scene.add($scope.mesh);
+
+                    // need to update camera's rotation here since the lookAt target only exists once
+                    // the rocket mesh has been created
+                    $scope.camera.lookAt($scope.mesh.position);
+                    // point the camera up a little bit, otherwise the camera looks too far down on the rocket
+                    $scope.camera.rotateX(0.16);
                 });
             }
 
             // Set up the $scope.camera and $scope.renderer and attach them to html.
             // Start a listener for window resizing.
             $scope.init = function () {
-                $scope.camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, .1, 2000);
-                $scope.camera.position.set(0, 0, 10);
+                // create scene and scene size
                 $scope.scene = new THREE.Scene();
-                $scope.renderer = new THREE.WebGLRenderer({antialias: true});
-                $scope.renderer.setSize(window.innerWidth / 2, window.innerHeight / 1.5);
+                $scope.width = window.innerWidth/config.AttitudeWidthRatio;
+                $scope.height = window.innerHeight/config.AttitudeHeightRatio;
+
+                // create the renderer and add it to the DOM
+                $scope.renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
+                $scope.renderer.setSize($scope.width, $scope.height);
                 $element[0].appendChild($scope.renderer.domElement);
+
+                // create the camera with FOV, aspect ratio, distance from scene, clipping distance
+                $scope.camera = new THREE.PerspectiveCamera(config.FOV, $scope.width / $scope.height, .1, 2000);
+                $scope.camera.position.set(-14, 10, 22); // pos x,y,z
+                $scope.scene.add($scope.camera);
+
+                window.addEventListener('resize', function() {
+                    $scope.width = window.innerWidth/config.AttitudeWidthRatio;
+                    $scope.height = window.innerHeight/config.AttitudeHeightRatio;
+                    $scope.renderer.setSize($scope.width, $scope.height);
+                    $scope.camera.aspect = $scope.width / $scope.height;
+                    $scope.camera.updateProjectionMatrix();
+                });
+
+                // set the background color of the scene
+                $scope.renderer.setClearColor(new THREE.Color(0xffffff, 1));
+
+                // set up light for the scene
+                $scope.light = new THREE.DirectionalLight(0xffffff, 1);
+                $scope.light.position.set(10, 50, 100);
+                $scope.scene.add($scope.light);
+
+
                 //$scope.attitudeGraphic = $scope.renderer.domElement;
                 //$scope.$apply();
-
             }
 
-            $scope.init();
+            // Function which initializes the background. Adds a red and green line for the axises and sets the background to
+            // a neutral color
+            $scope.bgInit = function(){
+                // Adds red line along the x axis
+                var lineGeometry = new THREE.Geometry();
+                lineGeometry.vertices.push(new THREE.Vector3(-800, 0, 0), new THREE.Vector3(800, 0, 0));
+                lineGeometry.computeLineDistances();
+                var lineMaterial = new THREE.LineBasicMaterial({color: 0xff0000, linewidth: 2});
+                var line = new THREE.Line(lineGeometry, lineMaterial);
+                $scope.scene.add(line);
 
-            $scope.loadModel("assets/rocket_model2.js");
+                // Adds green line along the z axis
+                var lineGeometry = new THREE.Geometry();
+                lineGeometry.vertices.push(new THREE.Vector3(0, 0, -800), new THREE.Vector3(0, 0, 800));
+                lineGeometry.computeLineDistances();
+                var lineMaterial = new THREE.LineBasicMaterial({color: 0x00ff00, linewidth: 2});
+                var line = new THREE.Line(lineGeometry, lineMaterial);
+                $scope.scene.add(line);
+
+                // Set background color to a nice neutral color with an opacity of 1
+                $scope.renderer.setClearColor(0x355565, 1);
+            }
 
             // This function will process a data packet and update the three $scope.targetRot variables
             // Uses a complementary filter between the gyro and accelerometer data to ensure accuracy
@@ -175,10 +246,14 @@ angular.module("rvtk").directive("attitude", function() {
                 }, 1000/30); // run at 30fps
             }
 
-            // Render will call it self 30 times a second to render the scene.
+            // Create the scene
+            $scope.init();
+            // Create the background
+            $scope.bgInit();
+            // Create the rocket model
+            $scope.loadModel("assets/rocket_final_obj.js");
+            // Render will call it self 30 times a second to render the scene and update the rocket's rotation
             $scope.render();
-            // The socket.io function at the beginning of the file will continuously receive and the data packets
-            // so no need for the loop() function.
         }],
         templateUrl: ''
     };
