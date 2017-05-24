@@ -106,6 +106,7 @@
 }
 /* blue telemetry cards */
 .cards {
+    min-width: 125px;
     background-color: #a4bbfc;
     padding: 30px;
     margin: 20px;
