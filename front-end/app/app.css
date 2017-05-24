@@ -56,6 +56,8 @@
     grid-row: 2/5;
     align-self: stretch;
     border: 3px solid white;
+    width: 100%;
+    height: 100%;
 }
 
 #video {
@@ -106,6 +108,7 @@
 }
 /* blue telemetry cards */
 .cards {
+    min-width: 125px;
     background-color: #a4bbfc;
     padding: 30px;
     margin: 20px;
