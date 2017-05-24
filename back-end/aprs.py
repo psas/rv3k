@@ -21,7 +21,7 @@ from psas_packet import messages
 is_parsed = aprs_source_input.is_parsed
 
 class AprsReceiver:
-    def __init__(self, address, port, sio, lock, log):
+    def __init__(self, address, port, sio, lock=None, log=None):
         """
         This class is responsible for receiving and parsing raw APRS data
 
@@ -95,10 +95,11 @@ class AprsReceiver:
                 data["Altitude"] = float(data_received["altitude"])
                 fourcc_message = messages.MESSAGES["APRS"]
                 encoded_data = fourcc_message.encode(data)
-                self.lock.acquire()
-                self.log.write(messages.HEADER.encode(fourcc_message, int(timestamp)))
-                self.log.write(encoded_data)
-                self.lock.release()
+                if self.lock and self.log:
+                    self.lock.acquire()
+                    self.log.write(messages.HEADER.encode(fourcc_message, int(timestamp)))
+                    self.log.write(encoded_data)
+                    self.lock.release()
                 data["recv"] = timestamp
                 # Stdout log
 
