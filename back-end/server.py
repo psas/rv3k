@@ -20,7 +20,7 @@ from telemetry import Telemetry
 
 
 # Create and configure the server socket
-sio = socketio.Server(logger=False, async_mode="threading")
+sio = socketio.Server(logger=False, async_mode="threading", ping_timeout=3600)
 app = Flask(__name__)
 app.wsgi_app = socketio.Middleware(sio, app.wsgi_app)
 app.config["SECRET_KEY"] = "secret!"
@@ -102,6 +102,7 @@ def main():
         global app
         app = socketio.Middleware(sio)
 
+
     # Start up all servers
     for thread in threads:
         thread.start()
@@ -109,13 +110,13 @@ def main():
     try:
         # Sets the server to listen on a specific port for incoming
         # connections
-        eventlet.wsgi.server(eventlet.listen(('', 8080)), app, log=None, log_output=False)
+        eventlet.wsgi.server(eventlet.listen(('', 8080)), app)
     except KeyboardInterrupt:
-        log.close()
-        for thread in threads:
-            thread.join() 
-        return
+        pass
 
+    log.close()
+    print("end")
+    return
 # Runs main()
 if __name__ == "__main__":
     main()
