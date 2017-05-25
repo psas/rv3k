@@ -32,29 +32,12 @@ app.directive("attitude", function() {
             socket.on('telemetry', function(data) {
                 for(var key in data) {
                     if(key == config.ADIS) {
-                        for (var type in data[key]) {
-                            switch (type) {
-                                case config.Gyro_X:
-                                    $scope.Gyro_X = data[key][type];
-                                    break;
-                                case config.Gyro_Y:
-                                    $scope.Gyro_Y = data[key][type];
-                                    break;
-                                case config.Gyro_Z:
-                                    $scope.Gyro_Z = data[key][type];
-                                    break;
-                                case config.Acc_X:
-                                    $scope.Acc_X = data[key][type];
-                                    break;
-                                case config.Acc_Y:
-                                    $scope.Acc_Y = data[key][type];
-                                    break;
-                                case config.Acc_Z:
-                                    $scope.Acc_Z = data[key][type];
-                                    break;
-                                default:
-                            }
-                        }
+                        $scope.Gyro_X = data[key][config.Gyro_X];
+                        $scope.Gyro_Y = data[key][config.Gyro_Y];
+                        $scope.Gyro_Z = data[key][config.Gyro_Z];
+                        $scope.Acc_X = data[key][config.Acc_X];
+                        $scope.Acc_Y = data[key][config.Acc_Y];
+                        $scope.Acc_Z = data[key][config.Acc_Z];
                         // If TimeStamp has not been initialized we set previous to current,
                         // deltaTime will be 0 for very first calculateData call.
                         if($scope.TimeStamp) {
