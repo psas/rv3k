@@ -11,8 +11,13 @@ This directory contains the Socket.IO server and supporting server modules for r
 4. Setup back-end video streaming by following the instructions in `VIDEO.md` 
 
 ### Running the Rocket View 3000 Socket.IO server
-- APRS Mode: `python server.py -A`
-- Telemetry Mode: `python server.py -T`
+`python2.7 -T -A`
+    - '-T' enables telemetry data processing
+    - '-A' enables aprs data processing
+    - See VIDEO.md for instructions on setting up and running video streams
+
+### Logging
+Telemetry data and APRS data are logged synchronously in binary format to rv3l/back-end/telemetry.log
 
 ### Testing notes
 Including the flag `-t` tells server.py to serve the testing webpage.
@@ -37,8 +42,5 @@ Including the flag `-t` tells server.py to serve the testing webpage.
 1. In another terminal type `python aprs_source_input.py`
 1. Open a browser to `localhost:8081`
 
-
-### Video streaming instructions
-1. See `VIDEO.md` for details
 
 
