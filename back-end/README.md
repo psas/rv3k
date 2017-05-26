@@ -12,9 +12,9 @@ This directory contains the Socket.IO server and supporting server modules for r
 
 ### Running the Rocket View 3000 Socket.IO server
 `python2.7 -T -A`
-    - '-T' enables telemetry data processing
-    - '-A' enables aprs data processing
-    - See VIDEO.md for instructions on setting up and running video streams
+ - -T enables telemetry data processing
+ - -A enables aprs data processing
+ - See VIDEO.md for instructions on setting up and running video streams
 
 ### Logging
 Telemetry data and APRS data are logged synchronously in binary format to rv3l/back-end/telemetry.log
