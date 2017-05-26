@@ -15,6 +15,7 @@ import eventlet.wsgi
 from flask import Flask, render_template
 import socketio
 import threading
+import os
 from threading import Lock
 from telemetry import Telemetry
 
@@ -25,7 +26,14 @@ app = Flask(__name__)
 app.wsgi_app = socketio.Middleware(sio, app.wsgi_app)
 app.config["SECRET_KEY"] = "secret!"
 lock = Lock()
-log = open("telemetry.log", "w")
+
+
+log_num = 0
+
+while os.path.exists("telemetry-%03d.log" % log_num):
+    log_num += 1
+
+log = open("telemetry-%03d.log" % log_num, "w")
 threads = []
 
 
