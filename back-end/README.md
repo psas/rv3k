@@ -11,7 +11,7 @@ This directory contains the Socket.IO server and supporting server modules for r
 4. Setup back-end video streaming by following the instructions in `VIDEO.md` 
 
 ### Running the Rocket View 3000 Socket.IO server
-`python2.7 -T -A`
+`python server.py -T -A`
  - -T enables telemetry data processing
  - -A enables aprs data processing
  - See VIDEO.md for instructions on setting up and running video streams
