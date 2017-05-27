@@ -85,7 +85,6 @@ def main():
 
     if args.aprs:
         aprs_rx = int(config.get("Ports", "aprs_rx"))
-        port = int(config.get("Ports", "aprs_tx"))
         server = AprsReceiver("127.0.0.1", aprs_rx, sio, lock, log)
         thread = threading.Thread(target=server.listen)
         thread.daemon = True
@@ -93,7 +92,6 @@ def main():
         
     if args.telemetry:
         telemetry_rx = int(config.get("Ports", "telemetry_rx"))
-        port = int(config.get("Ports", "telemetry_tx"))
         server = Telemetry("127.0.0.1", telemetry_rx, sio, lock, log)
         thread = threading.Thread(target=server.listen)
         thread.daemon = True
@@ -111,10 +109,12 @@ def main():
     for thread in threads:
         thread.start()
 
+    port = int(config.get("Ports", "main_tx"))
+
     try:
         # Sets the server to listen on a specific port for incoming
         # connections
-        eventlet.wsgi.server(eventlet.listen(('', 8080)), app)
+        eventlet.wsgi.server(eventlet.listen(('', port)), app)
     except KeyboardInterrupt:
         pass
 
