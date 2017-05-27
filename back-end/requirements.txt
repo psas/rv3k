@@ -1,5 +1,5 @@
 Flask==0.12
 eventlet==0.20.1
 python-socketio==1.7.2
-psas-packet==0.2.5
 aprslib==0.6.46
+-e git://github.com/paolo215/psas_packet.git#egg=psas_packet

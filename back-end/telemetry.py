@@ -7,6 +7,7 @@
 # Please see the file COPYING in the source distribution of this
 # software for license terms.
 from psas_packet import io
+from psas_packet import messages
 from Queue import Empty, Queue
 import socket
 from threading import Event, Thread
@@ -16,7 +17,7 @@ class Telemetry:
     """Listens for psas packet data via listen() and emits them via sender()
     """
 
-    def __init__(self, address, port, sio):
+    def __init__(self, address, port, sio, lock=None, log=None):
         """Initializes data members of an instance of the Telemetry class"""
         self.address = address
         self.event = Event()
@@ -30,6 +31,8 @@ class Telemetry:
         # Instantiates the sender thread.
         self.thread = Thread(target=self.sender)
         self.thread.daemon = True
+        self.lock = lock
+        self.log = log
 
     def listen(self):
         """Listens for incoming psas packets
@@ -61,10 +64,29 @@ class Telemetry:
         while self.event.is_set() == False:
             try:
                 # Dequeues (timestamp, data) without blocking.
-                timestamp, data = self.queue.get_nowait()
-                fourcc, data = data
-                data["recv"] = timestamp
-                self.sio.emit("telemetry", {fourcc: data}, namespace="/main")
+                if self.queue:
+                    timestamp, data = self.queue.get_nowait()
+                    fourcc, values = data
+                    fourcc_message = messages.MESSAGES[fourcc]
+                    encoded_values = fourcc_message.encode(values)
+
+                    if self.lock and self.log:
+                        self.lock.acquire()
+                        self.log.write(messages.HEADER.encode(fourcc_message, int(timestamp)))
+                        self.log.write(encoded_values)
+                        self.lock.release()
+
+                    values["recv"] = timestamp
+                    self.sio.emit("telemetry", {fourcc: values}, namespace="/main")
             except Empty:
                 pass
+            except KeyError:
+                pass
+            except ValueError:
+                pass
+            except KeyboardInterrupt:
+                return None
+
+
+
         return
