@@ -152,11 +152,11 @@ angular.module("rvtk").directive("earthFrameView", function() {
 
             var namespace = '/main';
             // this port connects to port broadcast by ../unified/app.py
-            var telemetrySocket = io.connect('http://' + document.domain + ':8080' + namespace);
-            telemetrySocket.on('connect', function() {});
-            telemetrySocket.on('disconnect', function() {});
+            var socket = io.connect('http://' + document.domain + ':8080' + namespace);
+            socket.on('connect', function() {});
+            socket.on('disconnect', function() {});
 
-            telemetrySocket.on('telemetry', function(data) {
+            socket.on('telemetry', function(data) {
                 for(var key in data) {
                     if(key == 'V8A8') {
                         //update anything that uses V8A8 data in cesium
@@ -166,12 +166,7 @@ angular.module("rvtk").directive("earthFrameView", function() {
                 }
 
             });
-
-            var aprsSocket = io.connect('http://' + document.domain + ':8080' + namespace);
-            aprsSocket.on('connect', function() {});
-            aprsSocket.on('disconnect', function() {});
-    
-            aprsSocket.on('recovery', function(data) {
+            socket.on('recovery', function(data) {
                 console.log(data);
                 var callsign = data["Callsign"];
                 var lat = data["Latitude"];
@@ -184,6 +179,8 @@ angular.module("rvtk").directive("earthFrameView", function() {
                 }
 
             });
+
+    
 
 
 
