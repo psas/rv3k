@@ -25,16 +25,6 @@ sio = socketio.Server(logger=False, async_mode="threading", ping_timeout=3600)
 app = Flask(__name__)
 app.wsgi_app = socketio.Middleware(sio, app.wsgi_app)
 app.config["SECRET_KEY"] = "secret!"
-lock = Lock()
-
-
-log_num = 0
-
-while os.path.exists("telemetry-%03d.log" % log_num):
-    log_num += 1
-
-log = open("telemetry-%03d.log" % log_num, "w")
-threads = []
 
 
 @app.route('/')
@@ -60,32 +50,38 @@ def disconnect(sid):
 # back ground thread that runs the foo()
 def main():
 
-    # parser is an object that holds the command line argument
-    # options
+    # parser is an object that holds the command line argument options
     parser = ArgumentParser()
+
+
+    # Enables to serve test web page for back-end. 
     parser.add_argument("-t", "--test", action="store_true")
 
-    # The group object holds a special set of options that 
-    # need to be mutually exclusive.  This ensures that a server
-    # will only be instantiated as either an APRS server, a
-    # telemetry server or a video server
-
-    # Note that the test option ("-t") is not part of the mutually
-    # exclusive group. This is because we want to allow any
-    # type of server instance to have testing options
-    #group = parser.add_mutually_exclusive_group(required=True)
+    # Enables to boot up the APRS server
     parser.add_argument("-A", "--aprs", action="store_true")
+
+    # Enables to boot up the telemetry server
     parser.add_argument("-T", "--telemetry", action="store_true")
 
     # Parse command line arguments
     args = parser.parse_args()
 
+
+    # Read configuration file
     config = ConfigParser()
     config.read("config.cfg")
 
-    # Creating the port and server variables with the 'global'
-    # keyword brings them into the scope of execution here
-    global port, server, threads
+
+    # Lock for synchronized logging
+    lock = Lock()
+
+    # Prevents from overwriting existing files
+    log_num = 0
+    while os.path.exists("telemetry-%03d.log" % log_num):
+        log_num += 1
+
+    log = open("telemetry-%03d.log" % log_num, "w")
+    threads = []
 
     if args.aprs:
         aprs_rx = int(config.get("Ports", "aprs_rx"))
