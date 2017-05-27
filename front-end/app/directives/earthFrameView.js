@@ -167,15 +167,15 @@ angular.module("rvtk").directive("earthFrameView", function() {
 
             });
 
-            var aprsSocket = io.connect('http://' + document.domain + ':8081' + namespace);
+            var aprsSocket = io.connect('http://' + document.domain + ':8080' + namespace);
             aprsSocket.on('connect', function() {});
             aprsSocket.on('disconnect', function() {});
     
             aprsSocket.on('recovery', function(data) {
                 console.log(data);
-                var callsign = data["callsign"];
-                var lat = data["latitude"];
-                var longi = data["longitude"];
+                var callsign = data["Callsign"];
+                var lat = data["Latitude"];
+                var longi = data["Longitude"];
 
                 if(!$scope.recoveryCrews.hasOwnProperty(callsign)) {
                     addDotForRecoveryCrew(callsign, lat, longi);
