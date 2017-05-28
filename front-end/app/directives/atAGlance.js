@@ -18,11 +18,11 @@
 
 'use strict'
 
-angular.module("rvtk").directive("atAGlance", function() {
+app.directive("atAGlance", function() {
     return {
         restrict: 'E',
         scope: {},
-        controller: ['$scope', function atAGlanceController($scope) {
+        controller: ['$scope', 'config', function atAGlanceController($scope, config) {
             // This variable represents the different data formats
             // We are using a set so that we only have one item of a specific type added
             $scope.formats = new Set();
@@ -40,10 +40,10 @@ angular.module("rvtk").directive("atAGlance", function() {
                 // their respective data.
                 for(var key in data) {
                     // Ignore these formats
-                    if(key == 'BMP1' || key == 'JGPS' || key == 'SEQN' || key == 'ROLL') {
+                    if(key == config.BMP1 || key == config.JGPS || key == config.SEQN || key == config.ROLL) {
                         continue;
                     }
-                    
+
                     $scope.formats.add(key);
                     // The if statement makes sure that we do not clear the old data
                     if(!$scope.formats[key]) {
@@ -51,14 +51,14 @@ angular.module("rvtk").directive("atAGlance", function() {
                     }
 
                     for(var type in data[key]){
-                        // Do not display the timestamps 
-                        if(type == 'timestamp' || type == 'recv') {
+                        // Do not display the timestamps
+                        if(type == config.timestamp || type == config.recv) {
                             continue;
                         }
                         $scope.formats[key].add(type);
                         $scope.formats[key][type] = data[key][type];
                     }
-                    // Update the display 
+                    // Update the display
                     $scope.$apply();
                 }
             });
