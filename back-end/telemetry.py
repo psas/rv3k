@@ -48,9 +48,29 @@ class Telemetry:
         network = io.Network(sock)
         while True:
             try:
+                collection = {}
                 for timestamp, data in network.listen():
-                    # Enqueues (timestamp, data) without blocking.
-                    self.queue.put_nowait((timestamp, data))
+                    fourcc, values = data
+                
+                    if not fourcc in messages.MESSAGES:
+                        continue
+
+                    if self.lock and self.log:
+                        fourcc_message = messages.MESSAGES[fourcc]
+                        encoded_values = fourcc_message.encode(values)
+                        self.lock.acquire()
+                        self.log.write(messages.HEADER.encode(fourcc_message, int(timestamp)))
+                        self.log.write(encoded_values)
+                        self.lock.release()
+
+                    values["recv"] = timestamp
+                    collection[fourcc] = values
+
+                # Enqueues (timestamp, data) without blocking.
+                if len(collection.keys()) > 0:
+                    self.queue.put_nowait(collection)
+
+
             except KeyboardInterrupt:
                 sock.close()
                 # Sets the shared event (breaks the sender thread's loop).
@@ -65,19 +85,8 @@ class Telemetry:
             try:
                 # Dequeues (timestamp, data) without blocking.
                 if self.queue:
-                    timestamp, data = self.queue.get_nowait()
-                    fourcc, values = data
-                    fourcc_message = messages.MESSAGES[fourcc]
-                    encoded_values = fourcc_message.encode(values)
-
-                    if self.lock and self.log:
-                        self.lock.acquire()
-                        self.log.write(messages.HEADER.encode(fourcc_message, int(timestamp)))
-                        self.log.write(encoded_values)
-                        self.lock.release()
-
-                    values["recv"] = timestamp
-                    self.sio.emit("telemetry", {fourcc: values}, namespace="/main")
+                    collection = self.queue.get_nowait()
+                    self.sio.emit("telemetry", collection, namespace="/main")
             except Empty:
                 pass
             except KeyError:
