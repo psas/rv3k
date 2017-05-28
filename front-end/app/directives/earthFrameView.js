@@ -188,11 +188,11 @@ app.directive("earthFrameView", function() {
 
             var namespace = '/main';
             // this port connects to port broadcast by ../unified/app.py
-            var telemetrySocket = io.connect('http://' + document.domain + ':8080' + namespace);
-            telemetrySocket.on('connect', function() {});
-            telemetrySocket.on('disconnect', function() {});
+            var socket = io.connect('http://' + document.domain + ':8080' + namespace);
+            socket.on('connect', function() {});
+            socket.on('disconnect', function() {});
 
-            telemetrySocket.on('telemetry', function(data) {
+            socket.on('telemetry', function(data) {
                 for(var key in data) {
                     if(key == config.V8A8) {
                         //update anything that uses V8A8 data in cesium
@@ -202,15 +202,12 @@ app.directive("earthFrameView", function() {
                 }
             });
 
-            var aprsSocket = io.connect('http://' + document.domain + ':8081' + namespace);
-            aprsSocket.on('connect', function() {});
-            aprsSocket.on('disconnect', function() {});
+            socket.on('recovery', function(data) {
 
-            aprsSocket.on('recovery', function(data) {
                 console.log(data);
-                var callsign = data["callsign"];
-                var lat = data["latitude"];
-                var longi = data["longitude"];
+                var callsign = data["Callsign"];
+                var lat = data["Latitude"];
+                var longi = data["Longitude"];
 
                 if(!$scope.recoveryCrews.hasOwnProperty(callsign)) {
                     addDotForRecoveryCrew(callsign, lat, longi);

@@ -13,13 +13,15 @@ import json
 import socket
 import aprs_source_input
 import aprslib
+import time
+from psas_packet import messages
 
 
 
 is_parsed = aprs_source_input.is_parsed
 
 class AprsReceiver:
-    def __init__(self, address, port, sio):
+    def __init__(self, address, port, sio, lock=None, log=None):
         """
         This class is responsible for receiving and parsing raw APRS data
 
@@ -30,6 +32,8 @@ class AprsReceiver:
         self.address = address
         self.port = port
         self.sio = sio
+        self.lock = lock
+        self.log = log
 
     def parse(self, aprs_packet):
         """
@@ -53,6 +57,7 @@ class AprsReceiver:
         :return: None
         """
 
+        print("APRS Server running")
         # Set up socket connection
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         addr = (self.address, self.port)
@@ -67,29 +72,36 @@ class AprsReceiver:
             # and address of the socket sending the data
             data_received, address = sock.recvfrom(1024)
             data = {}
+            timestamp = time.time()
             try:
                 # Expecting data received is in JSON format is 
                 # is_parsed is true
                 if data_received and is_parsed:
                     data_received = json.loads(data_received.decode('utf-8'))
-                    data["callsign"] = data_received["callsign"]
+                    data["Callsign"] = data_received["callsign"]
 
                 # Expecting data received is a raw APRS if is_parsed is false
                 elif data_received:
                     data_received = self.parse(data_received)
                     if not data_received:
                         continue
-                    data["callsign"] = data_received["from"]
+                    data["Callsign"] = data_received["from"]
                 else:
                     continue
 
 
-                data["latitude"] = data_received["latitude"]
-                data["longitude"] = data_received["longitude"]
-                data["altitude"] = data_received["altitude"]
-
+                data["Latitude"] = float(data_received["latitude"])
+                data["Longitude"] = float(data_received["longitude"])
+                data["Altitude"] = float(data_received["altitude"])
+                fourcc_message = messages.MESSAGES["APRS"]
+                encoded_data = fourcc_message.encode(data)
+                if self.lock and self.log:
+                    self.lock.acquire()
+                    self.log.write(messages.HEADER.encode(fourcc_message, int(timestamp)))
+                    self.log.write(encoded_data)
+                    self.lock.release()
+                data["recv"] = timestamp
                 # Stdout log
-                print(data) 
 
                 # Send parsed APRS data to front-end in JSON format
                 self.sio.emit("recovery", data, namespace="/main")

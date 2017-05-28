@@ -40,7 +40,9 @@ app.constant('config', {
     'Acc_Y':        'Acc_Y',
     'Acc_Z':        'Acc_Z',
 
-    'serverSource': 'paolo215.paolov435.com', // document.domain, //
+
+    'serverSource': document.domain, // 'paolo215.paolov435.com', // 
+
 
     // Vehicle Attitude Configuration
     'FOV':                  50,
