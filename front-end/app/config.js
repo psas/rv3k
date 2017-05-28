@@ -46,7 +46,9 @@ app.constant('config', {
     'timestamp':    'timestamp',
     'recv':         'recv',
 
-    'serverSource': 'paolo215.paolov435.com', // document.domain, //
+
+    'serverSource': document.domain, // 'paolo215.paolov435.com', // 
+
 
     // Vehicle Attitude Configuration
     'FOV':                  50,
