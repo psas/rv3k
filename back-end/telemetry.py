@@ -17,7 +17,7 @@ class Telemetry:
     """Listens for psas packet data via listen() and emits them via sender()
     """
 
-    def __init__(self, address, port, sio, lock=None, log=None):
+    def __init__(self, address, port, sio, lock=None, log=None, error_log=None):
         """Initializes data members of an instance of the Telemetry class"""
         self.address = address
         self.event = Event()
@@ -33,6 +33,7 @@ class Telemetry:
         self.thread.daemon = True
         self.lock = lock
         self.log = log
+        self.error_log = error_log
 
     def listen(self):
         """Listens for incoming psas packets

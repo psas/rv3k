@@ -21,7 +21,7 @@ from psas_packet import messages
 is_parsed = aprs_source_input.is_parsed
 
 class AprsReceiver:
-    def __init__(self, address, port, sio, lock=None, log=None):
+    def __init__(self, address, port, sio, lock=None, log=None, error_log=None):
         """
         This class is responsible for receiving and parsing raw APRS data
 
@@ -34,6 +34,7 @@ class AprsReceiver:
         self.sio = sio
         self.lock = lock
         self.log = log
+        self.error_log = error_log
 
     def parse(self, aprs_packet):
         """

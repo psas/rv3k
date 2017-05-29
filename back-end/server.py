@@ -81,18 +81,20 @@ def main():
         log_num += 1
 
     log = open("telemetry-%03d.log" % log_num, "w")
+    error_log = open("error.log", "w")
+
     threads = []
 
     if args.aprs:
         aprs_rx = int(config.get("Ports", "aprs_rx"))
-        server = AprsReceiver("127.0.0.1", aprs_rx, sio, lock, log)
+        server = AprsReceiver("127.0.0.1", aprs_rx, sio, lock, log, error_log)
         thread = threading.Thread(target=server.listen)
         thread.daemon = True
         threads.append(thread)
         
     if args.telemetry:
         telemetry_rx = int(config.get("Ports", "telemetry_rx"))
-        server = Telemetry("127.0.0.1", telemetry_rx, sio, lock, log)
+        server = Telemetry("127.0.0.1", telemetry_rx, sio, lock, log, error_log)
         thread = threading.Thread(target=server.listen)
         thread.daemon = True
         threads.append(thread)
@@ -119,6 +121,7 @@ def main():
         pass
 
     log.close()
+    error_log.close()
     print("end")
     return
 # Runs main()
