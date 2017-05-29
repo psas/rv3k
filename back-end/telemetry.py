@@ -27,10 +27,16 @@ class Telemetry:
         # must be exchanged safely between multiple threads. The Queue class
         # in this module implements all the required locking semantics."
         self.queue = Queue()
+        self.queue_log = Queue()
         self.sio = sio
         # Instantiates the sender thread.
         self.thread = Thread(target=self.sender)
         self.thread.daemon = True
+
+
+        self.loggerThread = Thread(target=self.log)
+        self.loggerThread.daemon = True
+
         self.lock = lock
         self.log = log
 
@@ -43,31 +49,22 @@ class Telemetry:
         print("The telemetry server is running.")
         # Starts the sender thread.
         self.thread.start()
+        self.loggerThread.start()
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         sock.bind((self.address, self.port))
         network = io.Network(sock)
         while True:
             try:
-                collection = {}
+                collection = []
                 for timestamp, data in network.listen():
                     fourcc, values = data
-                
                     if not fourcc in messages.MESSAGES:
                         continue
-
-                    if self.lock and self.log:
-                        fourcc_message = messages.MESSAGES[fourcc]
-                        encoded_values = fourcc_message.encode(values)
-                        self.lock.acquire()
-                        self.log.write(messages.HEADER.encode(fourcc_message, int(timestamp)))
-                        self.log.write(encoded_values)
-                        self.lock.release()
-
                     values["recv"] = timestamp
-                    collection[fourcc] = values
+                    collection.append((fourcc, values, timestamp))
 
                 # Enqueues (timestamp, data) without blocking.
-                if len(collection.keys()) > 0:
+                if len(collection) > 0:
                     self.queue.put_nowait(collection)
 
 
@@ -83,10 +80,13 @@ class Telemetry:
         """Emits a socketio event for each message that listen receives"""
         while self.event.is_set() == False:
             try:
-                # Dequeues (timestamp, data) without blocking.
                 if self.queue:
+                    send_data = {}
                     collection = self.queue.get_nowait()
-                    self.sio.emit("telemetry", collection, namespace="/main")
+                    for fourcc, values, timestamp in collection:
+                        send_data[fourcc] = values
+                    self.sio.emit("telemetry", send_data, namespace="/main")
+                    self.queue_log.put_nowait(collection)
             except Empty:
                 pass
             except KeyError:
@@ -95,7 +95,26 @@ class Telemetry:
                 pass
             except KeyboardInterrupt:
                 return None
-
-
-
         return
+
+
+
+    def log(self):
+       while True:
+            try:
+                collection = self.queue_log.get_nowait()
+                if self.lock and self.log:
+                    for fourcc, values, timestamp in collection:
+                        fourcc_message = messages.MESSAGES[fourcc]
+                        encoded_values = fourcc_message.encode(values)
+                        self.lock.acquire()
+                        self.log.write(messages.HEADER.encode(fourcc_message, int(timestamp)))
+                        self.log.write(encoded_values)
+                        self.lock.release()
+
+            except Empty:
+                pass
+
+            except KeyboardInterrupt:
+                return None
+
