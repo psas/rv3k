@@ -114,7 +114,7 @@ def main():
     try:
         # Sets the server to listen on a specific port for incoming
         # connections
-        eventlet.wsgi.server(eventlet.listen(('', port)), app)
+        eventlet.wsgi.server(eventlet.listen(('', port)), app, log_output=False)
     except KeyboardInterrupt:
         pass
 
