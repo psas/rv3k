@@ -67,7 +67,7 @@ app.directive("earthFrameView", function() {
                 $scope.RocketPosition = Cesium.Cartesian3.fromDegrees(config.launchLocation.longitude, config.launchLocation.latitude, config.launchLocation.height);
 
                 // Make a dot for the rocket
-                var rocket = $scope.viewer.entities.add({
+                $scope.rocket = $scope.viewer.entities.add({
                     name : 'Rocket',
                     position: $scope.RocketPosition,
                     model : {
@@ -78,7 +78,7 @@ app.directive("earthFrameView", function() {
                         colorBlendAmount : 1.0
                     }
                 });
-                $scope.viewer.trackedEntity = rocket;
+                $scope.viewer.trackedEntity = $scope.rocket;
 
                 // Positions the camera so that all entities are in view
                 $scope.viewer.zoomTo($scope.viewer.entities);
@@ -92,7 +92,7 @@ app.directive("earthFrameView", function() {
                 $scope.viewer.infoBox.frame.sandbox = "allow-same-origin allow-top-navigation allow-pointer-lock allow-popups allow-forms allow-scripts";
 
                 // The projected trajectory of the rocket.
-                var projTraj = $scope.viewer.entities.add({
+                $scope.projTraj = $scope.viewer.entities.add({
                     name : "Projected Trajectory",
                     polyline : {
                         positions : [$scope.RocketPosition, groundPos],
@@ -139,7 +139,7 @@ app.directive("earthFrameView", function() {
                 // store the new position in a variable
                 //$scope.RocketPosition = Cesium.Cartesian3.fromDegrees(x, y, z);
                 // move the rocket to new position
-                rocket.position = $scope.RocketPosition;
+                $scope.rocket.position = $scope.RocketPosition;
                 // Declare the trajectory line
                 var actualTrajectory = $scope.viewer.entities.add({
                         name : 'Actual Trajectory',
@@ -152,7 +152,7 @@ app.directive("earthFrameView", function() {
                         }
                 });
                 var rocketPos = Cesium.Cartesian3.fromDegrees(x, y, z);
-                projTraj.polyline.positions = [rocketPos, groundPos];
+                $scope.projTraj.polyline.positions = [rocketPos, groundPos];
                 //only adds the newest point to the map to avoid overflow
                 if(trajectoryPoints.length == 2) {
                     trajectoryPoints.split(1, 1);
@@ -196,8 +196,8 @@ app.directive("earthFrameView", function() {
                 for(var key in data) {
                     if(key == config.V8A8) {
                         //update anything that uses V8A8 data in cesium
-                        $scope.RocketPosition = Cesium.Cartesian3.fromDegrees(data[key].Longitude, data[key].Latitude, data[key].MSL_Altitude);
-                        $scope.moveRocket(data[key].Longitude, data[key].Latitude, data[key].MSL_Altitude);
+                        $scope.RocketPosition = Cesium.Cartesian3.fromDegrees(data[key][config.Longitude], data[key][config.Latitude], data[key][config.MSL_Altitude]);
+                        $scope.moveRocket(data[key][config.Longitude], data[key][config.Latitude], data[key][config.MSL_Altitude]);
                     }
                 }
             });
@@ -205,9 +205,9 @@ app.directive("earthFrameView", function() {
             socket.on('recovery', function(data) {
 
                 console.log(data);
-                var callsign = data["Callsign"];
-                var lat = data["Latitude"];
-                var longi = data["Longitude"];
+                var callsign = data[config.Callsign];
+                var lat = data[config.Latitude];
+                var longi = data[config.Longitude];
 
                 if(!$scope.recoveryCrews.hasOwnProperty(callsign)) {
                     addDotForRecoveryCrew(callsign, lat, longi);
