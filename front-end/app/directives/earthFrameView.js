@@ -74,7 +74,7 @@ app.directive("earthFrameView", function() {
                         uri : 'assets/rocket.gltf',
                         color : Cesium.Color.BLUE,
                         minimumPixelSize : config.rocketSize,
-                        maximumScale : 1000,
+                        maximumScale : 300,
                         colorBlendAmount : 1.0
                     }
                 });
