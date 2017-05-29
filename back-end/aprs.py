@@ -47,7 +47,12 @@ class AprsReceiver:
         try:
             return aprslib.parse(aprs_packet.strip())
         except (aprslib.ParseError, aprslib.UnknownFormat) as error:
-            print(error, aprs_packet) # TODO: log error or print in std err
+            print(error, aprs_packet)
+            if self.lock and self.error_log:
+                self.lock.acquire()
+                self.error_log.write('test write')
+                self.error_log.write(error, aprs_packet)
+                self.lock.release()
 
 
     def listen(self):
@@ -107,6 +112,11 @@ class AprsReceiver:
                 # Send parsed APRS data to front-end in JSON format
                 self.sio.emit("recovery", data, namespace="/main")
                 self.sio.sleep(0.1)
+            except KeyError:
+                if self.lock and self.error_log:
+                    self.lock.acquire()
+                    self.error_log.write('aprs.py: KeyError\n')
+                    self.lock.release()
             except KeyboardInterrupt:
                 return None
 

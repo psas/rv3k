@@ -6,6 +6,7 @@
 # [This program is licensed under the "GNU General Public License"]
 # Please see the file COPYING in the source distribution of this
 # software for license terms.
+
 from psas_packet import io
 from psas_packet import messages
 from Queue import Empty, Queue
@@ -80,10 +81,22 @@ class Telemetry:
                     values["recv"] = timestamp
                     self.sio.emit("telemetry", {fourcc: values}, namespace="/main")
             except Empty:
+                # if self.lock and self.error_log:
+                #    self.lock.acquire()
+                #    self.error_log.write('telemetry.py: Empty\n')
+                #    self.lock.release()
                 pass
             except KeyError:
+                if self.lock and self.error_log:
+                    self.lock.acquire()
+                    self.error_log.write('telemetry.py: KeyError\n')
+                    self.lock.release()
                 pass
             except ValueError:
+                if self.lock and self.error_log:
+                    self.lock.acquire()
+                    self.error_log.write('telemetry.py: Value Error\n')
+                    self.lock.release()
                 pass
             except KeyboardInterrupt:
                 return None
