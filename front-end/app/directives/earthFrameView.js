@@ -33,23 +33,11 @@ app.directive("earthFrameView", function() {
             // The point on the ground under the rocket
             var groundPos = Cesium.Cartesian3.fromDegrees(config.launchLocation.longitude, config.launchLocation.latitude);
 
-            // var terrainProvider = new Cesium.CesiumTerrainProvider({
-            //     url : 'https://assets.agi.com/stk-terrain/v1/tilesets/world/tiles',
-            //     requestWaterMask : true,
-            //     requestVertexNormals : true
-            // });
-
-            // var imageryProvider = Cesium.createTileMapServiceImageryProvider({
-            //    url : '/bower_components/cesium.js/dist/Assets/Textures/NaturalEarthII',
-            //    fileExtension : 'jpg'
-            // });
-
             // Initializes the Cesium Viewer, positions the camera, and adds entities
             $scope.init = function () {
                 // Create the viewer
                 $scope.viewer = new Cesium.Viewer('cesiumContainer', {
                     // imageryProvider: imageryProvider,    // Activate imagery overlay
-                    // terrainProvider: terrainProvider,    // Activate terrain
                     baseLayerPicker: false,     // disables menu to choose map type
                     homeButton: false,          // disables home button
                     timeline: false,            // disables timeline
@@ -60,24 +48,46 @@ app.directive("earthFrameView", function() {
                     sceneModePicker: false      // disables default scene picker
                 });
 
-                // Activate directional lighting for terrain (globe will be dark at night)
-                // $scope.viewer.scene.globe.enableLighting = true;
+                if (config.cesiumTerrain) {
+                    alert(1);
+                    $scope.viewer.terrainProvider = new Cesium.CesiumTerrainProvider({
+                        url : 'https://assets.agi.com/stk-terrain/world',
+                        requestWaterMask : true,
+                        requestVertexNormals : true
+                    });
+                    // Activate directional lighting for terrain (globe will be dark at night)
+                    $scope.viewer.scene.globe.enableLighting = true;
+                }
 
                 // Set Initial Rocket Position
-                $scope.RocketPosition = Cesium.Cartesian3.fromDegrees(config.launchLocation.longitude, config.launchLocation.latitude, config.launchLocation.height);
+                $scope.RocketPosition = Cesium.Cartesian3.fromDegrees(config.launchLocation.longitude, config.launchLocation.latitude, config.launchLocation.altitude);
 
-                // Make a dot for the rocket
-                $scope.rocket = $scope.viewer.entities.add({
-                    name : 'Rocket',
-                    position: $scope.RocketPosition,
-                    model : {
-                        uri : 'assets/rocket.gltf',
-                        color : Cesium.Color.BLUE,
-                        minimumPixelSize : config.rocketSize,
-                        maximumScale : 300,
-                        colorBlendAmount : 1.0
-                    }
-                });
+                if (config.cesiumRocket) {
+                    // Use a model for the rocket
+                    $scope.rocket = $scope.viewer.entities.add({
+                        name : 'Rocket',
+                        position: $scope.RocketPosition,
+                        model : {
+                            uri : 'assets/rocket.gltf',
+                            color : Cesium.Color.BLUE,
+                            minimumPixelSize : config.rocketSize,
+                            maximumScale : config.rocketScale,
+                            colorBlendAmount : 1.0
+                        }
+                    });
+                } else {
+                    // Make a dot for the rocket
+                    $scope.rocket = $scope.viewer.entities.add({
+                        name : 'Rocket',
+                        position: $scope.RocketPosition,
+                        ellipsoid : {
+                            radii : new Cesium.Cartesian3(300.0, 300.0, 300.0),
+                            material : Cesium.Color.BLUE,
+                            outline : false
+                        }
+                    });
+                }
+
                 $scope.viewer.trackedEntity = $scope.rocket;
 
                 // Positions the camera so that all entities are in view
@@ -188,7 +198,7 @@ app.directive("earthFrameView", function() {
 
             var namespace = '/main';
             // this port connects to port broadcast by ../unified/app.py
-            var socket = io.connect('http://' + document.domain + ':8080' + namespace);
+            var socket = io.connect('http://' + config.serverSource + ':8080' + namespace);
             socket.on('connect', function() {});
             socket.on('disconnect', function() {});
 

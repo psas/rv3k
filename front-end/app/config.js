@@ -23,9 +23,12 @@ app.constant('config', {
     'launchLocation': {
         'longitude':    -120.6517673,
         'latitude':     43.7961328,
-        'height':       3000
+        'altitude':     3000
     },
-    'rocketSize':       300,    // min size in pixels
+    'cesiumTerrain':    true,   // model cesium map with terrain
+    'cesiumRocket':     false,  // use rocket model in cesium
+    'rocketSize':       500,    // min size in pixels
+    'rocketScale':      100,    // max scale when at a distance
     'recoveryCrewSize': 3000,   // radius
 
     // PSAS Packet Types
@@ -53,7 +56,7 @@ app.constant('config', {
     'timestamp':    'timestamp',
     'recv':         'recv',
 
-    'serverSource': 'paolo215.paolov435.com', // document.domain, //
+    'serverSource': document.domain, // 'paolo215.paolov435.com', //
 
     // Telemetry Graphs Configuration
     'numPointsADIS':        150,    // approx. # of data points expected per min
@@ -66,14 +69,15 @@ app.constant('config', {
 
     // Video Configuration
     'videoFeeds':   [
+        'http://meg-murry.ddns.net:3586/hls/lava.m3u8',
         'http://paolo215.paolov435.com/hls/live.m3u8',
         'http://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8',
         'http://184.72.239.149/vod/smil:BigBuckBunny.smil/playlist.m3u8',
         'http://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8'
     ],
     'defaultFeed':  0,                      // The index of the default (starting) video feed
-    'numFeeds':     4,
-    'feedsOn':     [true,true,true,true],
+    'numFeeds':     5,
+    'feedsOn':     [true,true,true,true,true],
 
     // HLS.js Video Player configuration
     'hlsConfig':   {
