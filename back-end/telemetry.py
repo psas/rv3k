@@ -6,19 +6,19 @@
 # [This program is licensed under the "GNU General Public License"]
 # Please see the file COPYING in the source distribution of this
 # software for license terms.
-
 from psas_packet import io
 from psas_packet import messages
 from Queue import Empty, Queue
 import socket
 from threading import Event, Thread
+import logging
 
 
 class Telemetry:
     """Listens for psas packet data via listen() and emits them via sender()
     """
 
-    def __init__(self, address, port, sio, lock=None, log=None, error_log=None):
+    def __init__(self, address, port, sio, lock=None, log=None):
         """Initializes data members of an instance of the Telemetry class"""
         self.address = address
         self.event = Event()
@@ -34,7 +34,7 @@ class Telemetry:
         self.thread.daemon = True
         self.lock = lock
         self.log = log
-        self.error_log = error_log
+        logging.basicConfig(filename = 'telemetry_error.log', filemode = "w", level = logging.ERROR) 
 
     def listen(self):
         """Listens for incoming psas packets
@@ -81,22 +81,13 @@ class Telemetry:
                     values["recv"] = timestamp
                     self.sio.emit("telemetry", {fourcc: values}, namespace="/main")
             except Empty:
-                # if self.lock and self.error_log:
-                #    self.lock.acquire()
-                #    self.error_log.write('telemetry.py: Empty\n')
-                #    self.lock.release()
+                # logging.error('Empty: No incoming telemetry data\n')
                 pass
             except KeyError:
-                if self.lock and self.error_log:
-                    self.lock.acquire()
-                    self.error_log.write('telemetry.py: KeyError\n')
-                    self.lock.release()
+                logging.error('KeyError\n')
                 pass
             except ValueError:
-                if self.lock and self.error_log:
-                    self.lock.acquire()
-                    self.error_log.write('telemetry.py: Value Error\n')
-                    self.lock.release()
+                logging.error('ValueError\n')
                 pass
             except KeyboardInterrupt:
                 return None

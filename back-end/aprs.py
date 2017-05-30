@@ -15,13 +15,13 @@ import aprs_source_input
 import aprslib
 import time
 from psas_packet import messages
-
+import logging
 
 
 is_parsed = aprs_source_input.is_parsed
 
 class AprsReceiver:
-    def __init__(self, address, port, sio, lock=None, log=None, error_log=None):
+    def __init__(self, address, port, sio, lock=None, log=None):
         """
         This class is responsible for receiving and parsing raw APRS data
 
@@ -34,7 +34,7 @@ class AprsReceiver:
         self.sio = sio
         self.lock = lock
         self.log = log
-        self.error_log = error_log
+        logging.basicConfig(filename ='aprs_error.log', filemode = 'w', level = logging.ERROR)
 
     def parse(self, aprs_packet):
         """
@@ -47,12 +47,7 @@ class AprsReceiver:
         try:
             return aprslib.parse(aprs_packet.strip())
         except (aprslib.ParseError, aprslib.UnknownFormat) as error:
-            print(error, aprs_packet)
-            if self.lock and self.error_log:
-                self.lock.acquire()
-                self.error_log.write('test write')
-                self.error_log.write(error, aprs_packet)
-                self.lock.release()
+            logging.error(error, aprs_packet)
 
 
     def listen(self):
@@ -113,10 +108,7 @@ class AprsReceiver:
                 self.sio.emit("recovery", data, namespace="/main")
                 self.sio.sleep(0.1)
             except KeyError:
-                if self.lock and self.error_log:
-                    self.lock.acquire()
-                    self.error_log.write('aprs.py: KeyError\n')
-                    self.lock.release()
+                logging.error('KeyError\n')
             except KeyboardInterrupt:
                 return None
 
