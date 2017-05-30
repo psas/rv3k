@@ -78,11 +78,6 @@ angular.module("rvtk").directive("earthFrameView", function() {
             }
 
 
-            // function to move recovery crew 1's longitude and latitude +1 degree
-            $scope.movePoints = function(callsign, lat, longi) {
-                $scope.recoveryCrews[callsign].position = Cesium.Cartesian3.fromDegrees(longi, lat);
-            };
-
             // positions the camera so that all entities are in view
             viewer.zoomTo(viewer.entities);
 
@@ -178,10 +173,6 @@ angular.module("rvtk").directive("earthFrameView", function() {
                 }
 
             });
-
-
-
-
 
         }],
         templateUrl: 'directives/earthFrameView.html'
