@@ -38,16 +38,17 @@ app.directive("attitude", function() {
                         $scope.Acc_X = data[key][config.Acc_X];
                         $scope.Acc_Y = data[key][config.Acc_Y];
                         $scope.Acc_Z = data[key][config.Acc_Z];
+
                         // If TimeStamp has not been initialized we set previous to current,
                         // deltaTime will be 0 for very first calculateData call.
                         if($scope.TimeStamp) {
                             $scope.PreviousTimeStamp = $scope.TimeStamp;
                         }
                         else {
-                            $scope.PreviousTimeStamp = data[key].timestamp;
+                            $scope.PreviousTimeStamp = data[key][config.timestamp];
                         }
 
-                        $scope.TimeStamp = data[key].timestamp;
+                        $scope.TimeStamp = data[key][config.timestamp];
                         $scope.calculateData();
                     }
                 }
@@ -80,28 +81,22 @@ app.directive("attitude", function() {
             // Set up the $scope.camera and $scope.renderer and attach them to html.
             // Start a listener for window resizing.
             $scope.init = function () {
+                $scope.canvas = document.getElementById('attitude-canvas');
+
                 // create scene and scene size
                 $scope.scene = new THREE.Scene();
-                $scope.width = window.innerWidth/config.AttitudeWidthRatio;
-                $scope.height = window.innerHeight/config.AttitudeHeightRatio;
 
                 // create the renderer and add it to the DOM
-                $scope.renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
-                $scope.renderer.setSize($scope.width, $scope.height);
-                $element[0].appendChild($scope.renderer.domElement);
+                $scope.renderer = new THREE.WebGLRenderer({canvas: $scope.canvas, antialias: true, alpha: true});
+                $scope.canvas.width = $scope.canvas.clientWidth;
+                $scope.canvas.height = $scope.canvas.clientHeight*5;
+                $scope.renderer.setViewport(0,0,$scope.canvas.width, $scope.canvas.height);
+                // $element[0].appendChild($scope.renderer.domElement);
 
                 // create the camera with FOV, aspect ratio, distance from scene, clipping distance
-                $scope.camera = new THREE.PerspectiveCamera(config.FOV, $scope.width / $scope.height, .1, 2000);
+                $scope.camera = new THREE.PerspectiveCamera(config.FOV, $scope.canvas.width / $scope.canvas.height, .1, 2000);
                 $scope.camera.position.set(-14, 10, 22); // pos x,y,z
                 $scope.scene.add($scope.camera);
-
-                window.addEventListener('resize', function() {
-                    $scope.width = window.innerWidth/config.AttitudeWidthRatio;
-                    $scope.height = window.innerHeight/config.AttitudeHeightRatio;
-                    $scope.renderer.setSize($scope.width, $scope.height);
-                    $scope.camera.aspect = $scope.width / $scope.height;
-                    $scope.camera.updateProjectionMatrix();
-                });
 
                 // set the background color of the scene
                 $scope.renderer.setClearColor(new THREE.Color(0xffffff, 1));
@@ -111,9 +106,18 @@ app.directive("attitude", function() {
                 $scope.light.position.set(10, 50, 100);
                 $scope.scene.add($scope.light);
 
-
                 //$scope.attitudeGraphic = $scope.renderer.domElement;
                 //$scope.$apply();
+            }
+
+            $scope.resize = function () {
+                if ($scope.canvas.width != $scope.canvas.clientWidth || $scope.canvas.height != $scope.canvas.clientHeight) {
+                    $scope.canvas.width = $scope.canvas.clientWidth;
+                    $scope.canvas.height = $scope.canvas.clientHeight;
+                    $scope.renderer.setViewport(0,0,$scope.canvas.width, $scope.canvas.height);
+                    $scope.camera.aspect = $scope.canvas.width / $scope.canvas.height;
+                    $scope.camera.updateProjectionMatrix();
+                }
             }
 
             // Function which initializes the background. Adds a red and green line for the axises and sets the background to
@@ -226,6 +230,7 @@ app.directive("attitude", function() {
 
                     // Three.js function call to render the scene
                     $scope.renderer.render($scope.scene, $scope.camera);
+                    $scope.resize();
                 }, 1000/30); // run at 30fps
             }
 

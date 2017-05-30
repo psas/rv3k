@@ -14,7 +14,7 @@ angular.module("rvtk").directive("earthFrameView", function() {
     return {
         restrict: 'E',
         scope: {},
-        controller: ['$scope', function earthFrameViewController($scope) {
+        controller: ['$scope', 'config', function earthFrameViewController($scope, config) {
             // -----------------------------
             // all 3D map stuff
             // creates the 3D map viewer
@@ -25,11 +25,10 @@ angular.module("rvtk").directive("earthFrameView", function() {
                 timeline: false,
                 animation: false,
                 homeButton: false,
-                terrainExaggeration : 2.0
             });
 
             // set lighting to true - makes it look more realistic
-            viewer.scene.globe.enableLighting = true;
+            viewer.scene.globe.enableLighting = config.globalLighting;
 
             viewer.terrainProvider = new Cesium.CesiumTerrainProvider({
                 url : 'https://assets.agi.com/stk-terrain/world',
@@ -77,7 +76,7 @@ angular.module("rvtk").directive("earthFrameView", function() {
                 });
                 $scope.recoveryCrews[callsign] = recoveryCrew;
             }
-            
+
 
             // function to move recovery crew 1's longitude and latitude +1 degree
             $scope.movePoints = function(callsign, lat, longi) {
@@ -134,7 +133,7 @@ angular.module("rvtk").directive("earthFrameView", function() {
                 }
             }
 
-            // Changes the camera location and tilt when a new item is selected in the efv 
+            // Changes the camera location and tilt when a new item is selected in the efv
             // camera drop down menu
             $scope.changeCameraView = function() {
                 var viewKey = $scope.selected;
@@ -161,7 +160,7 @@ angular.module("rvtk").directive("earthFrameView", function() {
                     if(key == 'V8A8') {
                         //update anything that uses V8A8 data in cesium
                         $scope.RocketPosition = Cesium.Cartesian3.fromDegrees(data[key].Longitude, data[key].Latitude, data[key].MSL_Altitude);
-                        $scope.moveRocket(data[key].Longitude, data[key].Latitude, data[key].MSL_Altitude);                    
+                        $scope.moveRocket(data[key].Longitude, data[key].Latitude, data[key].MSL_Altitude);
                     }
                 }
 
@@ -180,7 +179,7 @@ angular.module("rvtk").directive("earthFrameView", function() {
 
             });
 
-    
+
 
 
 
