@@ -12,55 +12,125 @@
 md-toolbar.control-bar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.md-menu-toolbar) {
     background-color: #607d2a /* PSAS Green */ }
 
-/* Standard CSS Grid Layout*/
-.view {
+/* Grid Layout */
+.view-container {
+    display: -ms-grid;
+    -ms-grid-colums: 75% 25%;
+    -ms-grid-rows: 25% 25% 25% 25%;
     display: grid;
-    grid-template-columns: 3fr 1fr;
-    grid-template-rows: 50px 1fr 1fr 1fr 1fr;
-    border: 3px solid white; }
-
-/* Video Styling */
-.video-container {
-    grid-column: 1/2;
-    grid-row: 2/5;
+    grid-template-columns: 75% 25%;
+    grid-template-rows: 25% 25% 25% 25%;
+    grid-template-areas:
+        "main sideTop"
+        "main sideTop"
+        "main sideBottom"
+        "bottom sideBottom";
+    grid-column-gap: 3px;
+    grid-row-gap: 3px;
+    align-items: stretch;
+    align-content: stretch;
+    width: 100%;
+    height: 90%;
+    background-image:url('/imgs/PSASLaunch.png');
+    background-size: cover; }
+.main-container {
+    -ms-grid-column: 1;
+    -ms-grid-row: 1;
+    -ms-grid-row-span: 3;
+    grid-area: main;
     align-self: stretch;
-    border: 3px solid white;
+    overflow: hidden !important;
+    opacity: 1.0;
+    transition: opacity 0.5s ease-in-out; }
+.main-container-hide {
+    -ms-grid-column: 1;
+    -ms-grid-row: 1;
+    -ms-grid-row-span: 3;
+    grid-area: main;
+    align-self: stretch;
+    overflow: hidden !important;
+    opacity: 0.0;
+    transition: opacity 0.5s ease-in-out; }
+.sideTop-container {
+    -ms-grid-column: 2;
+    -ms-grid-row: 1;
+    -ms-grid-row-span: 2;
+    grid-area: sideTop;
+    align-self: stretch;
+    overflow: hidden !important;
+    opacity: 1.0;
+    transition: opacity 0.5s ease-in-out; }
+.sideTop-container-hide {
+    -ms-grid-column: 2;
+    -ms-grid-row: 1;
+    -ms-grid-row-span: 2;
+    grid-area: sideTop;
+    align-self: stretch;
+    overflow: hidden !important;
+    opacity: 0.0;
+    transition: opacity 0.5s ease-in-out; }
+.sideBottom-container {
+    -ms-grid-column: 2;
+    -ms-grid-row: 3;
+    -ms-grid-row-span: 2;
+    grid-area: sideBottom;
+    align-self: stretch;
+    overflow: hidden !important;
+    opacity: 1.0;
+    transition: opacity 0.5s ease-in-out; }
+.sideBottom-container-hide {
+    -ms-grid-column: 2;
+    -ms-grid-row: 3;
+    -ms-grid-row-span: 2;
+    grid-area: sideBottom;
+    align-self: stretch;
+    overflow: hidden !important;
+    opacity: 0.0;
+    transition: opacity 0.5s ease-in-out; }
+.bottom-container {
+    -ms-grid-column: 1;
+    -ms-grid-row: 4;
+    -ms-grid-row-span: 1;
+    grid-area: bottom;
+    align-self: stretch;
+    opacity: 1.0;
+    transition: opacity 0.5s ease-in-out; }
+.bottom-container-hide {
+    -ms-grid-column: 1;
+    -ms-grid-row: 4;
+    -ms-grid-row-span: 1;
+    grid-area: bottom;
+    align-self: stretch;
+    opacity: 0.0;
+    transition: opacity 0.5s ease-in-out; }
+
+/* At A Glance Container Styling */
+.atAGlance-container {
     width: 100%;
-    height: 100%;
-}
-#video {
-    width: 100%;
-    height: 600px;
-    background-color: black;
-    grid-column: 1/2;
-    grid-row: 2/5; }
+    height:100%; }
 
 /* Cesium Styling */
-.cesium-widget-credits {
-  /* hides credits */
-  visibility: hidden; }
+#cesiumContainer {
+    height: 100%;
+    width: 100%; }
 .cesium-viewer-toolbar {
-  /* hides search bar panel */
-  visibility:hidden; }
+    /* hides search bar panel */
+    visibility:hidden; }
+.cesium-widget-credits {
+    /* hides credits */
+    visibility: hidden; }
+.cesium-container {
+    width: 100%;
+    height: 100%; }
 #efvCameraDropDown {
     position: absolute;
     z-index: 1; }
 
-/* Earth Frame View Styling */
-.efv-container {
-    grid-column: 2/3;
-    grid-row: 2/4;
-    border: 3px solid white; }
-.cesiumViewer {
+/* HLS Video Player Styling */
+#video {
     width: 100%;
-    height: 400px; }
-
-/* Vehicle Attitude Styling */
-.attitude-container {
-    grid-column: 2/3;
-    grid-row: 4/6;
-    border: 3px solid white;
-}
+    height: 100%;
+    background-color: black; }
 
 /* Telemetry Styling */
 .telemetry-holders {
