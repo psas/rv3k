@@ -27,7 +27,7 @@ app.constant('config', {
     },
     'rocketSize':       300,    // min size in pixels
     'recoveryCrewSize': 3000,   // radius
-    'globalLighting':   false,  // true shades terrain and adds night and day
+    'globalLighting':   true,  // true shades terrain and adds night and day
 
     // PSAS Packet Types
     'ADIS':         'ADIS',

@@ -25,7 +25,6 @@ angular.module("rvtk").directive("earthFrameView", function() {
                 timeline: false,
                 animation: false,
                 homeButton: false,
-                terrainExaggeration : 2.0
             });
 
             // set lighting to true - makes it look more realistic
