@@ -41,7 +41,7 @@ md-toolbar.control-bar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.m
     align-self: stretch;
     overflow: hidden !important;
     opacity: 1.0;
-    transition: opacity 0.5s ease-in-out; }
+    transition: opacity 0.25s ease-in-out; }
 .main-container-hide {
     -ms-grid-column: 1;
     -ms-grid-row: 1;
@@ -50,7 +50,7 @@ md-toolbar.control-bar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.m
     align-self: stretch;
     overflow: hidden !important;
     opacity: 0.0;
-    transition: opacity 0.5s ease-in-out; }
+    transition: opacity 0.25s ease-in-out; }
 .sideTop-container {
     -ms-grid-column: 2;
     -ms-grid-row: 1;
@@ -59,7 +59,7 @@ md-toolbar.control-bar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.m
     align-self: stretch;
     overflow: hidden !important;
     opacity: 1.0;
-    transition: opacity 0.5s ease-in-out; }
+    transition: opacity 0.25s ease-in-out; }
 .sideTop-container-hide {
     -ms-grid-column: 2;
     -ms-grid-row: 1;
@@ -68,7 +68,7 @@ md-toolbar.control-bar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.m
     align-self: stretch;
     overflow: hidden !important;
     opacity: 0.0;
-    transition: opacity 0.5s ease-in-out; }
+    transition: opacity 0.25s ease-in-out; }
 .sideBottom-container {
     -ms-grid-column: 2;
     -ms-grid-row: 3;
@@ -77,7 +77,7 @@ md-toolbar.control-bar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.m
     align-self: stretch;
     overflow: hidden !important;
     opacity: 1.0;
-    transition: opacity 0.5s ease-in-out; }
+    transition: opacity 0.25s ease-in-out; }
 .sideBottom-container-hide {
     -ms-grid-column: 2;
     -ms-grid-row: 3;
@@ -86,7 +86,7 @@ md-toolbar.control-bar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.m
     align-self: stretch;
     overflow: hidden !important;
     opacity: 0.0;
-    transition: opacity 0.5s ease-in-out; }
+    transition: opacity 0.25s ease-in-out; }
 .bottom-container {
     -ms-grid-column: 1;
     -ms-grid-row: 4;
@@ -94,7 +94,7 @@ md-toolbar.control-bar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.m
     grid-area: bottom;
     align-self: stretch;
     opacity: 1.0;
-    transition: opacity 0.5s ease-in-out; }
+    transition: opacity 0.2s ease-in-out; }
 .bottom-container-hide {
     -ms-grid-column: 1;
     -ms-grid-row: 4;
@@ -102,7 +102,7 @@ md-toolbar.control-bar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.m
     grid-area: bottom;
     align-self: stretch;
     opacity: 0.0;
-    transition: opacity 0.5s ease-in-out; }
+    transition: opacity 0.2s ease-in-out; }
 
 /* At A Glance Container Styling */
 .atAGlance-container {

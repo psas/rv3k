@@ -41,13 +41,13 @@ app.controller('MainController', ['$scope', function($scope) {
 
         if (main && sideTop && sideBottom && bottom) {
             main.className = "main-container-hide";
-            sideTop.className = "sideTop-container-hide";
-            sideBottom.className = "sideBottom-container-hide";
-            bottom.className = "bottom-container-hide";
-            setTimeout(function() {main.className = "sideBottom-container"}, 500);
-            setTimeout(function() {sideTop.className = "main-container"}, 500);
-            setTimeout(function() {sideBottom.className = "sideTop-container"}, 500);
-            setTimeout(function() {bottom.className = "bottom-container"}, 500);
+            setTimeout(function() {sideTop.className = "sideTop-container-hide";}, 100);
+            setTimeout(function() {sideBottom.className = "sideBottom-container-hide";}, 200);
+            setTimeout(function() {bottom.className = "bottom-container-hide";}, 300);
+            setTimeout(function() {main.className = "sideBottom-container"}, 800);
+            setTimeout(function() {sideTop.className = "main-container"}, 1000);
+            setTimeout(function() {sideBottom.className = "sideTop-container"}, 900);
+            setTimeout(function() {bottom.className = "bottom-container"}, 700);
         }
     }
 
