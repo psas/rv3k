@@ -19,25 +19,36 @@
 "use strict";
 
 app.constant('config', {
-    // Launch Location
+    // Cesium Configuration
     'launchLocation': {
         'longitude':    -120.6517673,
-        'latitude':     43.7961328
+        'latitude':     43.7961328,
+        'height':       3000
     },
+    'rocketSize':       300,    // min size in pixels
+    'recoveryCrewSize': 3000,   // radius
 
     // PSAS Packet Types
     'ADIS':         'ADIS',
     'V8A8':         'V8A8',
+    'BMP1':         'BMP1',
+    'JGPS':         'JGPS',
+    'SEQN':         'SEQN',
+    'ROLL':         'ROLL',
 
-    // PSAS ADIS Gyro & Acc for attitude.js
+    // PSAS Packet Keys
     'Gyro_X':       'Gyro_X',
     'Gyro_Y':       'Gyro_Y',
     'Gyro_Z':       'Gyro_Z',
     'Acc_X':        'Acc_X',
     'Acc_Y':        'Acc_Y',
     'Acc_Z':        'Acc_Z',
+    'timestamp':    'timestamp',
+    'recv':         'recv',
+
 
     'serverSource': document.domain, // 'paolo215.paolov435.com', //
+
 
     // Vehicle Attitude Configuration
     'FOV':                  50,
