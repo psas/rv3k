@@ -21,7 +21,7 @@
 <div class='telemetry-holders' ng-repeat='(name, format) in formats' >
     <h2> {{name}} </h2>
     <br />
-    <div class="md-whiteframe-6dp cards inline" ng-repeat='(type, data) in format'>
+    <div class="md-whiteframe-6dp cards inline" id={{type}} ng-repeat='(type, data) in format'>
         {{type}}
         <br />
         {{data | number: 5}}

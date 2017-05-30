@@ -26,6 +26,8 @@ angular.module("rvtk").directive("atAGlance", function() {
             // This variable represents the different data formats
             // We are using a set so that we only have one item of a specific type added
             $scope.formats = new Set();
+            // A parallel array with timestamps for each piece of data
+            $scope.formatsTimeStamps = new Set();
 
             // Connect to the server.
             var namespace = '/main';
@@ -45,9 +47,11 @@ angular.module("rvtk").directive("atAGlance", function() {
                     }
                     
                     $scope.formats.add(key);
+                    $scope.formatsTimeStamps.add(key);
                     // The if statement makes sure that we do not clear the old data
                     if(!$scope.formats[key]) {
                         $scope.formats[key] = new Set();
+                        $scope.formatsTimeStamps[key] = new Set();
                     }
 
                     for(var type in data[key]){
@@ -56,12 +60,47 @@ angular.module("rvtk").directive("atAGlance", function() {
                             continue;
                         }
                         $scope.formats[key].add(type);
+                        $scope.formatsTimeStamps[key].add(type);
                         $scope.formats[key][type] = data[key][type];
+                        $scope.formatsTimeStamps[key][type] = Date.now();
                     }
                     // Update the display 
                     $scope.$apply();
                 }
+                // checks to see if the data is stale and changes the background color
+                $scope.dataAging();
             });
+            $scope.dataAging = function() {
+                for(var key in $scope.formatsTimeStamps) {
+                    // Ignore these
+                    if(key == 'BMP1' || key == 'JGPS' || key == 'SEQN' || key == 'ROLL') {
+                        continue;
+                    }
+                    for(var type in $scope.formatsTimeStamps[key]){
+                        var currentTime = Date.now();
+                        // PSAS Green
+                        var color = '#607D2A';
+                        // 12 seconds
+                        if($scope.formatsTimeStamps[key][type] <= currentTime - 12000) {
+                                color = '#BABABA'; 
+                        // 9 seconds
+                        } else if($scope.formatsTimeStamps[key][type] <= currentTime - 9000) {
+                                color = '#A8AD9D';
+                        // 6 seconds
+                        } else if($scope.formatsTimeStamps[key][type] <= currentTime - 6000) {
+                                color = '#8D9B72';
+                        // 3 seconds 
+                        } else if($scope.formatsTimeStamps[key][type] <= currentTime - 3000) {
+                                color = '#728946';
+                        } 
+                        // grab the element
+                        var currentElement = angular.element(document.querySelector('#' + type));
+                        // change it's background color
+                        currentElement.css('background-color', color);
+                    }
+                }
+
+            };
         }],
         templateUrl: 'directives/atAGlance.html'
     }
