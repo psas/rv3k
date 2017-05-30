@@ -224,7 +224,6 @@ app.directive("earthFrameView", function() {
                     $scope.movePoints(callsign, lat, longi);
                 }
             });
-
         }],
         templateUrl: 'directives/earthFrameView.html'
     }

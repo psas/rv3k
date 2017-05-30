@@ -16,45 +16,37 @@ def main():
     parser.add_argument("-t", "--test", action="store_true")
     parser.add_argument("-A", "--aprs", action="store_true")
     parser.add_argument("-T", "--telemetry", action="store_true")
-    # parser.add_argument("-V", "--video", action="store_true")
 
     args = parser.parse_args()
     if True not in vars(args).values():
         parser.print_help()
         return
 
-    # The testing flag is only applied to the telemetry server. This is
-    # appropriate because the test webpage only supports the telemetry server.
-    tel_args = ["python2", "server.py", "-T"]
+    command = ["python2", "server.py"]
+
+
     if args.test:
-        tel_args = ["python2", "server.py", "-t", "-T"]
+        command.append("-t")
     if args.aprs:
-        a_pid = Popen(["python2", "server.py", "-A"])
+        command.append("-A")
     if args.telemetry:
-        t_pid = Popen(tel_args)
-    # if args.video:
-    #     v_pid = Popen(["python2", "server.py", "-V"])
+        command.append("-T")
+
+
+    if not any([args.aprs, args.telemetry]):
+        parser.error("At least one of the arguments (-A | -T) is required")
+        return
+
+    proc = Popen(command)    
 
     try:
-        # This loop checks if each subprocess is still running. If any of the
-        # subprocesses have stopped, then they're restarted.
+        # This loop checks if subprocess is still running. If the
+        # subprocess have stopped, then it is restarted.
         while True:
-            if args.aprs:
-                if a_pid.poll() is not None:
-                    a_pid = Popen(["python2", "server.py", "-A"])
-            if args.telemetry:
-                if t_pid.poll() is not None:
-                    t_pid = Popen(tel_args)
-            # if args.video:
-            #     if v_pid.poll() is not None:
-            #         v_pid = Popen(["python2", "server.py", "-V"])
+            if proc.poll() is not None:
+                proc = Popen(command)
     except KeyboardInterrupt:
-        if args.aprs:
-            a_pid.terminate()
-        if args.telemetry:
-            t_pid.terminate()
-        # if args.video:
-        #     v_pid.terminate()
+        proc.terminate()
         return
 
 if __name__ == "__main__":

@@ -10,34 +10,45 @@ app.controller('MainController', ['$scope', function($scope) {
 
     //initialize variables
     $scope.VisibleCamera = 1;
-    $scope.hideEFV = false;
-    $scope.hideVideo = false;
-    $scope.hideAtt = false;
     $scope.hideView = false;
     $scope.hideAtAGlance = true;
 
-    $scope.showHideVideo = function() {
-        $scope.hideVideo = !$scope.hideVideo;
+    // Toggle between View and At A Glance
+    $scope.toggleView = function() {
+        $scope.hideView = !$scope.hideView;
+        $scope.hideAtAGlance = !$scope.hideAtAGlance;
     }
 
-    $scope.showHideEfv = function() {
-        $scope.hideEFV = !$scope.hideEFV;
-    }
-
-    $scope.showHideAtt = function() {
-        $scope.hideVehicleAttitude = !$scope.hideVehicleAttitude;
-    }
+    // Initial location of each module.
+    var focuses = ['main-container', 'sideTop-container', 'sideBottom-container'];
+    var videoIndex = 0;
+    var efvIndex = 1;
+    var attitudeIndex = 2;
+    $scope.videoFocus = focuses[videoIndex];
+    $scope.efvFocus = focuses[efvIndex];
+    $scope.attitudeFocus = focuses[attitudeIndex];
 
     $scope.toggleView = function() {
         $scope.hideView = !$scope.hideView;
         $scope.hideAtAGlance = !$scope.hideAtAGlance;
     }
 
-    //This funtion changes which video stream appears on the page when the button is clicked
-    $scope.toggleCamera = function() {
-	//to change the number of feeds to toggle through change the number of feeds variable
-	var numberOfFeeds = 2;
-        $scope.VisibleCamera = ++$scope.VisibleCamera%numberOfFeeds;
-    };
+    $scope.switchFocus = function updateTransition() {
+        var main = document.querySelector(".main-container");
+        var sideTop  = document.querySelector(".sideTop-container");
+        var sideBottom = document.querySelector(".sideBottom-container");
+        var bottom = document.querySelector(".bottom-container");
+
+        if (main && sideTop && sideBottom && bottom) {
+            main.className = "main-container-hide";
+            setTimeout(function() {sideTop.className = "sideTop-container-hide";}, 100);
+            setTimeout(function() {sideBottom.className = "sideBottom-container-hide";}, 200);
+            setTimeout(function() {bottom.className = "bottom-container-hide";}, 300);
+            setTimeout(function() {main.className = "sideBottom-container"}, 800);
+            setTimeout(function() {sideTop.className = "main-container"}, 1000);
+            setTimeout(function() {sideBottom.className = "sideTop-container"}, 900);
+            setTimeout(function() {bottom.className = "bottom-container"}, 700);
+        }
+    }
 
 }]);
