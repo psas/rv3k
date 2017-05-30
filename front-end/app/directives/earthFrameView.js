@@ -49,7 +49,6 @@ app.directive("earthFrameView", function() {
                 });
 
                 if (config.cesiumTerrain) {
-                    alert(1);
                     $scope.viewer.terrainProvider = new Cesium.CesiumTerrainProvider({
                         url : 'https://assets.agi.com/stk-terrain/world',
                         requestWaterMask : true,
