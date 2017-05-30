@@ -37,7 +37,7 @@ app.constant('config', {
     'Acc_Y':        'Acc_Y',
     'Acc_Z':        'Acc_Z',
 
-    'serverSource': document.domain, // 'paolo215.paolov435.com', // 
+    'serverSource': document.domain, // 'paolo215.paolov435.com', //
 
     // Vehicle Attitude Configuration
     'FOV':                  50,
@@ -46,14 +46,15 @@ app.constant('config', {
 
     // Video Configuration
     'videoFeeds':   [
+        'http://meg-murry.ddns.net:3586/hls/lava.m3u8',
         'http://paolo215.paolov435.com/hls/live.m3u8',
         'http://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8',
         'http://184.72.239.149/vod/smil:BigBuckBunny.smil/playlist.m3u8',
         'http://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8'
     ],
     'defaultFeed':  0,                      // The index of the default (starting) video feed
-    'numFeeds':     4,
-    'feedsOn':     [true,true,true,true],
+    'numFeeds':     5,
+    'feedsOn':     [true,true,true,true,true],
 
     // HLS.js Video Player configuration
     'hlsConfig':   {
