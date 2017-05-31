@@ -34,7 +34,9 @@ class Telemetry:
         self.thread.daemon = True
         self.lock = lock
         self.log = log
-        logging.basicConfig(filename = 'telemetry_error.log', filemode = "w", level = logging.ERROR) 
+        self.Tel_log = logging.getLogger('telemetry')
+        fh = logging.FileHandler('telemetry_error.log', mode='w')
+        self.Tel_log.addHandler(fh)
 
     def listen(self):
         """Listens for incoming psas packets
@@ -81,13 +83,13 @@ class Telemetry:
                     values["recv"] = timestamp
                     self.sio.emit("telemetry", {fourcc: values}, namespace="/main")
             except Empty:
-                # logging.error('Empty: No incoming telemetry data\n')
+                # self.Tel_log.error('Empty: No incoming telemetry data\n')
                 pass
             except KeyError:
-                logging.error('KeyError\n')
+                self.Tel_log.error('KeyError\n')
                 pass
             except ValueError:
-                logging.error('ValueError\n')
+                self.Tel_log.error('ValueError\n')
                 pass
             except KeyboardInterrupt:
                 return None

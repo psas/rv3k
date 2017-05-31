@@ -34,7 +34,10 @@ class AprsReceiver:
         self.sio = sio
         self.lock = lock
         self.log = log
-        logging.basicConfig(filename ='aprs_error.log', filemode = 'w', level = logging.ERROR)
+        self.aprs_log = logging.getLogger('aprs')
+        fh = logging.FileHandler('aprs_error.log', mode='w')
+        self.aprs_log.addHandler(fh)
+
 
     def parse(self, aprs_packet):
         """
@@ -47,7 +50,7 @@ class AprsReceiver:
         try:
             return aprslib.parse(aprs_packet.strip())
         except (aprslib.ParseError, aprslib.UnknownFormat) as error:
-            logging.error(error, aprs_packet)
+            self.aprs_log.error(error, aprs_packet)
 
 
     def listen(self):
@@ -108,7 +111,7 @@ class AprsReceiver:
                 self.sio.emit("recovery", data, namespace="/main")
                 self.sio.sleep(0.1)
             except KeyError:
-                logging.error('KeyError\n')
+                self.aprs_log.error('KeyError\n')
             except KeyboardInterrupt:
                 return None
 
