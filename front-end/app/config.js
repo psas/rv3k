@@ -23,11 +23,14 @@ app.constant('config', {
     'launchLocation': {
         'longitude':    -120.6517673,
         'latitude':     43.7961328,
-        'height':       3000
+        'altitude':     3000
     },
-    'rocketSize':       300,    // min size in pixels
+    'cesiumTerrain':    true,   // model cesium map with terrain
+    'cesiumRocket':     false,  // use rocket model in cesium
+    'rocketSize':       500,    // min size in pixels
+    'rocketScale':      100,    // max scale when at a distance
     'recoveryCrewSize': 3000,   // radius
-    'globalLighting':   true,  // true shades terrain and adds night and day
+
 
     // PSAS Packet Types
     'ADIS':         'ADIS',
@@ -63,7 +66,7 @@ app.constant('config', {
     // Vehicle Attitude Configuration
     'FOV':                  50,
     'AttitudeWidthRatio':   4.09,   // for 16:9
-    'AttitudeHeightRatio':  2.15,    // for 16:9
+    'AttitudeHeightRatio':  2.15,   // for 16:9
 
     // Video Configuration
     'videoFeeds':   [
@@ -87,14 +90,14 @@ app.constant('config', {
         'maxBufferHole': 0.5,               // Max inter-fragment buffer hole tolerance when searching for next fragment (default 0.5 sec)
         'maxSeekHole': 2,                   // Max buffer hole to jump if playback is stalled (default: 2 sec)
         'liveSyncDurationCount': 1,         // Edge of live delay. Playback starts at N-X fragments.
-                                     // N is most recent fragment. Smaller number could introduce stalls (default: 3)
+                                            // N is most recent fragment. Smaller number could introduce stalls (default: 3)
         'liveMaxLatencyDurationCount': 5,   // Max number of fragments the player is allowed to get behind (default: Infinity)
         'manifestLoadingMaxRetry': 2,       // Number of retries (default: 1)
         'levelLoadingMaxRetry': 4,          // (default: 4)
         'fragLoadingMaxRetry': 6,           // (default: 6)
         'abrBandWidthFactor': 1.1,          // Switch to lower bitrate if bandwidth avg * abrBandWidthFactor < level.bitrate
-                                     // Value > 1 increases likelihood that bitrate is lowered (default: 0.8)
+                                            // Value > 1 increases likelihood that bitrate is lowered (default: 0.8)
         'abrBandWidthUpFactor': 0.3         // Switch to higher bitrate if bandwidth avg * abrBandWidthFactor < level.bitrate
-                                     // Value < 1 increases likelihood that bitrate is raised (default: 0.7)
+                                            // Value < 1 increases likelihood that bitrate is raised (default: 0.7)
     }
 });

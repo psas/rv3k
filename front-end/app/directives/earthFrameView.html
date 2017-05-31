@@ -1,15 +1,22 @@
 <!--
-This file is the template for the earth frame view. It works in conjunction with the earth frame view javaScript file to render a 3D map and all items that appear on that map. Any layout or html for the earth frame view will be in this file.
-
-Copyright (c) 2017 Jeff Patterson, Amanda Murphy, Paolo Villanueva, Patrick Overton, Connor Picken, Yun Cong Chen, Seth Amundsen, Michael Ohl, Matthew Tighe
-ALL RIGHTS RESERVED
-[This program is licensed under the "GNU General Public License"]
-Please see the file COPYING in the source
-distribution of this software for license terms.
+  - This file is the template for the earth frame view. It works in conjunction with the earth frame view javaScript file to render a 3D map and all items that appear on that map. Any layout or html for the earth frame view will be in this file.
+  - Copyright (C) 2017 Jeff Patterson, Amanda Murphy, Paolo Villanueva, Patrick Overton, Connor Picken, Yun Cong Chen, Seth Amundsen
+  - Michael Ohl, Mathew Tighe
+  -
+  - This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License
+  - as published by the Free Software Foundation; either vesion 2 of the License, or (at our option) any later version.
+  -
+  - This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+  - MERCHANTABILITY of FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+  -
+  - ALL RIGHTS RESERVED
+  - This program is licensed under the "GNU General Public License"
+  - Please see the file COPYING in the source
+  - distribution of this software for license terms.
 -->
 
 <!-- drop down menu that changes the camera location and direction -->
-<div id="efvCameraDropDown"> 
+<div id="efvCameraDropDown">
     <select ng-change="changeCameraView()" ng-model="selected" class="cesium-button">
         <option value="top">Top View </option>
         <option value="side">Side View </option>
@@ -18,3 +25,6 @@ distribution of this software for license terms.
 
 <!-- Cesium replaces this div with the 3D map -->
 <div class="cesiumViewer" id="cesiumContainer"></div>
+
+<!-- This function resets hiding that permanently hides cesium on ng-click="hideEFV = !hideEFV"> -->
+<div ng-click="reset()">Reset Earth Frame View</div>
