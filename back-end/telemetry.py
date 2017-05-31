@@ -60,7 +60,6 @@ class Telemetry:
                     fourcc, values = data
                     if not fourcc in messages.MESSAGES:
                         continue
-                    values["recv"] = timestamp
                     collection.append((fourcc, values, timestamp))
 
                 # Enqueues (timestamp, data) without blocking.
@@ -84,6 +83,7 @@ class Telemetry:
                     send_data = {}
                     collection = self.queue.get_nowait()
                     for fourcc, values, timestamp in collection:
+                        values["recv"] = timestamp
                         send_data[fourcc] = values
                     self.sio.emit("telemetry", send_data, namespace="/main")
                     self.queue_log.put_nowait(collection)
