@@ -30,6 +30,7 @@ distribution of this software for license terms.
   <link rel="stylesheet" href="app.css">
   <link rel="stylesheet" href="bower_components/cesium.js/dist/Widgets/widgets.css">
   <link rel="stylesheet" href="/bower_components/angular-material/angular-material.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
   <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js"></script>
   <script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
@@ -44,7 +45,7 @@ distribution of this software for license terms.
   <script src="/bower_components/angular-material/angular-material.js"></script>
 
   <!-- These are necessary for the attitude visualization. -->
-  <script src="bower_components/threejs/build/three.min.js"></script>
+  <script src="bower_components/three.js/three.min.js"></script>
 
   <!-- Eearth Frame View Scripts -->
   <script src="bower_components/cesium.js/dist/Cesium.js"></script>
@@ -76,15 +77,38 @@ distribution of this software for license terms.
     <md-toolbar class="control-bar" style="height: 50px">
         <div class="md-toolbar-tools">
             <img src="imgs/PSASLogo2.png" style="width:50px;height:50px"></img>
+            <p class="psas" flex md-truncate> Portland State Aerospace: Rocket Launch Viewer</p>
+            <md-button class="tool-bar-button" ng-click="switchFocus()">
+                Swap Windows
+            </md-button>
             <md-button class="tool-bar-button" ng-click="toggleVideo()">
                 Change Video Feeds
             </md-button>
             <md-button class="tool-bar-button" ng-click="toggleView()">
-                Toggle at-a-glance view
+                Toggle At-A-Glance View
             </md-button>
-            <md-button class="tool-bar-button" ng-click="switchFocus()">
-                Toggle Focus
+            <md-menu>
+            <md-button class="md-icon-button"ng-mouseenter="$mdMenu.open()">
+                <md-icon md-menu-origin md-svg-icon="imgs/menu.svg"></md-icon>
             </md-button>
+            <md-menu-content width="3" ng-mouseleave="$mdMenu.close()">
+                <md-menu-item style="color: white">
+                    <md-button  ng-click="switchFocus()">
+                        Swap Windows
+                    </md-button>
+                </md-menu-item>
+                <md-menu-item style="color: white">
+                    <md-button ng-click="toggleVideo()">
+                        Change Video Feeds
+                    </md-button>
+                </md-menu-item>
+                <md-menu-divider></md-menu-divider>
+                <md-menu-item style="color: white">
+                    <md-button ng-click="toggleView()">
+                        Toggle At-A-Glance View
+                    </md-button>
+                </md-menu-item>
+            </md-menu-content>
         </div>
     </md-toolbar>
 </md-content>
@@ -110,14 +134,15 @@ distribution of this software for license terms.
             <telemetry-charts></telemetry-charts>
         </md-content>
     </div>
-
-    <div class="atAGlanceContainer" ng-hide="hideAtAGlance">
+</md-content>
+<md-content>
+    <div class="atAGlance-container-hide" ng-hide="hideAtAGlance">
         <at-a-glance></at-a-glance>
     </div>
+</md-content>
 
     <!-- In production use:
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
   -->
-</md-content>
 </body>
 </html>

@@ -12,12 +12,7 @@ app.controller('MainController', ['$scope', function($scope) {
     $scope.VisibleCamera = 1;
     $scope.hideView = false;
     $scope.hideAtAGlance = true;
-
-    // Toggle between View and At A Glance
-    $scope.toggleView = function() {
-        $scope.hideView = !$scope.hideView;
-        $scope.hideAtAGlance = !$scope.hideAtAGlance;
-    }
+    $scope.toggleViewCount = 0;
 
     // Initial location of each module.
     var focuses = ['main-container', 'sideTop-container', 'sideBottom-container'];
@@ -29,7 +24,18 @@ app.controller('MainController', ['$scope', function($scope) {
     $scope.attitudeFocus = focuses[attitudeIndex];
 
     $scope.toggleView = function() {
-        $scope.hideView = !$scope.hideView;
+        var viewVisible = document.querySelector(".view-container");
+        var viewHidden = document.querySelector(".view-container-hide");
+        var atAGlanceVisible = document.querySelector(".atAGlance-container");
+        var atAGlanceHidden = document.querySelector(".atAGlance-container-hide");
+        if ($scope.toggleViewCount%2 == 1) {
+            viewHidden.className = "view-container";
+            atAGlanceVisible.className = "atAGlance-container-hide";
+        } else {
+            viewVisible.className = "view-container-hide";
+            atAGlanceHidden.className = "atAGlance-container";
+        }
+        $scope.toggleViewCount++;
         $scope.hideAtAGlance = !$scope.hideAtAGlance;
     }
 
