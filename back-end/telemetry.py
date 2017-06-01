@@ -85,6 +85,10 @@ class Telemetry:
                     for fourcc, values, timestamp in collection:
                         values["recv"] = timestamp
                         send_data[fourcc] = values
+                    
+                        # For performance testing
+                        if fourcc == "SEQN":
+                            print(values["Sequence"])
                     self.sio.emit("telemetry", send_data, namespace="/main")
                     self.queue_log.put_nowait(collection)
             except Empty:
