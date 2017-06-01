@@ -192,6 +192,7 @@ md-menu-content {
 /* Telemetry Charts Styling */
 .charts {
     display: inline-block;
+    height: 100%; 
     width: 49%; }
 
 /* blue telemetry cards */
