@@ -9,28 +9,22 @@
 /* app css stylesheet */
 @font-face {
     font-family: "Akashi";
-    src: url("fonts/akashi.ttf") format('truetype');
-}
+    src: url("fonts/akashi.ttf") format('truetype'); }
 @font-face {
     font-family: "Exo";
-    src: url("fonts/Exo-Regular.otf") format('opentype');
-}
+    src: url("fonts/Exo-Regular.otf") format('opentype'); }
 @font-face {
     font-family: "Aller";
-    src: url("fonts/Aller_Rg.ttf") format('truetype');
-}
+    src: url("fonts/Aller_Rg.ttf") format('truetype'); }
 @font-face {
     font-family: "Amaranth";
-    src: url("fonts/Amaranth-Regular.otf") format('opentype');
-}
+    src: url("fonts/Amaranth-Regular.otf") format('opentype'); }
 @font-face {
     font-family: "AUdimat";
-    src: url("fonts/AUdimat-Regular.otf") format('opentype');
-}
+    src: url("fonts/AUdimat-Regular.otf") format('opentype'); }
 @font-face {
     font-family: "Junction";
-    src: url("fonts/Junction-regular.otf") format('opentype');
-}
+    src: url("fonts/Junction-regular.otf") format('opentype'); }
 
 /* Toolbar Styling */
 md-toolbar.control-bar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.md-menu-toolbar) {
