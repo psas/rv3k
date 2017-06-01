@@ -75,9 +75,9 @@ distribution of this software for license terms.
 <md-content>
     <!-- Angular Material Toolbar + Nav Bar -->
     <md-toolbar class="control-bar" style="height: 50px">
-        <div class="md-toolbar-tools">
+        <div class="md-toolbar-tools" ng-cloak>
             <img src="imgs/PSASLogo2.png" style="width:50px;height:50px"></img>
-            <p class="psas" flex md-truncate> Portland State Aerospace: Rocket Launch Viewer</p>
+            <p class="toolbar-title" flex md-truncate> Portland State Aerospace: Rocket Launch Viewer</p>
             <md-button class="tool-bar-button" ng-click="switchFocus()">
                 Swap Windows
             </md-button>
@@ -136,7 +136,7 @@ distribution of this software for license terms.
     </div>
 </md-content>
 <md-content>
-    <div class="atAGlance-container-hide" ng-hide="hideAtAGlance">
+    <div class="atAGlance-container" ng-hide="hideAtAGlance">
         <at-a-glance></at-a-glance>
     </div>
 </md-content>

@@ -23,22 +23,20 @@ app.controller('MainController', ['$scope', function($scope) {
     $scope.efvFocus = focuses[efvIndex];
     $scope.attitudeFocus = focuses[attitudeIndex];
 
+    // Switches the View of the web page from Visual Elements to At-A-Glance Rocket Data
     $scope.toggleView = function() {
         var viewVisible = document.querySelector(".view-container");
         var viewHidden = document.querySelector(".view-container-hide");
-        var atAGlanceVisible = document.querySelector(".atAGlance-container");
-        var atAGlanceHidden = document.querySelector(".atAGlance-container-hide");
         if ($scope.toggleViewCount%2 == 1) {
             viewHidden.className = "view-container";
-            atAGlanceVisible.className = "atAGlance-container-hide";
         } else {
             viewVisible.className = "view-container-hide";
-            atAGlanceHidden.className = "atAGlance-container";
         }
         $scope.toggleViewCount++;
         $scope.hideAtAGlance = !$scope.hideAtAGlance;
     }
 
+    // Rotates the position of the Launch Video, Earth Frame View, and Rocket Attitude
     $scope.switchFocus = function updateTransition() {
         var main = document.querySelector(".main-container");
         var sideTop  = document.querySelector(".sideTop-container");
