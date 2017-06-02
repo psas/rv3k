@@ -80,8 +80,6 @@ distribution of this software for license terms.
         <div class="md-toolbar-tools" ng-cloak>
             <!-- PSAS Logo -->
             <img src="assets/PSASLogo2.png" style="width:50px;height:50px"></img>
-            <!-- Toolbar Title -->
-            <p class="toolbar-title" flex md-truncate> Portland State Aerospace: Rocket View 3000</p>
             <!-- Toolbar Buttons -->
             <md-button class="tool-bar-button" ng-click="switchFocus()">
                 Swap Windows
@@ -92,32 +90,6 @@ distribution of this software for license terms.
             <md-button class="tool-bar-button" ng-click="toggleView()">
                 Toggle At-A-Glance View
             </md-button>
-            <!-- Toolbar Dropdown Menu with hover -->
-            <md-menu>
-                <!-- Menu Button: Opens on Hover -->
-                <md-button class="md-icon-button"ng-mouseenter="$mdMenu.open()">
-                    <md-icon md-menu-origin md-svg-icon="assets/menu.svg"></md-icon>
-                </md-button>
-                <md-menu-content width="3" ng-mouseleave="$mdMenu.close()">
-                    <!-- Menu Items -->
-                    <md-menu-item style="color: white">
-                        <md-button  ng-click="switchFocus()">
-                            Swap Windows
-                        </md-button>
-                    </md-menu-item>
-                    <md-menu-item style="color: white">
-                        <md-button ng-click="toggleVideo()">
-                            Change Video Feed
-                        </md-button>
-                    </md-menu-item>
-                    <md-menu-divider></md-menu-divider>
-                    <md-menu-item style="color: white">
-                        <md-button ng-click="toggleView()">
-                            Toggle At-A-Glance View
-                        </md-button>
-                    </md-menu-item>
-                </md-menu-content>
-            </md-menu>
         </div>
     </md-toolbar>
 </md-content>
