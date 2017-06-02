@@ -16,6 +16,8 @@ import aprslib
 import time
 from psas_packet import messages
 import logging
+import traceback
+import sys
 
 
 is_parsed = aprs_source_input.is_parsed
@@ -50,7 +52,8 @@ class AprsReceiver:
         try:
             return aprslib.parse(aprs_packet.strip())
         except (aprslib.ParseError, aprslib.UnknownFormat) as error:
-            self.aprs_log.error(error, aprs_packet)
+            self.aprs_log.error(traceback.format_exc())
+            traceback.print_exc(file=sys.stdout)
 
 
     def listen(self):
@@ -111,7 +114,8 @@ class AprsReceiver:
                 self.sio.emit("recovery", data, namespace="/main")
                 self.sio.sleep(0.1)
             except KeyError:
-                self.aprs_log.error('KeyError\n')
+                self.aprs_log.error(traceback.format_exc())
+                traceback.print_exc(file=sys.stdout)
             except KeyboardInterrupt:
                 return None
 
