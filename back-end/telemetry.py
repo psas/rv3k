@@ -37,11 +37,11 @@ class Telemetry:
         self.lock = lock
         self.log = log
         
-        #Tel_log is a logging object that logs any error messages thrown in
+        #error_log is a logging object that logs any error messages thrown in
         #telemetry.py to telemery_error.log
-        self.Tel_log = logging.getLogger('telemetry')
+        self.error_log = logging.getLogger('telemetry')
         fh = logging.FileHandler('telemetry_error.log', mode='w')
-        self.Tel_log.addHandler(fh)
+        self.error_log.addHandler(fh)
 
     def listen(self):
         """Listens for incoming psas packets
@@ -91,15 +91,15 @@ class Telemetry:
                 # This exception is raised every time the while loop does another pass
                 # with no telemetry data is being received
                 
-                # self.Tel_log.error(traceback.format_exc())  # logs erro to file
+                # self.error_log.error(traceback.format_exc())  # logs erro to file
                 # traceback.print_exc(file=sys.stdout)
                 pass
             except KeyError:
-                self.Tel_log.error(traceback.format_exc())
+                self.error_log.error(traceback.format_exc())
                 traceback.print_exc(file=sys.stdout)
                 pass
             except ValueError:
-                self.Tel_log.error(traceback.format_exc())
+                self.error_log.error(traceback.format_exc())
                 traceback.print_exc(file=sys.stdout)
                 pass
             except KeyboardInterrupt:
