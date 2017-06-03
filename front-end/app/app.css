@@ -174,7 +174,20 @@ md-menu-content {
 /* Telemetry Charts Styling */
 .charts {
     display: inline-block;
+    height: 100%;
     width: 49%; }
+@-moz-document url-prefix() {
+    .charts {
+        display: inline-block;
+        height: 100%;
+        width: 49%; }
+}
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+    .charts {
+        display: inline-block;
+        height: 25%;
+        width: 49%; }
+}
 
 /* blue telemetry cards */
 .cards {

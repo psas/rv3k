@@ -97,6 +97,7 @@ app.directive("telemetryCharts", function() {
             $scope.Acc_Series = ['X', 'Y', 'Z'];
             $scope.Acc_Data = [[], [], []];
             $scope.Acc_Options = {
+                maintainAspectRatio: false,
                 scales: {
                     yAxes: [{
                         ticks: {
@@ -133,6 +134,7 @@ app.directive("telemetryCharts", function() {
             $scope.Gyro_Series = ['X', 'Y', 'Z'];
             $scope.Gyro_Data = [[], [], []];
             $scope.Gyro_Options = {
+                maintainAspectRatio: false,
                 scales: {
                     yAxes: [{
                         ticks: {
@@ -197,6 +199,7 @@ app.directive("telemetryCharts", function() {
             $scope.Altitude_Labels = [];
             $scope.Altitude_Series = ["Ellipsoid Altitude"];
             $scope.Altitude_Options = {
+                maintainAspectRatio: false,
                 scales: {
                     yAxes: [{
                         ticks: {
@@ -229,6 +232,7 @@ app.directive("telemetryCharts", function() {
             $scope.Speed_Labels = [];
             $scope.Speed_Series = ["Speed"];
             $scope.Speed_Options = {
+                maintainAspectRatio: false,
                 scales: {
                     yAxes: [{
                         ticks: {
