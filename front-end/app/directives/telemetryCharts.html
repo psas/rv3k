@@ -1,0 +1,49 @@
+<!--
+Copyright (c) 2017 Jeff Patterson, Amanda Murphy, Paolo Villanueva, Patrick Overton, Connor Picken, Yun Cong Chen, Seth Amundsen, Michael Ohl, Matthew Tighe
+ALL RIGHTS RESERVED
+[This program is licensed under the "GNU General Public License"]
+Please see the file COPYING in the source
+distribution of this software for license terms.
+-->
+
+<!-- This is where the charts are created on the page -->
+<div class="charts">
+    <canvas id="acc-bar"
+        class="chart chart-line"
+        chart-data="Acc_Data"
+        chart-labels="Acc_Labels"
+        chart-series="Acc_Series"
+        chart-options="Acc_Options"
+        chart-colors="Acc_Gyro_Colors">
+    </canvas>
+</div>
+<div class="charts">
+    <canvas id="gyro-bar"
+        class="chart chart-line"
+        chart-data="Gyro_Data"
+        chart-labels="Gyro_Labels"
+        chart-series="Gyro_Series"
+        chart-options="Gyro_Options"
+        chart-colors="Acc_Gyro_Colors">
+    </canvas>
+</div>
+<div class="charts">
+    <canvas id="altitude-bar"
+        class="chart chart-line"
+        chart-data="Altitude_Data"
+        chart-labels="Altitude_Labels"
+        chart-series="Altitude_Series"
+        chart-options="Altitude_Options"
+        chart-colors="Altitude_Speed_Colors">
+    </canvas>
+</div>
+<div class="charts">
+    <canvas id="speed-bar"
+        class="chart chart-line"
+        chart-data="Speed_Data"
+        chart-labels="Speed_Labels"
+        chart-series="Speed_Series"
+        chart-options="Speed_Options"
+        chart-colors="Altitude_Speed_Colors">
+    </canvas>
+</div>

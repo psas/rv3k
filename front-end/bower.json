@@ -1,0 +1,20 @@
+{
+  "name": "rv3k",
+  "description": "A telemetry viewer for PSAS",
+  "version": "0.0.3",
+  "homepage": "https://github.com/patter5/rv3k",
+  "license": "gpl v2",
+  "private": false,
+  "dependencies": {
+    "angular": "^1.6.x",
+    "angular-material": "^1.1.4",
+    "hls.js": "^0.7.6",
+    "cesium.js": "^1.33.0",
+    "three.js": "^0.84.0",
+    "angular-chart.js": "^1.1.1",
+    "jquery": "^3.2.1"
+  },
+  "resolutions": {
+    "angular": "^1.6.x"
+  }
+}

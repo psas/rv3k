@@ -1,0 +1,204 @@
+/**
+ * Copyright (c) 2017 Jeff Patterson, Amanda Murphy, Paolo Villanueva, Patrick Overton, Connor Picken, Yun Cong Chen, Seth Amundsen, Michael Ohl, Matthew Tighe
+ * ALL RIGHTS RESERVED
+ * [This program is licensed under the "GNU General Public License"]
+ * Please see the file COPYING in the source
+ * distribution of this software for license terms.
+ */
+
+/* app css stylesheet */
+
+/* Toolbar Styling */
+md-toolbar.control-bar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.md-menu-toolbar) {
+    background-color: #607d2a; /* PSAS Green */ }
+md-menu-item:hover {
+    cursor: pointer;
+    background-color: #335100; /* PSAS Dark Green */ }
+md-menu-content {
+    font-variant: small-caps;
+    color: white;
+    background-color: #607d2a; }
+.toolbar-title {
+    font-variant: small-caps;
+    font-family: Akashi;
+    font-size: 125%;
+    margin-left: 20px;
+    white-space: nowrap;
+    overflow: hidden; }
+
+/* Grid Layout */
+.view-container {
+    display: -ms-grid;
+    -ms-grid-colums: 75% 25%;
+    -ms-grid-rows: 25% 25% 25% 25%;
+    display: grid;
+    grid-template-columns: 75% 25%;
+    grid-template-rows: 25% 25% 25% 25%;
+    grid-template-areas:
+        "main sideTop"
+        "main sideTop"
+        "main sideBottom"
+        "bottom sideBottom";
+    grid-column-gap: 3px;
+    grid-row-gap: 3px;
+    align-items: stretch;
+    align-content: stretch;
+    width: 100%;
+    height: 91%;
+    transition: height 1s;
+    background-image:url('/assets/PSASLaunch.png');
+    background-size: cover;
+    overflow: hidden !important; }
+.view-container-hide {
+    display: -ms-grid;
+    -ms-grid-colums: 75% 25%;
+    -ms-grid-rows: 25% 25% 25% 25%;
+    display: grid;
+    grid-template-columns: 75% 25%;
+    grid-template-rows: 25% 25% 25% 25%;
+    grid-template-areas:
+        "main sideTop"
+        "main sideTop"
+        "main sideBottom"
+        "bottom sideBottom";
+    grid-column-gap: 3px;
+    grid-row-gap: 3px;
+    align-items: stretch;
+    align-content: stretch;
+    width: 100%;
+    height: 0%;
+    transition: height 1s;
+    background-image:url('/assets/PSASLaunch.png');
+    background-size: cover;
+    overflow: hidden !important; }
+.main-container {
+    -ms-grid-column: 1;
+    -ms-grid-row: 1;
+    -ms-grid-row-span: 3;
+    grid-area: main;
+    align-self: stretch;
+    overflow: hidden !important;
+    opacity: 1.0;
+    transition: opacity 0.25s ease-in-out; }
+.main-container-hide {
+    -ms-grid-column: 1;
+    -ms-grid-row: 1;
+    -ms-grid-row-span: 3;
+    grid-area: main;
+    align-self: stretch;
+    overflow: hidden !important;
+    opacity: 0.0;
+    transition: opacity 0.25s ease-in-out; }
+.sideTop-container {
+    -ms-grid-column: 2;
+    -ms-grid-row: 1;
+    -ms-grid-row-span: 2;
+    grid-area: sideTop;
+    align-self: stretch;
+    overflow: hidden !important;
+    opacity: 1.0;
+    transition: opacity 0.25s ease-in-out; }
+.sideTop-container-hide {
+    -ms-grid-column: 2;
+    -ms-grid-row: 1;
+    -ms-grid-row-span: 2;
+    grid-area: sideTop;
+    align-self: stretch;
+    overflow: hidden !important;
+    opacity: 0.0;
+    transition: opacity 0.25s ease-in-out; }
+.sideBottom-container {
+    -ms-grid-column: 2;
+    -ms-grid-row: 3;
+    -ms-grid-row-span: 2;
+    grid-area: sideBottom;
+    align-self: stretch;
+    overflow: hidden !important;
+    opacity: 1.0;
+    transition: opacity 0.25s ease-in-out; }
+.sideBottom-container-hide {
+    -ms-grid-column: 2;
+    -ms-grid-row: 3;
+    -ms-grid-row-span: 2;
+    grid-area: sideBottom;
+    align-self: stretch;
+    overflow: hidden !important;
+    opacity: 0.0;
+    transition: opacity 0.25s ease-in-out; }
+.bottom-container {
+    -ms-grid-column: 1;
+    -ms-grid-row: 4;
+    -ms-grid-row-span: 1;
+    grid-area: bottom;
+    align-self: stretch;
+    opacity: 1.0;
+    transition: opacity 0.2s ease-in-out; }
+.bottom-container-hide {
+    -ms-grid-column: 1;
+    -ms-grid-row: 4;
+    -ms-grid-row-span: 1;
+    grid-area: bottom;
+    align-self: stretch;
+    opacity: 0.0;
+    transition: opacity 0.2s ease-in-out; }
+
+/* At A Glance Container Styling */
+.atAGlance-container {
+    width: 100%;
+    height:88%;
+    transition: height 1s; }
+
+/* Cesium Styling */
+#cesiumContainer {
+    height: 100%;
+    width: 100%; }
+.cesium-viewer-toolbar {
+    /* hides search bar panel */
+    visibility:hidden; }
+.cesium-widget-credits {
+    /* hides credits */
+    visibility: hidden; }
+.cesium-container {
+    width: 100%;
+    height: 100%; }
+#efvCameraDropDown {
+    position: absolute;
+    z-index: 1; }
+
+/* HLS Video Player Styling */
+#video {
+    width: 100%;
+    height: 100%;
+    background-color: black; }
+
+/* Telemetry Charts Styling */
+.charts {
+    display: inline-block;
+    height: 100%;
+    width: 49%; }
+@-moz-document url-prefix() {
+    .charts {
+        display: inline-block;
+        height: 100%;
+        width: 49%; }
+}
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+    .charts {
+        display: inline-block;
+        height: 25%;
+        width: 49%; }
+}
+
+/* blue telemetry cards */
+.cards {
+    min-width: 125px;
+    background-color: #607d2a;
+    padding: 30px;
+    margin: 20px; }
+.telemetry-holders {
+    padding: 20px;
+    text-align: center; }
+/* handles anything that needs to be an inline block */
+.inline {
+    vertical-align:top;
+    display: inline-block; }

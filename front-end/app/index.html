@@ -1,0 +1,130 @@
+<!-- index.html handles the layout for the rv3k UI
+Copyright (c) 2017 Jeff Patterson, Amanda Murphy, Paolo Villanueva, Patrick Overton, Connor Picken, Yun Cong Chen, Seth Amundsen, Michael Ohl, Matthew Tighe
+ALL RIGHTS RESERVED
+[This program is licensed under the "GNU General Public License"]
+Please see the file COPYING in the source
+distribution of this software for license terms.
+-->
+
+<!DOCTYPE html lang="en">
+<!--[if lt IE 7]>      <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html lang="en" ng-app="rvtk" class="no-js"> <!--<![endif]-->
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Rocket View 3000</title>
+  <meta name="description" content="">
+  <!-- Icons -->
+  <link rel="icon" href="favicon.ico"/>
+
+  <!-- angular-material setting -->
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+
+  <!-- STYLESHEETS -->
+  <link rel="stylesheet" href="app.css">
+  <link rel="stylesheet" href="bower_components/cesium.js/dist/Widgets/widgets.css">
+  <link rel="stylesheet" href="/bower_components/angular-material/angular-material.css">
+
+  <!-- Socket IO Dependencies -->
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js"></script>
+
+  <!-- ANGULAR core -->
+  <script src="bower_components/angular/angular.js"></script>
+
+  <!-- Angular Material Dependencies -->
+  <script src="/bower_components/angular-aria/angular-aria.js"></script>
+  <script src="/bower_components/angular-animate/angular-animate.js"></script>
+  <script src="/bower_components/angular-material/angular-material.js"></script>
+
+
+  <!-- THREE.js Script for Vehichle Attitude -->
+
+  <script src="bower_components/three.js/three.min.js"></script>
+
+  <!-- Cesium Script for Earth Frame View -->
+  <script src="bower_components/cesium.js/dist/Cesium.js"></script>
+
+  <!-- Video Module Script for HLS.js Video Player -->
+  <script src="bower_components/hls.js/dist/hls.min.js"></script>
+
+  <!-- Angular-Chart Scripts for Telemetry Charts-->
+  <script src="bower_components/chart.js/dist/Chart.min.js"></script>
+  <script src="bower_components/angular-chart.js/dist/angular-chart.min.js"></script>
+
+  <!-- JQuery Script-->
+  <script src="bower_components/jquery/dist/jquery.min.js"></script>
+
+    <!-- Angular App and Config-->
+  <script src="app.js"></script>
+  <script src="config.js"></script>
+
+  <!-- Angular Controller -->
+  <script src="controllers/main-controller.js"></script>
+
+  <!-- Angular Directives -->
+  <script src="directives/attitude.js"></script>
+  <script src="directives/telemetryCharts.js"></script>
+  <script src="directives/earthFrameView.js"></script>
+  <script src="directives/hlsjsVideo.js"></script>
+  <script src="directives/atAGlance.js"></script>
+</head>
+<body ng-controller="MainController" ng-cloak>
+<md-content>
+    <!-- Angular Material Toolbar + Nav Bar -->
+    <md-toolbar class="control-bar" style="height: 50px">
+        <div class="md-toolbar-tools" ng-cloak>
+            <!-- PSAS Logo -->
+            <img src="assets/PSASLogo2.png" style="width:50px;height:50px"></img>
+            <!-- Toolbar Buttons -->
+            <md-button class="tool-bar-button" ng-click="switchFocus()">
+                Swap Windows
+            </md-button>
+            <md-button class="tool-bar-button" ng-click="toggleVideo()">
+                Change Video Feed
+            </md-button>
+            <md-button class="tool-bar-button" ng-click="toggleView()">
+                Toggle At-A-Glance View
+            </md-button>
+        </div>
+    </md-toolbar>
+</md-content>
+
+<md-content>
+    <!-- This graphics board holds the EFV, video, and vehicle attitude.-->
+    <div class="view-container" ng-hide="hideView">
+        <!-- Streaming Video Content -->
+        <md-content ng-class="videoFocus">
+            <hlsjs-video></hlsjs-video>
+        </md-content>
+        <!-- earthFrameView Content -->
+        <md-content ng-class="efvFocus">
+            <earth-frame-view></earth-frame-view>
+        </md-content>
+        <!-- Vehicle Attitude Content -->
+        <md-content layout-fill ng-class="attitudeFocus">
+            <!-- Canvas sizes the element for THREE.js rendering -->
+            <canvas id="attitude-canvas" style="height: 100%; width: 100%">
+                <attitude></attitude>
+            </canvas>
+        </md-content>
+        <!-- Telemetry Charts Content -->
+        <md-content class="bottom-container">
+            <telemetry-charts></telemetry-charts>
+        </md-content>
+    </div>
+</md-content>
+<md-content>
+    <!-- At A Glance Data Tiles Content -->
+    <div class="atAGlance-container" ng-hide="hideAtAGlance">
+        <at-a-glance></at-a-glance>
+    </div>
+</md-content>
+
+    <!-- In production use:
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
+  -->
+</body>
+</html>
