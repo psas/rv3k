@@ -1,0 +1,278 @@
+%% Term 1 Capstone Presentation Team RV3K
+%% Copyright (C) 2017 Amanda Murphy, Jeff Patterson, Patrick Overton, Matt Tighe, Yun Cong Chen, Seth Amundsen, Paolo Villnueva, Michael Ohl, Connor Picken
+\newcommand{\version}{v0.0.1} %% Set version
+%% GPL v2.0 License : See Copying for more info
+\documentclass[smaller, aspectratio=169]{beamer}
+  \usepackage{tikz}
+  \usepackage{pgfplots}
+  \usepackage{hyperref}
+  \usepackage[sfdefault]{FiraSans}
+  \usepackage{geometry}
+  %\usepackage{beamerthemeshadow} %% uncomment for slideshow
+  %\usepackage{metropolis}
+  % \usepackage{pgfpages} %% uncomment for handout format
+  % \pgfpagesuselayout{4 on 1}[letterpaper,border shrink=5mm] %% uncomment for handout format
+
+  \mode<presentation>{
+        \usetheme[
+          %titleformat=smallcaps,
+          titleformat = smallcaps
+        ]{metropolis}
+        \useoutertheme{metropolis}
+        \useinnertheme{metropolis}
+        \usecolortheme{metropolis}
+        \usefonttheme{metropolis}
+  }
+
+  %Global Background must be put in preamble
+  %\usebackgroundtemplate%
+  %{%
+  %    \includegraphics[width=\paperwidth,height=\paperheight]{}%
+  %}
+
+  %\usepackage[latin1]{inputenc}
+  % oder was auch immer
+
+  % \usepackage[default]{sourcesanspro}
+  % \usepackage[T1]{fontenc}
+  % \usepackage{hyperref}
+  %\usepackage{helvet}
+  %\usepackage[sfdefault]{merriweather}
+
+
+
+  \title[Short Title]{Team RV3K}
+  \subtitle[insert subtitle]{CS Capstone 2017 --- Rocket View 3000 \\ {\small Sponsor: Andrew Greenberg, Portland State Aerospace Society}}
+  \author{Amanda Murphy, Jeff Patterson, Patrick Overton, Matt Tighe, Yun Cong Chen, Seth Amundsen, Paolo Villanueva, Michael Ohl, Connor Picken }
+  \institute{Portland State University \\ Maseeh College of Engineering and Computer Science}
+  \date{\today}
+
+\begin{document}
+
+  \begin{frame}[standout]
+    \begin{tikzpicture}
+
+      \coordinate (O) at (0,0,0);
+      \coordinate (A) at (4,2.5,-2);
+      \coordinate (B) at (4,0,-2);
+      \draw[->]         (0,0,0) to  (5,0,0)   node[anchor=north east]{};
+      \draw[->] (0,0,0) to  (0,3,0)   node[anchor=north east]{};
+      \draw[->, dotted] (0,0,0) to  (0,-.5,0) node[anchor=north east]{};
+      \draw[->, dotted] (0,0,0) to  (0,0,-5)  node[anchor=east]{};
+      \draw[->]         (0,0,0) to  (0,0,1)   node[anchor=east]{};
+      \draw[color=red, ultra thick] (O) to [out=70, in=100] (A);
+      %\draw[white, thick, dotted, domain=0:5] plot (\x, {0-\x*\x + 5*\x});
+      \draw[dotted, thick, ->] (A) to (B) node{$x$};
+      %\draw[color=red] (O) to [bend left= 60] (A);
+      \draw[color=white, fill=white] (A) circle[radius=.15];
+    \end{tikzpicture}
+
+    \Huge{RV3K}
+  \end{frame}
+
+  \begin{frame}{}
+    \titlepage
+    %\framesubtitle{stuff in slide 1}
+  \end{frame}
+
+  \begin{frame}{Introduction}
+    \begin{itemize}
+      \item Product
+      \begin{itemize}
+        \item Product Features
+        \item Assumptions and constraints
+      \end{itemize}
+      \item Process, schedule, and deliverables
+      \item Risk analysis: across iterations
+      \item What we learned
+    \end{itemize}
+  \end{frame}
+
+  % The Product
+  \begin{frame}[standout]
+    \Huge{What is RV3K?}
+  \end{frame}
+
+  \section{Features}
+
+
+  \begin{frame}{Features: Video Display}
+    \includegraphics[scale=.4]{./imgs/video.png}
+  \end{frame}
+
+  \begin{frame}{Features: Earth Frame View}
+    \begin{center}
+      \includegraphics[scale=.5]{./imgs/efv.png}
+    \end{center}
+  \end{frame}
+
+  \begin{frame}{Features: Vehicle attitude view}
+    \begin{center}
+      \includegraphics[scale=.33]{./imgs/attitude.png}
+    \end{center}
+    \href{https://youtu.be/SqB1a36bGHA}{Video}
+  \end{frame}
+
+  \begin{frame}{Features: Telemetry data}
+    \begin{center}
+      \includegraphics[scale=.45]{./imgs/tel-data.png}
+    \end{center}
+  \end{frame}
+
+
+    \begin{frame}{Features: Server}
+      \begin{center}
+        \includegraphics[scale=.7]{./imgs/web-server.jpg}
+      \end{center}
+    \end{frame}
+
+    \begin{frame}{Features: Instrumentation and logging}
+      \begin{itemize}
+        \item Purpose
+        \begin{itemize}
+          \item To facilitate debugging traceability, and configuration
+        \end{itemize}
+        \item Functionality
+        \begin{itemize}
+          \item Logs connection status, errors, and relevent events
+        \end{itemize}
+      \end{itemize}
+    \end{frame}
+
+
+
+  \begin{frame}[standout]
+    \Huge{Assumptions \& Constraints}
+  \end{frame}
+
+  \begin{frame}{Process and Schedule}
+    \begin{center}
+    \begin{tabular}{l c c c}
+    Planned Process & Actual Process & Planned Schedule & Actual Schedule \\
+    \hline
+      {\bf Project Plan} & Same & Weekly & 3 iterations \\
+
+      {\bf Requirements Elicitation} & Same & week 0 to Feb 18th & March 7 \\
+
+      {\bf Risk Plan} & Same & ongoing & ongoing \\
+
+      {\bf SRS/License Agreement} & Same  & Feb 7 - Feb 18  & Feb 7 - March 14 \\
+
+      {\bf SDD} & SDD draft & Feb 18 - March 20 & Feb 21 - March 13 \\
+
+    \end{tabular}
+    \end{center}
+    Used Trello and GitHub Issues/Milestones/Projects to track tasks
+  \end{frame}
+
+    \begin{frame}{Process and Schedule: Term 2}
+      \begin{columns}
+
+      \begin{column}{.25\textwidth}
+        \begin{block}{Estimated Capacity}
+          864 hours
+
+          + 216 hours of slack time
+
+          (96 hours per person)
+          \end{block}
+        \end{column}
+
+
+        \begin{column}{.15\textwidth}
+          \begin{block}{Back End}
+            396 hours
+          \end{block}
+        \end{column}
+
+        \begin{column}{.01\textwidth}
+          \begin{block}{+}
+          \end{block}
+        \end{column}
+
+        \begin{column}{.15\textwidth}
+          \begin{block}{Front End}
+            468 hours
+          \end{block}
+        \end{column}
+
+      \end{columns}
+      \bigskip
+
+      With tasks broken down into 1 hour long pieces.
+    \end{frame}
+
+
+
+  \begin{frame}{Term 1 Deliverables}
+    \begin{itemize}
+        \item Project Plan
+        \item Risk Management Plan
+        \item Software Requirements Specification
+        \item License Agreement
+        \item SDD draft
+    \end{itemize}
+  \end{frame}
+
+  \begin{frame}[standout]
+    \Huge Risk Analysis
+  \end{frame}
+
+  \begin{frame}[standout]
+    Lessons Learned
+  \end{frame}
+
+  \begin{frame}{Lessons: Collaboration with GitHub / Working as a Team}
+    \begin{center}
+      \includegraphics[scale=.45]{./imgs/git.jpg}
+    \end{center}
+  \end{frame}
+
+  \begin{frame}{Lessons: Working with Sponsors}
+    \begin{center}
+      \includegraphics[scale=.15]{./imgs/wws.jpg}
+    \end{center}
+  \end{frame}
+
+  \begin{frame}{Lessons: PSAS Community}
+    \begin{center}
+      \includegraphics[scale=.15]{./imgs/psas.jpg}
+    \end{center}
+  \end{frame}
+  %\section{amanda-efv}
+  % \input{efv.tex}
+  %
+  % %\section{seth-mike}
+  % \input{VideoProcessing.tex}
+  %
+  %
+  % \input{attitude.tex}
+  %
+  % %\input{use-case.tex}
+  %
+  % \begin{frame}[standout]
+  %   \Huge{Use Cases}
+  % \end{frame}
+  \begin{frame}[standout]
+    Thank You!
+
+    \begin{tikzpicture}
+
+      \coordinate (O) at (0,0,0);
+      \coordinate (A) at (4,2.5,-2);
+      \coordinate (B) at (4,0,-2);
+      \draw[->]         (0,0,0) to  (5,0,0)   node[anchor=north east]{};
+      \draw[->] (0,0,0) to  (0,3,0)   node[anchor=north east]{};
+      \draw[->, dotted] (0,0,0) to  (0,-.5,0) node[anchor=north east]{};
+      \draw[->, dotted] (0,0,0) to  (0,0,-5)  node[anchor=east]{};
+      \draw[->]         (0,0,0) to  (0,0,1)   node[anchor=east]{};
+      \draw[color=red, ultra thick] (O) to [out=70, in=100] (A);
+      %\draw[white, thick, dotted, domain=0:5] plot (\x, {0-\x*\x + 5*\x});
+      \draw[dotted, thick, ->] (A) to (B) node{$x$};
+      %\draw[color=red] (O) to [bend left= 60] (A);
+      \draw[color=white, fill=white] (A) circle[radius=.15];
+    \end{tikzpicture}
+
+    \Huge{RV3K}
+  \end{frame}
+\end{document}

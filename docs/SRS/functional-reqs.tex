@@ -1,0 +1,56 @@
+\subsection{Functional Requirements}
+
+\subsubsection{System must serve the user interface as a web page}
+  \begin{itemize}
+    \item The web UI must be accessible on localhost and from the network
+    \item The UI must include the following elements
+    \begin{itemize}
+      \item Earth Frame View display
+      \item Vehicle Attitude (local tangent) display
+      \item Telemetry data
+      \item Video Views
+      \begin{itemize}
+        \item Video stream sources TBD
+      \end{itemize}
+    \end{itemize}
+  \end{itemize}
+
+\subsubsection{System shall process and display video streams}
+  \begin{itemize}
+    \item System shall define a video format
+    \item System shall take as input video streams of the defined format
+    \item System shall output the video in the UI
+    \item Codec: TBD
+    \item Source: TBD
+  \end{itemize}
+
+\subsubsection{System must interpret the telemetry data}
+  \begin{itemize}
+    \item RocketView 3000 must interpret data from all relevant telemetry feeds.
+    \item The system must output the interpreted data in a meaningful form for the UI described in \S 3.2.1
+    \begin{itemize}
+      \item data interpretation shall describe internal and external states of the vehicle, before, during, and after flight.
+      \item Some data classifications are described in \url{https://github.com/psas/psas_packet}, but these classifations are likely to change.
+    \end{itemize}
+    \item Packet rate details TBD
+    \item Packet contents TBD
+  \end{itemize}
+
+\subsubsection{System must perform calculations on telemetry data}
+  \begin{itemize}
+    \item The system shall accept Vehicle Attitude and Vehicle Trajectory data.
+    \item The system shall translate Vehicle Attitude and Vehicle Trajectory data into object or data structure representations that will be used by the UI.
+  \end{itemize}
+
+\subsubsection{System shall interpret APRS data}
+  \begin{itemize}
+    \item RV3K shall receive and interpret APRS data from recovery teams.
+    \item RV3K shall output this data as input for the UI described in \S 2.2.1.
+  \end{itemize}
+
+\subsubsection{System should interpret rocket location}
+  \begin{itemize}
+    \item RV3K should isolate GPS data from the incoming data stream or extrapolate location from otherwise available data.
+    \item The system should output the interpreted data as input for the UI described in \S 2.2.1
+    \item This functionality should support logistics as covered in \S 1.3.1
+  \end{itemize}

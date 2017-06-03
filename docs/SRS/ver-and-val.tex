@@ -1,0 +1,31 @@
+\subsection{Unit testing}
+The unit tests shall:
+  \begin{itemize}
+    \item Ensure that the web UI is accessible on localhost
+    \item Check that the Earth Frame View display is functioning properly
+    \item Check that the Vehicle Attitude display is functioning properly
+    \item Check that the Video Streams are functioning properly
+    \item Ensure that the Telemetry data isn't being misinterpreted
+    \item Check that the translated Vehicle Attitude and Vehicle Trajectory data is correct
+    \item Ensure that the APRS data isn't being misinterpreted
+    \item Provide meaningful messages for each failure mode
+  \end{itemize}
+
+\subsection{Continuous integration}
+The development process for RV3K will use a GitHub repository together with a
+continuous integration tool (such as TravisCI).
+
+\subsection{Replay testing}
+The validation process for RV3K will use recorded and/or simulated data to improve the relevance of test results.
+
+\subsection{Runtime error handling \& assertions}
+  \begin{itemize}
+    \item RV3K will employ assertions and/or exception handling to manage error states during run-time.
+    \item In the event of an critical error, RV3K shall notify the user of the
+    error and prefer halting
+    rather than allow continued operation that may present erroneous or incorrect data.
+    \item The system will restart to its most recent state after a crash occurs.
+  \end{itemize}
+
+\subsection{Logging and instrumentation}
+RV3K will maintain plain text logs to facilitate debugging and diagnostic analysis.

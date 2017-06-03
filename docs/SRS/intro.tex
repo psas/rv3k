@@ -1,0 +1,98 @@
+\subsection{Purpose}
+  The purpose of this document is to document the
+  requirements for the RocketView 3000 (RV3K) \vers software system. This
+  document is a reference for software scope and development. It will explain
+  RV3K’s purpose, features, interfaces and system constraints, as well as the 
+  scope of use.
+
+  Functional requirements were elicited during conversations between February 7th,
+  2017, and \today{} with Jamey Sharp and Andrew Greenberg at Portland State
+  University. \cite{Interview}
+
+  This document is (very loosely) based on IEEE SA - 29148-2011 Software
+  Requirements Specification (SRS) guidelines \cite{ieee}.
+
+\subsection{Scope}
+  RV3K \vers is a PSAS rocket telemetry display module that allows local and
+  remote users to monitor PSAS vehicle flights using a networked computer 
+  that supports modern web-browsers (2017). The goal is to create data 
+  visualization features that will allow users to better understand what is
+  presented. This includes, but is not limited to, 3D maps and video.
+
+\subsection{Product overview}
+
+\subsubsection{System purpose}
+  The three main purposes of RV3K are:
+  \begin{itemize}
+    \item State visualization and state transparency
+      \begin{itemize}
+        \item[--] To display internal vehicle and mission state information
+        \item To display external vehicle and mission state information
+      \end{itemize}
+    \item Publicity
+    \begin{description}
+      \item To display telemetry data and mission state to viewers who are no domain experts
+    \end{description}
+    \item Logistics
+      \begin{itemize}
+        \item To coordinate recovery
+          \begin{itemize}
+            \item To locate individual ground crew
+            \item To locate rocket parts for recovery
+          \end{itemize}
+      \end{itemize}
+  \end{itemize}
+
+
+\subsubsection{Product perspective}
+  \begin{itemize}
+      \item RV3K is a cross-platform, software intensive system with a browser-based user interface
+      \item The RV3K user interface is composed of web browser modules and
+        widgets, server modules, and internetworking capabilities.
+        As such, RV3K requires hardware that supports modern
+        browsers (see \S 2.1.2).
+  \end{itemize}
+
+\subsubsection{Objectives and success criteria}
+  \begin{itemize}
+    \item System can be invoked cross-platform via command
+    \item RV3K UI can be invoked from the web browsers listed in \S 2.1.2
+    \item RV3K correctly performs calculations on incoming data
+    \item Upon failure, RV3K will enforce halting over displaying incorrect data 
+    \item RV3K displays telemetry information provided in the data stream
+    \item RV3K displays GPS coordinates of the recovery crew
+  \end{itemize}
+
+\subsubsection{Limitations}
+  RV3K, nor its creators shall be held responsible for death or injury resulting
+  directly or indirectly from its use. Users of RV3K assume full responsibility
+  for accidents, damages, injury, death, expenses, and/or humiliation incurred
+  while using RV3K software system. This limitation is covered by the Capstone
+  contract statement: ``No mission critical or phase based projects''
+
+  \url{http://wiki.cs.pdx.edu/capstone/sponsors.html}
+
+  \medskip
+
+  \subparagraph{Scientific accuracy}
+    The accuracy of calculations for vehicle location, attitude, trajectory, and
+    any other internal and external state are limited by sensor states, signal strength,
+    connectivity, and other factors of complexity. RV3K shall provide approximate telemetry data
+    about these states, but it shall not guarantee scientific accuracy or precision.
+
+
+
+\subsection{Definitions}
+\begin{description}
+  \item[cross-platform:] An application that runs on Linux, macOS and Windows operating systems (2017).
+\end{description}
+
+\subsubsection{Abbreviations used}
+
+\begin{description}
+  \item[RV3K] Rocket View 3000 \vers Telemetry Viewer
+  \item[APRS] Automatic Packet Reporting System
+  \item[PSAS] Portland State Aerospace Society
+  \item[UI]   User Interface
+  \item[URL]  Uniform Resource Locator
+\end{description}

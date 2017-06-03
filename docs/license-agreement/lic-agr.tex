@@ -1,0 +1,42 @@
+\documentclass[letterpaper]{article}
+
+%% Language and font encodings
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{palatino}
+\usepackage{hyperref}
+\usepackage[margin=1in]{geometry}
+\author{}
+
+\newcommand{\namesigdate}[2][5cm]{%
+  \begin{tabular}{@{}p{#1}@{}}
+    #2 \\[2\normalbaselineskip] \hrule \\[0pt]
+    {\small \textit{Signature}} \\[2\normalbaselineskip] \hrule \\[0pt]
+    {\small \textit{Date}}
+  \end{tabular}
+}
+
+
+\title{ COMPUTER SOFTWARE LICENSING AGREEMENT }
+
+\begin{document}
+\maketitle
+
+\input{face-page.tex}
+\bigskip
+\bigskip
+\bigskip
+
+\namesigdate{Andrew Greenberg} \hfill \namesigdate{Jamey Sharp}
+
+\newpage
+
+\section{Exhibit A: Software Requirements Specification}
+(attached)
+
+\section{Exhibit B: GPL License v2}
+
+\input{gpl-2.0.tex}
+
+\end{document}

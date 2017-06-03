@@ -1,0 +1,24 @@
+\subsection{Use Case: Spectators}
+  \subsubsection{Primary Actor: Spectator}
+    \paragraph{Flow of Events:}
+      \begin{enumerate}
+        \item PSAS crew members start RV3K on a server, either local or remote
+        \item User opens their browser and navigates to the URL of the telemetry viewer, given to them by PSAS crew members.
+        \item User monitors and enjoys the PSAS launch via RV3K either locally at the launch site, or anywhere on the globe if they can get network access to the RV3K telemetry server. 
+      \end{enumerate}
+\subsection{Use Case: Flight Director and PSAS Crew}
+  \subsubsection{Primary Actor: Flight Director}
+    \paragraph{Flow of Events:}
+      \begin{enumerate}
+         \item PSAS crew members configure RV3K for launch
+         \item PSAS crew tests configuration and makes necessary modifications
+         \item PSAS crew pushes configuration to repository
+         \item PSAS crew invokes RV3K and opens it in browser tab(s)
+         \item PSAS crew members distribute URL of RV3K to spectators, both local and remote
+         \item PSAS Flight Director monitors launch flight and recovery crew locations
+         \item RV3K receives GPS coordinates from the Recovery Crews using APRS
+              and updates the map with their locations throughout the launch
+         \item PSAS Flight Director changes view of EFV to birds-eye view to coordinate recovery
+         \item Flight Director communicates the location of the rocket to the
+              Recovery Crews
+      \end{enumerate}
