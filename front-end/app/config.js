@@ -19,41 +19,66 @@
 "use strict";
 
 app.constant('config', {
-    // Launch Location
+    // Cesium Configuration
     'launchLocation': {
         'longitude':    -120.6517673,
-        'latitude':     43.7961328
+        'latitude':     43.7961328,
+        'altitude':     3000
     },
+    'cesiumTerrain':    true,   // model cesium map with terrain
+    'cesiumRocket':     false,  // use rocket model in cesium
+    'rocketSize':       500,    // min size in pixels
+    'rocketScale':      100,    // max scale when at a distance
+    'recoveryCrewSize': 3000,   // radius
+
 
     // PSAS Packet Types
     'ADIS':         'ADIS',
     'V8A8':         'V8A8',
+    'BMP1':         'BMP1',
+    'JGPS':         'JGPS',
+    'SEQN':         'SEQN',
+    'ROLL':         'ROLL',
 
-    // PSAS ADIS Gyro & Acc for attitude.js
+    // PSAS Packet Keys
     'Gyro_X':       'Gyro_X',
     'Gyro_Y':       'Gyro_Y',
     'Gyro_Z':       'Gyro_Z',
     'Acc_X':        'Acc_X',
     'Acc_Y':        'Acc_Y',
     'Acc_Z':        'Acc_Z',
+    'ECEF_VX':      'ECEF_VX',
+    'ECEF_VY':      'ECEF_VY',
+    'ECEF_VZ':      'ECEF_VZ',
+    'Latitude':     'Latitude',
+    'Longitude':    'Longitude',
+    'MSL_Altitude': 'MSL_Altitude',
+    'Callsign':     'Callsign',
+    'timestamp':    'timestamp',
+    'recv':         'recv',
 
-    'serverSource': document.domain, // 'paolo215.paolov435.com', // 
+    'serverSource': document.domain, // 'paolo215.paolov435.com', //
+
+    // Telemetry Graphs Configuration
+    'numPointsADIS':        150,    // approx. # of data points expected per min
+    'numPointsV8A8':        15,
 
     // Vehicle Attitude Configuration
     'FOV':                  50,
     'AttitudeWidthRatio':   4.09,   // for 16:9
-    'AttitudeHeightRatio':  2.15,    // for 16:9
+    'AttitudeHeightRatio':  2.15,   // for 16:9
 
     // Video Configuration
     'videoFeeds':   [
+        'http://meg-murry.ddns.net:3586/hls/lava.m3u8',
         'http://paolo215.paolov435.com/hls/live.m3u8',
         'http://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8',
         'http://184.72.239.149/vod/smil:BigBuckBunny.smil/playlist.m3u8',
         'http://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8'
     ],
     'defaultFeed':  0,                      // The index of the default (starting) video feed
-    'numFeeds':     4,
-    'feedsOn':     [true,true,true,true],
+    'numFeeds':     5,
+    'feedsOn':     [true,true,true,true,true],
 
     // HLS.js Video Player configuration
     'hlsConfig':   {

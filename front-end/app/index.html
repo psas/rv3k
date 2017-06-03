@@ -25,18 +25,14 @@ distribution of this software for license terms.
   <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
 
   <!-- STYLESHEETS -->
-  <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/normalize.css">
-  <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/main.css">
   <link rel="stylesheet" href="app.css">
   <link rel="stylesheet" href="bower_components/cesium.js/dist/Widgets/widgets.css">
   <link rel="stylesheet" href="/bower_components/angular-material/angular-material.css">
 
   <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js"></script>
-  <script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
 
   <!-- ANGULAR core -->
   <script src="bower_components/angular/angular.js"></script>
-  <script src="bower_components/angular-route/angular-route.js"></script>
 
   <!-- Angular Material Dependencies -->
   <script src="/bower_components/angular-aria/angular-aria.js"></script>
@@ -44,7 +40,7 @@ distribution of this software for license terms.
   <script src="/bower_components/angular-material/angular-material.js"></script>
 
   <!-- These are necessary for the attitude visualization. -->
-  <script src="bower_components/threejs/build/three.min.js"></script>
+  <script src="bower_components/three.js/three.min.js"></script>
 
   <!-- Eearth Frame View Scripts -->
   <script src="bower_components/cesium.js/dist/Cesium.js"></script>
@@ -52,55 +48,67 @@ distribution of this software for license terms.
   <!-- Video Module Script -->
   <script src="bower_components/hls.js/dist/hls.min.js"></script>
 
+  <!-- Angular-Chart Scripts-->
+  <script src="bower_components/chart.js/dist/Chart.min.js"></script>
+  <script src="bower_components/angular-chart.js/dist/angular-chart.min.js"></script>
+
+  <!-- JQuery Script -->
+  <script src="bower_components/jquery/dist/jquery.min.js"></script>
+
   <script src="app.js"></script>
   <script src="config.js"></script>
 
   <script src="controllers/main-controller.js"></script>
   <script src="directives/attitude.js"></script>
-  <script src="directives/telemetry.js"></script>
+  <script src="directives/telemetryCharts.js"></script>
   <script src="directives/earthFrameView.js"></script>
   <script src="directives/hlsjsVideo.js"></script>
   <script src="directives/atAGlance.js"></script>
 </head>
 <body ng-controller="MainController" ng-cloak>
-<md-content class = "md-padding">
-  <md-nav-bar
-    md-selected-nav-item="currentNavItem"
-    nav-bar-aria-label="navigation links">
-    <md-button class="md-button">
-      <img class="logo-image" src="imgs/PSASLogo.png" style="width:40px;height:40px" name="PSAS logo">
-   </md-button>
-    <md-nav-item md-nav-click="toggleVideo()" name="Switch Video feeds">
-        Change Video Feeds
-    </md-nav-item>
-    <md-nav-item md-nav-click="toggleView()" name ="Switch Views">
-          Toggle at-a-glance view
-    </md-nav-item>
-   </md-nav-bar>
+<md-content>
+    <!-- Angular Material Toolbar + Nav Bar -->
+    <md-toolbar class="control-bar" style="height: 50px">
+        <div class="md-toolbar-tools">
+            <img src="imgs/PSASLogo2.png" style="width:50px;height:50px"></img>
+            <md-button class="tool-bar-button" ng-click="toggleVideo()">
+                Change Video Feeds
+            </md-button>
+            <md-button class="tool-bar-button" ng-click="toggleView()">
+                Toggle at-a-glance view
+            </md-button>
+            <md-button class="tool-bar-button" ng-click="switchFocus()">
+                Toggle Focus
+            </md-button>
+        </div>
+    </md-toolbar>
+</md-content>
 
+<md-content>
     <!-- This graphics board holds the EFV, video, and vehicle attitude.-->
-    <div class="view" ng-hide="hideView">
-         <div class="video-container" ng-hide="hideVideo" style="height: 100%">
-            <!-- <div class="videoStream" > -->
-                <hlsjs-video></hlsjs-video>
-	        <!-- </div> -->
-        </div>
-        <div class="attitude-container" ng-hide="hideVehicleAttitude">
-            <attitude></attitude>
-        </div>
-        <div class="efv-container" ng-hide="hideEFV">
-            <earth-frame-view></earth-frame-view>
-        </div>
-        <div class="telemetry-container">
-            <telemetry></telemetry>
-        </div>
+    <div class="view-container" ng-hide="hideView">
+        <md-content ng-class="videoFocus">
+            <hlsjs-video></hlsjs-video>
+        </md-content>
 
+        <md-content ng-class="efvFocus">
+            <earth-frame-view></earth-frame-view>
+        </md-content>
+
+        <md-content layout-fill ng-class="attitudeFocus">
+            <canvas id="attitude-canvas" style="height: 100%; width: 100%">
+                <attitude></attitude>
+            </canvas>
+        </md-content>
+
+        <md-content class="bottom-container">
+            <telemetry-charts></telemetry-charts>
+        </md-content>
     </div>
 
     <div class="atAGlanceContainer" ng-hide="hideAtAGlance">
         <at-a-glance></at-a-glance>
     </div>
-
 
     <!-- In production use:
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
