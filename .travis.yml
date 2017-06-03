@@ -1,8 +1,8 @@
 language: node_js
+sudo: false
 node_js: 
-  - "iojs"
   - "6"
-cache:
-  directories:
-    - "front-end/node_modules"
-    - "front-end/app/bower_components"
+before_install:
+  - cd front-end/
+install: 
+  - npm install
