@@ -1,30 +1,12 @@
-\section{Telemetry data module}
+\section{Telemetry Data Module}
 
-\subsection{Client Service}
-  Receives data from the telemetry server middleware module.
+\subsection{Main View}
+  Receives data through a socket opened to the telemetry server module, and
+  pipes it to relevant directives that control visualization of the data on the
+  main view of the page.
 
-\subsection{Data Processing Functions}
-  Receives data from client service and splits it into relevant, useful categories
-  such as gyroscopic data, acceleration, etc.
-
-  Performs functions on data as necessary to make it useful for outside modules
-  such as the EFV module.
-
-\subsection{Error Checking}
-  Performs functions on data as necessary to indicate strength and integrity
-  of data and signals.
-
-\subsection{Display}
-  Displays pertinent telemetry data to relevant views, in respective
-  HTML ids and tags.
-
-  Displays graphical representations of numeric data in real time.
-  Organizes information in an easy to read format.
-
-  Responsible for ``at-a-glance'' view.
-
-\begin{figure}[h!]
-\centering
-\includegraphics[scale=.45]{imgs/tel-data-module.png}
-\caption{Telemetry Module Architecture Plan \label{tel}}
-\end{figure}
+\subsection{At A Glance View}
+  Receives data through a socket opened to the telemetry server module 
+  to the At A Glance directive, which in turn uses Angular's 'ng-repeat' 
+  directive to cycle through the data and serve it to At A Glance view of the
+  page.
