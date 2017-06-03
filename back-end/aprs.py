@@ -15,7 +15,9 @@ import aprs_source_input
 import aprslib
 import time
 from psas_packet import messages
-
+import logging
+import traceback
+import sys
 
 
 is_parsed = aprs_source_input.is_parsed
@@ -34,6 +36,10 @@ class AprsReceiver:
         self.sio = sio
         self.lock = lock
         self.log = log
+        self.error_log = logging.getLogger('aprs')
+        fh = logging.FileHandler('aprs_error.log', mode='w')
+        self.error_log.addHandler(fh)
+
 
     def parse(self, aprs_packet):
         """
@@ -46,7 +52,8 @@ class AprsReceiver:
         try:
             return aprslib.parse(aprs_packet.strip())
         except (aprslib.ParseError, aprslib.UnknownFormat) as error:
-            print(error, aprs_packet) # TODO: log error or print in std err
+            self.error_log.error(traceback.format_exc())
+            traceback.print_exc(file=sys.stdout)
 
 
     def listen(self):
@@ -106,6 +113,9 @@ class AprsReceiver:
                 # Send parsed APRS data to front-end in JSON format
                 self.sio.emit("recovery", data, namespace="/main")
                 self.sio.sleep(0.1)
+            except KeyError:
+                self.error_log.error(traceback.format_exc())
+                traceback.print_exc(file=sys.stdout)
             except KeyboardInterrupt:
                 return None
 
