@@ -34,8 +34,13 @@ class AprsReceiver:
         self.address = address
         self.port = port
         self.sio = sio
+
+        # Sets up lock and log for synchronized logging (APRS + Telemetry)
         self.lock = lock
         self.log = log
+
+        # error_log is a logging object that logs any error messages thrown
+        # in aprs.py to aprs_error.log
         self.error_log = logging.getLogger('aprs')
         fh = logging.FileHandler('aprs_error.log', mode='w')
         self.error_log.addHandler(fh)
@@ -78,41 +83,45 @@ class AprsReceiver:
             # Receive data from the socket. Returns data in string format
             # and address of the socket sending the data
             data_received, address = sock.recvfrom(1024)
-            data = {}
+            values = {}
             timestamp = time.time()
             try:
-                # Expecting data received is in JSON format is 
+                # Expecting data received is in JSON format if 
                 # is_parsed is true
                 if data_received and is_parsed:
                     data_received = json.loads(data_received.decode('utf-8'))
-                    data["Callsign"] = data_received["callsign"]
+                    values["Callsign"] = data_received["callsign"]
 
                 # Expecting data received is a raw APRS if is_parsed is false
                 elif data_received:
                     data_received = self.parse(data_received)
                     if not data_received:
                         continue
-                    data["Callsign"] = data_received["from"]
+                    values["Callsign"] = data_received["from"]
                 else:
                     continue
 
 
-                data["Latitude"] = float(data_received["latitude"])
-                data["Longitude"] = float(data_received["longitude"])
-                data["Altitude"] = float(data_received["altitude"])
-                fourcc_message = messages.MESSAGES["APRS"]
-                encoded_data = fourcc_message.encode(data)
+                values["Latitude"] = float(data_received["latitude"])
+                values["Longitude"] = float(data_received["longitude"])
+                values["Altitude"] = float(data_received["altitude"])
+
                 if self.lock and self.log:
+                    # Obtain MESSAGES information for APRS fourcc
+                    fourcc_message = messages.MESSAGES["APRS"]
+
+                    # Encode values
+                    encoded_values = fourcc_message.encode(values)
+                
+                    # Synchronously log binary data to the file
                     self.lock.acquire()
                     self.log.write(messages.HEADER.encode(fourcc_message, int(timestamp)))
-                    self.log.write(encoded_data)
+                    self.log.write(encoded_values)
                     self.lock.release()
-                data["recv"] = timestamp
-                # Stdout log
+                values["recv"] = timestamp
 
                 # Send parsed APRS data to front-end in JSON format
-                self.sio.emit("recovery", data, namespace="/main")
-                self.sio.sleep(0.1)
+                self.sio.emit("recovery", values, namespace="/main")
             except KeyError:
                 self.error_log.error(traceback.format_exc())
                 traceback.print_exc(file=sys.stdout)
