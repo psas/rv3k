@@ -35,6 +35,8 @@ distribution of this software for license terms.
             } else {
                 for(var key in data) {
                     if(key == "recv") {
+                        var dateNow = (new Date().getTime() / 1000.0);
+                        console.log(dateNow - data[key]);
                         $('#' + fourcc + "_recv").text(data[key]);
                     } else {
                         $('#' + key).text(data[key]);

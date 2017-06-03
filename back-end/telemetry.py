@@ -30,15 +30,21 @@ class Telemetry:
         # must be exchanged safely between multiple threads. The Queue class
         # in this module implements all the required locking semantics."
         self.queue = Queue()
+        self.queue_log = Queue()
         self.sio = sio
         # Instantiates the sender thread.
         self.thread = Thread(target=self.sender)
         self.thread.daemon = True
+
+
+        self.loggerThread = Thread(target=self.log)
+        self.loggerThread.daemon = True
+
         self.lock = lock
         self.log = log
         
-        #error_log is a logging object that logs any error messages thrown in
-        #telemetry.py to telemery_error.log
+        # error_log is a logging object that logs any error messages thrown in
+        # telemetry.py to telemery_error.log
         self.error_log = logging.getLogger('telemetry')
         fh = logging.FileHandler('telemetry_error.log', mode='w')
         self.error_log.addHandler(fh)
@@ -49,17 +55,38 @@ class Telemetry:
         network.listen() returns a tuple of timestamp and data
         adds the tuple to the queue
         """
+
         print("The telemetry server is running.")
+
         # Starts the sender thread.
         self.thread.start()
+
+        # Starts logger thread if lock and log exists
+        if self.lock and self.log:
+            self.loggerThread.start()
+
+        # Use PSAS Packet to listen for incoming telemetry data 
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         sock.bind((self.address, self.port))
         network = io.Network(sock)
+
         while True:
             try:
+                collection = []
                 for timestamp, data in network.listen():
-                    # Enqueues (timestamp, data) without blocking.
-                    self.queue.put_nowait((timestamp, data))
+                    fourcc, values = data
+                    
+                    # Skips packet with unrecognized fourcc
+                    if not fourcc in messages.MESSAGES:
+                        continue
+
+                    collection.append((fourcc, values, timestamp))
+
+                # Enqueues collection of packets without blocking.
+                if len(collection) > 0:
+                    self.queue.put_nowait(collection)
+
+
             except KeyboardInterrupt:
                 sock.close()
                 # Sets the shared event (breaks the sender thread's loop).
@@ -70,41 +97,47 @@ class Telemetry:
 
     def sender(self):
         """Emits a socketio event for each message that listen receives"""
+
         while self.event.is_set() == False:
             try:
-                # Dequeues (timestamp, data) without blocking.
-                if self.queue:
-                    timestamp, data = self.queue.get_nowait()
-                    fourcc, values = data
-                    fourcc_message = messages.MESSAGES[fourcc]
-                    encoded_values = fourcc_message.encode(values)
+                if not self.queue.empty():
+                    send_data = {}
+                    collection = self.queue.get_nowait()
+                    for fourcc, values, timestamp in collection:
+                        values["recv"] = timestamp
+                        send_data[fourcc] = values
+                    
+                    self.sio.emit("telemetry", send_data, namespace="/main")
+                    self.queue_log.put_nowait(collection)
+            except KeyError:
+                self.error_log.error(traceback.format_exc())
+                traceback.print_exc(file=sys.stdout)
+            except ValueError:
+                self.error_log.error(traceback.format_exc())
+                traceback.print_exc(file=sys.stdout)
+            except KeyboardInterrupt:
+                return None
+        return
 
-                    if self.lock and self.log:
+
+
+    def log(self):
+       while True:
+            try:
+                if not self.queue_log.empty():
+                    collection = self.queue_log.get_nowait()
+                    # Iterates through collection of packets
+                    for fourcc, values, timestamp in collection:
+                        # Obtain MESSAGES information for this fourcc
+                        fourcc_message = messages.MESSAGES[fourcc]
+                        # Encode values
+                        encoded_values = fourcc_message.encode(values)
+
+                        # Synchronously log binary data to the file
                         self.lock.acquire()
                         self.log.write(messages.HEADER.encode(fourcc_message, int(timestamp)))
                         self.log.write(encoded_values)
                         self.lock.release()
-
-                    values["recv"] = timestamp
-                    self.sio.emit("telemetry", {fourcc: values}, namespace="/main")
-            except Empty:
-                # This exception is raised every time the while loop does another pass
-                # with no telemetry data is being received
-                
-                # self.error_log.error(traceback.format_exc())  # logs erro to file
-                # traceback.print_exc(file=sys.stdout)
-                pass
-            except KeyError:
-                self.error_log.error(traceback.format_exc())
-                traceback.print_exc(file=sys.stdout)
-                pass
-            except ValueError:
-                self.error_log.error(traceback.format_exc())
-                traceback.print_exc(file=sys.stdout)
-                pass
             except KeyboardInterrupt:
                 return None
 
-
-
-        return
