@@ -18,8 +18,9 @@
 <!-- drop down menu that changes the camera location and direction -->
 <div id="efvCameraDropDown">
     <select ng-change="changeCameraView()" ng-model="selected" class="cesium-button">
+        <option value="default" selected="selected">Move Camera</option>
         <option value="top">Top View </option>
-        <option value="side">Side View </option>
+        <option value="side">Orthogonal View </option>
     </select>
 </div>
 

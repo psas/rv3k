@@ -183,6 +183,8 @@ app.directive("earthFrameView", function() {
                 }
             };
 
+            $scope.selected = 'default';
+
             // Initialize Cesium
             $scope.init();
 
