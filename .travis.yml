@@ -6,6 +6,3 @@ before_install:
   - cd front-end/
 install: 
   - npm install
-script:
-  - npm start
-
