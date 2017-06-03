@@ -1,0 +1,79 @@
+%% Copyright (C) 2017 Amanda Murphy, Jeff Patterson, Patrick Overton, Matt Tighe, Yun Cong Chen, Seth Amundsen, Paolo Villnueva, Michael Ohl, Connor Picken
+\newcommand{\version}{0.0.1} %% Set version
+%% GPL v2.0 License : See Copying for more info
+\documentclass[10pt, letterpaper]{article}
+
+  %% Language and font encodings
+  \usepackage[english]{babel}
+  \usepackage[utf8x]{inputenc}
+  \usepackage[T1]{fontenc}
+  \usepackage{palatino}
+
+  %% formatting packages
+  \usepackage{indentfirst}
+  \usepackage{multicol, graphicx}
+  \usepackage{titlesec}
+  \usepackage[margin=1in]{geometry}
+  \usepackage[linktoc=all]{hyperref}
+
+  %% bibliography package
+  \usepackage[square, numbers]{natbib}
+  %% explicit style needed by natbib
+  \bibliographystyle{achemso}
+  %% USER DEFINED COMMANDS
+  \newcommand{\pre}[1]{\tt #1\rm} %% monospace code usage \pre{<code>}
+  \newcommand{\ez}[1]{$^{\text{\cite{#1}}}$} %% cite a work in the bibliography
+  \newcommand{\vers}{v\version{ }}
+  \newcommand{\initBox}{Initial: \underline{\hspace*{1cm} }}
+
+  \graphicspath{{./img/}} % Specifies the directory where pictures are stored
+
+  \title{Software Requirements Specification\\
+    {\normalsize Rocket View 3000 \vers}
+    }
+  \author{}
+
+\begin{document}
+  \maketitle
+  \input{ % Copyright and licensing notice
+    cr-notice.tex}
+  \tableofcontents
+  \newpage
+
+  \section{Introduction}
+    %% gdxzginb \cite{stanford}  % reference test
+    \input{intro.tex}
+
+  %% Automated references
+  \addcontentsline{toc}{section}{References}
+  \bibliography{srsbib}
+
+  \section{Specific requirements}
+    %% External interfaces
+    \input{ext-interfaces.tex}
+
+    %% Functional Requirements
+    \input{functional-reqs.tex}
+
+    %% Extra-functional requirements
+    \input{extra-func-reqs.tex}
+
+  \section{Verification and validation requirements}
+    %% Verification and validation requirements
+    \input{ver-and-val.tex}
+
+  \section{Use cases}
+
+    \input{use-cases.tex}
+
+  \section{Appendices}
+
+    \input{appendices.tex}
+
+
+
+
+
+
+
+\end{document}

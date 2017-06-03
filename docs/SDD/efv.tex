@@ -1,0 +1,49 @@
+\section{Earth Frame View (EFV) Module}
+% TODO: Add Diagram
+
+\subsection{EFV display}
+  The Earth Frame display, takes in coordinates, map files, processed trajectory
+  data, telemetry data, and recovery crew GPS data. It then outputs browser
+  compatible code which renders a 3D map with overlay graphical
+  representations of this data in an Earth Frame View.
+
+\subsubsection{3D map rendering}
+  The data must be in a form that the map rendering module can easily display.
+
+  Map is rendered from local map files using a JavaScript library (TBD) which
+  injects the map into an HTML div element.
+
+\subsubsection{Trajectory path overlay}
+  The pre-calculated trajectory is provided in a configuration file by the user.
+  This trajectory object is pulled into the EFV module and rendered as an overlay
+  on the map.
+
+\subsubsection{Real-time vehicle trajectory location overlay}
+  This module takes in the coordinates of the vehicle. The purpose for of the
+  GPS data is to indicate the rockets current location on its trajectory.
+
+  The current location of the vehicle is represented as a dot in the EFV display.
+
+\subsubsection{Vehicle path overlay}
+  As the vehicle moves on its trajectory path a red trail will be rendered to show
+  the trajectory path the vehicle has traveled on.
+  The logs the incoming coordinates of the vehicle. This is to insure
+  that the rendering can display the path the vehicle has taken.
+
+\subsubsection{Recovery Crew Location Indicator Overlay}
+   The system takes in the GPS coordinates of the recovery crews. Earth frame
+   view only needs to keep track of the current location of the recovery teams.
+
+\subsubsection{Map angle views}
+
+\subsection{Assets}
+
+\subsubsection{Map files}
+  Map files consist of collected terrain maps which are indexed by cartographic
+  coordinates.
+
+\subsection{Configuration files}
+  Configurable JSON file that stores information about calculated trajectory,
+  network ports, and location.
+
+  %The system will display the trajectory of the of where the rocket has been.
