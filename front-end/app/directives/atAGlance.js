@@ -73,7 +73,7 @@ app.directive("atAGlance", function() {
             $scope.dataAging = function() {
                 for(var key in $scope.formatsTimeStamps) {
                     // Ignore these
-                    if(key == 'BMP1' || key == 'JGPS' || key == 'SEQN' || key == 'ROLL') {
+                    if(key == config.BMP1 || key == config.JGPS || key == config.SEQN || key == config.ROLL) {
                         continue;
                     }
                     for(var type in $scope.formatsTimeStamps[key]){
@@ -82,17 +82,17 @@ app.directive("atAGlance", function() {
                         var color = '#607D2A';
                         // 12 seconds
                         if($scope.formatsTimeStamps[key][type] <= currentTime - 12000) {
-                                color = '#BABABA'; 
+                                color = '#BABABA';
                         // 9 seconds
                         } else if($scope.formatsTimeStamps[key][type] <= currentTime - 9000) {
                                 color = '#A8AD9D';
                         // 6 seconds
                         } else if($scope.formatsTimeStamps[key][type] <= currentTime - 6000) {
                                 color = '#8D9B72';
-                        // 3 seconds 
+                        // 3 seconds
                         } else if($scope.formatsTimeStamps[key][type] <= currentTime - 3000) {
                                 color = '#728946';
-                        } 
+                        }
                         // grab the element
                         var currentElement = angular.element(document.querySelector('#' + type));
                         // change it's background color

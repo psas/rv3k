@@ -12,12 +12,7 @@ app.controller('MainController', ['$scope', function($scope) {
     $scope.VisibleCamera = 1;
     $scope.hideView = false;
     $scope.hideAtAGlance = true;
-
-    // Toggle between View and At A Glance
-    $scope.toggleView = function() {
-        $scope.hideView = !$scope.hideView;
-        $scope.hideAtAGlance = !$scope.hideAtAGlance;
-    }
+    $scope.toggleViewCount = 0;
 
     // Initial location of each module.
     var focuses = ['main-container', 'sideTop-container', 'sideBottom-container'];
@@ -28,11 +23,20 @@ app.controller('MainController', ['$scope', function($scope) {
     $scope.efvFocus = focuses[efvIndex];
     $scope.attitudeFocus = focuses[attitudeIndex];
 
+    // Switches the View of the web page from Visual Elements to At-A-Glance Rocket Data
     $scope.toggleView = function() {
-        $scope.hideView = !$scope.hideView;
+        var viewVisible = document.querySelector(".view-container");
+        var viewHidden = document.querySelector(".view-container-hide");
+        if ($scope.toggleViewCount%2 == 1) {
+            viewHidden.className = "view-container";
+        } else {
+            viewVisible.className = "view-container-hide";
+        }
+        $scope.toggleViewCount++;
         $scope.hideAtAGlance = !$scope.hideAtAGlance;
     }
 
+    // Rotates the position of the Launch Video, Earth Frame View, and Rocket Attitude
     $scope.switchFocus = function updateTransition() {
         var main = document.querySelector(".main-container");
         var sideTop  = document.querySelector(".sideTop-container");

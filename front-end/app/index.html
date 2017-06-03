@@ -17,9 +17,8 @@ distribution of this software for license terms.
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Rocket View 3000</title>
   <meta name="description" content="">
-  <!-- Commented out to test angular-material
-  <meta name="viewport" content="width=device-width, initial-scale=1">
--->
+  <!-- Icons -->
+  <link rel="icon" href="favicon.ico"/>
 
   <!-- angular-material setting -->
   <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
@@ -29,6 +28,7 @@ distribution of this software for license terms.
   <link rel="stylesheet" href="bower_components/cesium.js/dist/Widgets/widgets.css">
   <link rel="stylesheet" href="/bower_components/angular-material/angular-material.css">
 
+  <!-- Socket IO Dependencies -->
   <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js"></script>
 
   <!-- ANGULAR core -->
@@ -39,26 +39,32 @@ distribution of this software for license terms.
   <script src="/bower_components/angular-animate/angular-animate.js"></script>
   <script src="/bower_components/angular-material/angular-material.js"></script>
 
-  <!-- These are necessary for the attitude visualization. -->
+
+  <!-- THREE.js Script for Vehichle Attitude -->
+
   <script src="bower_components/three.js/three.min.js"></script>
 
-  <!-- Eearth Frame View Scripts -->
+  <!-- Cesium Script for Earth Frame View -->
   <script src="bower_components/cesium.js/dist/Cesium.js"></script>
 
-  <!-- Video Module Script -->
+  <!-- Video Module Script for HLS.js Video Player -->
   <script src="bower_components/hls.js/dist/hls.min.js"></script>
 
-  <!-- Angular-Chart Scripts-->
+  <!-- Angular-Chart Scripts for Telemetry Charts-->
   <script src="bower_components/chart.js/dist/Chart.min.js"></script>
   <script src="bower_components/angular-chart.js/dist/angular-chart.min.js"></script>
 
-  <!-- JQuery Script -->
+  <!-- JQuery Script-->
   <script src="bower_components/jquery/dist/jquery.min.js"></script>
 
+    <!-- Angular App and Config-->
   <script src="app.js"></script>
   <script src="config.js"></script>
 
+  <!-- Angular Controller -->
   <script src="controllers/main-controller.js"></script>
+
+  <!-- Angular Directives -->
   <script src="directives/attitude.js"></script>
   <script src="directives/telemetryCharts.js"></script>
   <script src="directives/earthFrameView.js"></script>
@@ -69,16 +75,18 @@ distribution of this software for license terms.
 <md-content>
     <!-- Angular Material Toolbar + Nav Bar -->
     <md-toolbar class="control-bar" style="height: 50px">
-        <div class="md-toolbar-tools">
-            <img src="imgs/PSASLogo2.png" style="width:50px;height:50px"></img>
+        <div class="md-toolbar-tools" ng-cloak>
+            <!-- PSAS Logo -->
+            <img src="assets/PSASLogo2.png" style="width:50px;height:50px"></img>
+            <!-- Toolbar Buttons -->
+            <md-button class="tool-bar-button" ng-click="switchFocus()">
+                Swap Windows
+            </md-button>
             <md-button class="tool-bar-button" ng-click="toggleVideo()">
-                Change Video Feeds
+                Change Video Feed
             </md-button>
             <md-button class="tool-bar-button" ng-click="toggleView()">
-                Toggle at-a-glance view
-            </md-button>
-            <md-button class="tool-bar-button" ng-click="switchFocus()">
-                Toggle Focus
+                Toggle At-A-Glance View
             </md-button>
         </div>
     </md-toolbar>
@@ -87,32 +95,36 @@ distribution of this software for license terms.
 <md-content>
     <!-- This graphics board holds the EFV, video, and vehicle attitude.-->
     <div class="view-container" ng-hide="hideView">
+        <!-- Streaming Video Content -->
         <md-content ng-class="videoFocus">
             <hlsjs-video></hlsjs-video>
         </md-content>
-
+        <!-- earthFrameView Content -->
         <md-content ng-class="efvFocus">
             <earth-frame-view></earth-frame-view>
         </md-content>
-
+        <!-- Vehicle Attitude Content -->
         <md-content layout-fill ng-class="attitudeFocus">
+            <!-- Canvas sizes the element for THREE.js rendering -->
             <canvas id="attitude-canvas" style="height: 100%; width: 100%">
                 <attitude></attitude>
             </canvas>
         </md-content>
-
+        <!-- Telemetry Charts Content -->
         <md-content class="bottom-container">
             <telemetry-charts></telemetry-charts>
         </md-content>
     </div>
-
-    <div class="atAGlanceContainer" ng-hide="hideAtAGlance">
+</md-content>
+<md-content>
+    <!-- At A Glance Data Tiles Content -->
+    <div class="atAGlance-container" ng-hide="hideAtAGlance">
         <at-a-glance></at-a-glance>
     </div>
+</md-content>
 
     <!-- In production use:
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
   -->
-</md-content>
 </body>
 </html>

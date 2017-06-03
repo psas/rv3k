@@ -10,7 +10,21 @@
 
 /* Toolbar Styling */
 md-toolbar.control-bar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.md-menu-toolbar) {
-    background-color: #607d2a /* PSAS Green */ }
+    background-color: #607d2a; /* PSAS Green */ }
+md-menu-item:hover {
+    cursor: pointer;
+    background-color: #335100; /* PSAS Dark Green */ }
+md-menu-content {
+    font-variant: small-caps;
+    color: white;
+    background-color: #607d2a; }
+.toolbar-title {
+    font-variant: small-caps;
+    font-family: Akashi;
+    font-size: 125%;
+    margin-left: 20px;
+    white-space: nowrap;
+    overflow: hidden; }
 
 /* Grid Layout */
 .view-container {
@@ -30,9 +44,33 @@ md-toolbar.control-bar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.m
     align-items: stretch;
     align-content: stretch;
     width: 100%;
-    height: 90%;
-    background-image:url('/imgs/PSASLaunch.png');
-    background-size: cover; }
+    height: 91%;
+    transition: height 1s;
+    background-image:url('/assets/PSASLaunch.png');
+    background-size: cover;
+    overflow: hidden !important; }
+.view-container-hide {
+    display: -ms-grid;
+    -ms-grid-colums: 75% 25%;
+    -ms-grid-rows: 25% 25% 25% 25%;
+    display: grid;
+    grid-template-columns: 75% 25%;
+    grid-template-rows: 25% 25% 25% 25%;
+    grid-template-areas:
+        "main sideTop"
+        "main sideTop"
+        "main sideBottom"
+        "bottom sideBottom";
+    grid-column-gap: 3px;
+    grid-row-gap: 3px;
+    align-items: stretch;
+    align-content: stretch;
+    width: 100%;
+    height: 0%;
+    transition: height 1s;
+    background-image:url('/assets/PSASLaunch.png');
+    background-size: cover;
+    overflow: hidden !important; }
 .main-container {
     -ms-grid-column: 1;
     -ms-grid-row: 1;
@@ -107,7 +145,8 @@ md-toolbar.control-bar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.m
 /* At A Glance Container Styling */
 .atAGlance-container {
     width: 100%;
-    height:100%; }
+    height:88%;
+    transition: height 1s; }
 
 /* Cesium Styling */
 #cesiumContainer {
@@ -132,23 +171,10 @@ md-toolbar.control-bar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.m
     height: 100%;
     background-color: black; }
 
-/* Telemetry Styling */
-.telemetry-holders {
-    padding: 20px;
-    text-align: center; }
-.telemetry-tile {
-    position: relative;
-    border-radius: 25px;
-    float: left;
-    border: 2px solid #73AD21;
-    padding: 20px;
-    text-align: center;
-    height: 140px;
-    width: 100px; }
-.telemetry-container {
-    grid-column: 1/3;
-    grid-row: 5/6;
-    border: 3px solid white; }
+/* Telemetry Charts Styling */
+.charts {
+    display: inline-block;
+    width: 49%; }
 
 /* blue telemetry cards */
 .cards {
@@ -156,18 +182,10 @@ md-toolbar.control-bar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.m
     background-color: #607d2a;
     padding: 30px;
     margin: 20px; }
-
+.telemetry-holders {
+    padding: 20px;
+    text-align: center; }
 /* handles anything that needs to be an inline block */
 .inline {
     vertical-align:top;
     display: inline-block; }
-.button {
-    float: left;
-    color: #777;
-    padding: 10px; }
-.button:hover {
-    color: #000;
-    background-color: #6B8B3D; }
-
-a {
-    text-decoration: none; }
