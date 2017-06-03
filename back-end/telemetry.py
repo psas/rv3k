@@ -6,12 +6,15 @@
 # [This program is licensed under the "GNU General Public License"]
 # Please see the file COPYING in the source distribution of this
 # software for license terms.
+
 from psas_packet import io
 from psas_packet import messages
 from Queue import Empty, Queue
 import socket
 from threading import Event, Thread
-
+import logging
+import traceback
+import sys
 
 class Telemetry:
     """Listens for psas packet data via listen() and emits them via sender()
@@ -33,6 +36,12 @@ class Telemetry:
         self.thread.daemon = True
         self.lock = lock
         self.log = log
+        
+        #error_log is a logging object that logs any error messages thrown in
+        #telemetry.py to telemery_error.log
+        self.error_log = logging.getLogger('telemetry')
+        fh = logging.FileHandler('telemetry_error.log', mode='w')
+        self.error_log.addHandler(fh)
 
     def listen(self):
         """Listens for incoming psas packets
@@ -79,10 +88,19 @@ class Telemetry:
                     values["recv"] = timestamp
                     self.sio.emit("telemetry", {fourcc: values}, namespace="/main")
             except Empty:
+                # This exception is raised every time the while loop does another pass
+                # with no telemetry data is being received
+                
+                # self.error_log.error(traceback.format_exc())  # logs erro to file
+                # traceback.print_exc(file=sys.stdout)
                 pass
             except KeyError:
+                self.error_log.error(traceback.format_exc())
+                traceback.print_exc(file=sys.stdout)
                 pass
             except ValueError:
+                self.error_log.error(traceback.format_exc())
+                traceback.print_exc(file=sys.stdout)
                 pass
             except KeyboardInterrupt:
                 return None
