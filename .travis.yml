@@ -1,0 +1,11 @@
+language: python
+sudo: true
+python:
+  - "2.7"
+before_install:
+  - cd front-end
+  - npm install
+  - cd ../back-end
+install: 
+  - pip install -r requirements.txt
+script: "python test_aprs.py"
