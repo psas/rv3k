@@ -50,7 +50,7 @@ rv3k
     │   .jshintrc
     │   bower.json                      --> installs the bower dependancies into the bower_components directory              
     │   package.json                    --> defines npm commands and installs node dependancies into the node_modules directory
-    │   README.md
+    │   README.md                       --> INSTRUCTIONS: how to install and run rv3k front-end 
     │
     └───app
         │   app.css                     --> all stylesheets 
