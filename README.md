@@ -65,9 +65,9 @@ rv3k
         │       PSASLaunch.png
         │       PSASLogo.png
         │       PSASLogo2.png
-        │       rocket.gltf
-        │       rocket_final_obj.js
-        │       rocket_model2.js
+        │       rocket.gltf             
+        │       rocket_final_obj.js     --> vehicle model for the vehicle attitude module
+        │       rocket_model2.js        --> old vehicle model 
         │
         ├───controllers
         │       main-controller.js      --> controller logic for the main page
