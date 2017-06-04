@@ -6,4 +6,4 @@ before_install:
   - cd back-end
 install: 
   - pip install -r requirements.txt
-script: test_aprs.py
+script: "python test_aprs.py"
