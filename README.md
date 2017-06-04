@@ -8,7 +8,7 @@ Software repository for winter-spring capstone project: Rocket View 3000
 ```
 rv3k
 │   .gitignore
-│   .travis.yml
+│   .travis.yml                         --> Configuration for continuous integration
 │   COPYING
 │   LICENSE
 │   README.md
@@ -46,20 +46,20 @@ rv3k
 │           srs.pdf
 │
 └───front-end
-    │   .bowerrc
+    │   .bowerrc        
     │   .jshintrc
-    │   bower.json
-    │   package.json
+    │   bower.json                      --> installs the bower dependancies into the bower_components directory              
+    │   package.json                    --> defines npm commands and installs node dependancies into the node_modules directory
     │   README.md
     │
     └───app
-        │   app.css
-        │   app.js
-        │   config.js
+        │   app.css                     --> all stylesheets 
+        │   app.js                      --> main application module, defines app variable
+        │   config.js                   --> centeral place for rv3k configuration
         │   favicon.ico
-        │   index.html
+        │   index.html                  --> layout file - this holds all layout
         │
-        ├───assets
+        ├───assets                      --> all images and models need for the application
         │       basic_background.jpg
         │       menu.svg
         │       PSASLaunch.png
@@ -70,17 +70,16 @@ rv3k
         │       rocket_model2.js
         │
         ├───controllers
-        │       main-controller.js
+        │       main-controller.js      --> controller logic for the main page
         │
-        └───directives
-                atAGlance.html
-                atAGlance.js
-                attitude.html
-                attitude.js
-                earthFrameView.html
-                earthFrameView.js
-                hlsjsVideo.html
-                hlsjsVideo.js
-                telemetryCharts.html
-                telemetryCharts.js
+        └───directives                  --> defines custom html tags
+                atAGlance.html          --> layout/html for at a glance 
+                atAGlance.js            --> logic and data connection for at a glance
+                attitude.js             --> logic, data connection and rendering for attitude
+                earthFrameView.html     --> layout/html for the 3D map
+                earthFrameView.js       --> logic and data connection for the 3D map
+                hlsjsVideo.html         --> layout/html for the video player
+                hlsjsVideo.js           --> logic and data connection for video
+                telemetryCharts.html    --> layout/html for graphs
+                telemetryCharts.js      --> logic and data connection for graphs
 ```
