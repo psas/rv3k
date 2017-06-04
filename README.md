@@ -8,6 +8,7 @@ Software repository for winter-spring capstone project: Rocket View 3000
 ```
 rv3k
 │   .gitignore
+│   .travis.yml
 │   COPYING
 │   LICENSE
 │   README.md
