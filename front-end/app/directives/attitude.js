@@ -288,10 +288,10 @@ angular.module("rvtk").directive("attitude", function() {
              * ----------------------------------------------------------------------------------------------*/
 
             // Create the rocket model using a three.js .js file
-            //$scope.loadModelJSON("assets/rocket_final_obj.js");
+            $scope.loadModelJSON("assets/rocket_final_obj.js");
 
             // Create the rocket model using .obj and .mtl files
-            $scope.loadModelOBJ("assets/rocket.obj", "assets/rocket.mtl");
+            //$scope.loadModelOBJ("assets/rocket.obj", "assets/rocket.mtl");
 
             // Create the rocket model using only a .obj file
             //$scope.loadModelOBJOnly("assets/rocket.obj");
