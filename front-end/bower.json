@@ -10,7 +10,7 @@
     "angular-material": "^1.1.4",
     "hls.js": "^0.7.6",
     "cesium.js": "^1.33.0",
-    "three.js": "^0.84.0",
+    "threejs": "r85",
     "angular-chart.js": "^1.1.1",
     "jquery": "^3.2.1"
   },
