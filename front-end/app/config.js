@@ -56,6 +56,7 @@ app.constant('config', {
     'Callsign':     'Callsign',
     'timestamp':    'timestamp',
     'recv':         'recv',
+    'Sequence':     'Sequence',
 
     'serverSource': document.domain, // 'paolo215.paolov435.com', //
 
@@ -67,6 +68,7 @@ app.constant('config', {
     'FOV':                  50,
     'AttitudeWidthRatio':   4.09,   // for 16:9
     'AttitudeHeightRatio':  2.15,   // for 16:9
+    'AttitudeReplayMode':   true,   // Used to testing purposes to reset the model for looping replaylog
 
     // Video Configuration
     'videoFeeds':   [
