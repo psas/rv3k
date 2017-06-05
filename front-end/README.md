@@ -14,7 +14,7 @@ Alternatively, use GitHub desktop or some other tool to clone to your local mach
 ### Configuring Rocket View 3000
 Rocket View 3000 is configurable through the configuration file config.js found in the front-end/app directory
 1. Cesium Configuration
-- Offline: Cesium can be used offline with lower resolution tilemaps by setting 'offline' to true.
+- Offline: Cesium can be used offline with lower resolution tilemaps by setting 'offline' to true. For higher fidelity tilemaps, follow the instructions at https://github.com/AnalyticalGraphicsInc/cesium/wiki/Offline-Guide to download the full set of offline tiles and place them in the bower_components/cesium.js/dist/Assets/Textures/ folder, overwriting the current NaturalEarthII folder.
 - Launch Location: The launch location can be set through the 'launchLocation' parameters.
 - Terrain Modeling: Cesium can model terrain by setting 'cesiumTerrain' to true.
 - Rocket Position Modeling: The position of the rocket can be modeled with a blue sphere or a model rocket depending on the setting of 'cesiumRocket'.
