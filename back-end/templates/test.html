@@ -23,9 +23,11 @@ distribution of this software for license terms.
             socket.on("connect", function() {});
             socket.on("disconnect", function() {});
             socket.on("telemetry", function(data) {
-                foo += JSON.stringify(data) + '\n';
-                ++count;
-                if(count == 14913) {
+                for(var key in data) {
+                    foo += "{\"" + key + "\":" + JSON.stringify(data[key]) + "}\n";
+                    ++count;
+                }
+                if(count == 9417) {
                     $("#log").append("<br><a href=\"" + text_to_link(foo) + "\">Download</a>");
                 }
             });
