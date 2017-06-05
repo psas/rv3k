@@ -20,6 +20,7 @@
 
 app.constant('config', {
     // Cesium Configuration
+    'offline': false,
     'launchLocation': {
         'longitude':    -120.6517673,
         'latitude':     43.7961328,
@@ -30,7 +31,6 @@ app.constant('config', {
     'rocketSize':       500,    // min size in pixels
     'rocketScale':      100,    // max scale when at a distance
     'recoveryCrewSize': 3000,   // radius
-
 
     // PSAS Packet Types
     'ADIS':         'ADIS',
@@ -65,8 +65,6 @@ app.constant('config', {
 
     // Vehicle Attitude Configuration
     'FOV':                  50,
-    'AttitudeWidthRatio':   4.09,   // for 16:9
-    'AttitudeHeightRatio':  2.15,   // for 16:9
 
     // Video Configuration
     'videoFeeds':   [

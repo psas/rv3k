@@ -36,17 +36,33 @@ app.directive("earthFrameView", function() {
             // Initializes the Cesium Viewer, positions the camera, and adds entities
             $scope.init = function () {
                 // Create the viewer
-                $scope.viewer = new Cesium.Viewer('cesiumContainer', {
-                    // imageryProvider: imageryProvider,    // Activate imagery overlay
-                    baseLayerPicker: false,     // disables menu to choose map type
-                    homeButton: false,          // disables home button
-                    timeline: false,            // disables timeline
-                    animation: false,           // disables clock
-                    fullscreenButton: false,    // fullscreen doesn't work correctly
-                    geocoder: false,            // disables landmark detection
-                    selectionIndicator: false,  // disables indicator on selected object
-                    sceneModePicker: false      // disables default scene picker
-                });
+                if (config.offline) {
+                    $scope.viewer = new Cesium.Viewer('cesiumContainer', {
+                        imageryProvider : new Cesium.createTileMapServiceImageryProvider({
+                            url : Cesium.buildModuleUrl('Assets/Textures/NaturalEarthII'),
+                            maximumLevel: 5
+                        }),
+                        baseLayerPicker: false,     // disables menu to choose map type
+                        homeButton: false,          // disables home button
+                        timeline: false,            // disables timeline
+                        animation: false,           // disables clock
+                        fullscreenButton: false,    // fullscreen doesn't work correctly
+                        geocoder: false,            // disables landmark detection
+                        selectionIndicator: false,  // disables indicator on selected object
+                        sceneModePicker: false      // disables default scene picker
+                    });
+                } else {
+                    $scope.viewer = new Cesium.Viewer('cesiumContainer', {
+                        baseLayerPicker: false,     // disables menu to choose map type
+                        homeButton: false,          // disables home button
+                        timeline: false,            // disables timeline
+                        animation: false,           // disables clock
+                        fullscreenButton: false,    // fullscreen doesn't work correctly
+                        geocoder: false,            // disables landmark detection
+                        selectionIndicator: false,  // disables indicator on selected object
+                        sceneModePicker: false      // disables default scene picker
+                    });
+                }
 
                 if (config.cesiumTerrain) {
                     $scope.viewer.terrainProvider = new Cesium.CesiumTerrainProvider({
