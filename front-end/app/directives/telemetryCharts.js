@@ -72,7 +72,7 @@ app.directive("telemetryCharts", function() {
                     }
                     else if(key == config.V8A8){
                         // Add new data point to Altitude chart
-                        $scope.Altitude_Data[0].push(data[key].Ellipsoid_Altitude);
+                        $scope.Altitude_Data[0].push(data[key][config.Ellipsoid_Altitude]);
 
                         // Add new data point to Speed chart by calculating the magnitude of the
                         // rocket's velocity
@@ -92,6 +92,10 @@ app.directive("telemetryCharts", function() {
                 }
             });
 
+            // Turn on or off tooltip based on the config variable showTooltips
+            //Chart.defaults.global.showTooltips = config.showTooltips;
+            Chart.defaults.global.tooltips.enabled = config.showTooltips;
+    
             // Acceleration Chart Attributes
             $scope.Acc_Labels = [];
             $scope.Acc_Series = ['X', 'Y', 'Z'];
@@ -101,8 +105,8 @@ app.directive("telemetryCharts", function() {
                 scales: {
                     yAxes: [{
                         ticks: {
-                            min: -40,
-                            max: 140
+                            suggestedMin: -40,
+                            suggestedMax: 140
                         },
                         scaleLabel: {
                             display: true,
@@ -138,8 +142,8 @@ app.directive("telemetryCharts", function() {
                 scales: {
                     yAxes: [{
                         ticks: {
-                            min: -80,
-                            max: 80
+                            suggestedMin: -80,
+                            suggestedMax: 80
                         },
                         scaleLabel: {
                             display: true,
