@@ -49,26 +49,27 @@ app.directive("attitude", function() {
 
                         $scope.TimeStamp = data[key][config.timestamp];
                         $scope.calculateData();
-
                     }
                     // If check to reset the rocket when looping the replay log. Should be removed in final product
-                    else if(key == config.SEQN){
-                        if(data[key][config.Sequence] == 93251 || data[key][config.Sequence] < 90510){
-                            $scope.mesh.rotation.x = 0;
-                            $scope.mesh.rotation.y = 0;
-                            $scope.mesh.rotation.z = 0;
+                    if(config.AttitudeReplayMode == true){ 
+                        if(key == config.SEQN){
+                            if(data[key][config.Sequence] == 93251 || data[key][config.Sequence] < 90510){
+                                $scope.mesh.rotation.x = 0;
+                                $scope.mesh.rotation.y = 0;
+                                $scope.mesh.rotation.z = 0;
 
-                            $scope.targetRotX = 0;
-                            $scope.targetRotY = 0;
-                            $scope.targetRotZ = 0;
+                                $scope.targetRotX = 0;
+                                $scope.targetRotY = 0;
+                                $scope.targetRotZ = 0;
 
-                            $scope.prevRotX = 0;
-                            $scope.prevRotY = 0;
-                            $scope.prevRotZ = 0;
+                                $scope.prevRotX = 0;
+                                $scope.prevRotY = 0;
+                                $scope.prevRotZ = 0;
 
-                            $scope.diffX = 0;
-                            $scope.diffY = 0;
-                            $scope.diffZ = 0;
+                               $scope.diffX = 0;
+                                $scope.diffY = 0;
+                                $scope.diffZ = 0;
+                            }
                         }
                     }
                 }
