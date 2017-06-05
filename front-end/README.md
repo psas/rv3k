@@ -28,7 +28,7 @@ Rocket View 3000 is configurable through the configuration file config.js found 
 5. Vehicle Attitude Configuration
 - The Vehicle Attitude Display FOV (field of view) can be configured by degrees with the 'FOV' value.
 6. HLS Video Player Configuration
-The HLS Video player can be configured to switch between multiple video feeds. Simply add the server url that will stream the video to array 'videoFeeds'. Set the default feed to the desired array element with 'default feed', and enable and disable feeds through the 'numFeeds' value and 'feedsOn' array. The player itself is also configurable to system needs. Options are available to restrict buffer size on a system with limited RAM as well as set latency and bandwidth values to increase syncronization or performance of the video player. Each option is commented, explaining its function and default value.
+- The HLS Video player can be configured to switch between multiple video feeds. Simply add the server url that will stream the video to array 'videoFeeds'. Set the default feed to the desired array element with 'default feed', and enable and disable feeds through the 'numFeeds' value and 'feedsOn' array. The player itself is also configurable to system needs. Options are available to restrict buffer size on a system with limited RAM as well as set latency and bandwidth values to increase syncronization or performance of the video player. Each option is commented, explaining its function and default value.
 
 ### Running the Rocket View 3000 web server
 1. use command `npm start`
