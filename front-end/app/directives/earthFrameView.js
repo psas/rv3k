@@ -40,7 +40,6 @@ app.directive("earthFrameView", function() {
                     $scope.viewer = new Cesium.Viewer('cesiumContainer', {
                         imageryProvider : new Cesium.createTileMapServiceImageryProvider({
                             url : Cesium.buildModuleUrl('Assets/Textures/NaturalEarthII'),
-                            maximumLevel: 5
                         }),
                         baseLayerPicker: false,     // disables menu to choose map type
                         homeButton: false,          // disables home button

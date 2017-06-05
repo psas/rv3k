@@ -20,7 +20,7 @@
 
 app.constant('config', {
     // Cesium Configuration
-    'offline': false,
+    'offline': true,
     'launchLocation': {
         'longitude':    -120.6517673,
         'latitude':     43.7961328,
