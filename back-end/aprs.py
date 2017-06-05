@@ -100,8 +100,9 @@ class AprsReceiver:
                     values["Callsign"] = data_received["from"]
                 else:
                     continue
-
-
+                
+                # set the values according to the results of the data_received
+                # function calls
                 values["Latitude"] = float(data_received["latitude"])
                 values["Longitude"] = float(data_received["longitude"])
                 values["Altitude"] = float(data_received["altitude"])
@@ -127,8 +128,3 @@ class AprsReceiver:
                 traceback.print_exc(file=sys.stdout)
             except KeyboardInterrupt:
                 return None
-
-
-
-
-
