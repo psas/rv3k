@@ -19,7 +19,6 @@ This directory contains the Socket.IO server and supporting server modules for r
 #### Data Logging
  - Telemetry data and APRS data are logged synchronously in binary format to rv3k/back-end/telemetry.log.
    A new log of telemetry data is genereated (with an incremented suffix) each time the server is run.
- - aprs.py logs error messages in plain text format to rv3k/back-end/aprs_error.log
 
 #### Error Logging
  - telemetry.py logs error message in plain text format to rv3k/back-end/telemetry_error.log
