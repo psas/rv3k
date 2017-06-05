@@ -26,6 +26,7 @@ def main():
         except KeyboardInterrupt:
             sock.close()
             file = open("sent.txt", 'w')
+            
             # Lines 36-58 format the output strings to match the JavaScript
             # formatting. Here are the formatting differences I observed.
             # 1. Python includes a space after each colon and comma.
@@ -41,10 +42,10 @@ def main():
                                 if int(repr(value)[-1]) < 7:
                                     if '.' in repr(value):
                                         if value < 0:
-                                            dps = (len(repr(value)) - 7) +\
+                                            dps = (len(repr(value)) - 7) + \
                                                   int(repr(value)[-1])
                                         else:
-                                            dps = (len(repr(value)) - 6) +\
+                                            dps = (len(repr(value)) - 6) + \
                                                   int(repr(value)[-1])
                                     else:
                                         dps = int(repr(value)[-1])
@@ -59,6 +60,7 @@ def main():
                 file.write(output + '\n')
             file.close()
             return
+
 
 if __name__ == "__main__":
     main()

@@ -19,7 +19,8 @@ import json
 is_parsed = True
 filename = "aprs.parsed"
 
-# NOTES (terms used): 
+
+# NOTES (terms used):
 # Raw APRS data: see aprs.fi/?c=raw for example.
 # Parsed APRS data: data obtained after decoding and parsed raw APRS data.
 
@@ -35,7 +36,6 @@ class AprsSourceInput:
         self.data = [f for f in fileObj.read().split("\n") if f]
         fileObj.close()
 
-
     def filter(self):
         """
         Parses each parsed APRS data and converts it to a JSON object.
@@ -45,7 +45,7 @@ class AprsSourceInput:
         self.filteredAprs = []
         for line in self.data:
             if line:
-                message = {} 
+                message = {}
                 data = line
                 if is_parsed:
                     parsedData = line.strip().split(",")
@@ -54,9 +54,8 @@ class AprsSourceInput:
                     message["latitude"] = parsedData[1]
                     message["longitude"] = parsedData[2]
                     data = json.dumps(message).encode("utf-8")
-                        
-                self.filteredAprs.append(data)
 
+                self.filteredAprs.append(data)
 
     def send(self):
         """
@@ -68,13 +67,13 @@ class AprsSourceInput:
         # set up UDP socket
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
-        address = ("127.0.0.1", 35002) 
+        address = ("127.0.0.1", 35002)
         if is_parsed:
             self.filter()
             self.data = self.filteredAprs
 
         # Continously send data to the server
-        try:        
+        try:
             while True:
                 for aprs in self.data:
                     print(aprs)
@@ -86,13 +85,11 @@ class AprsSourceInput:
         finally:
             print("closing socket")
             sock.close()
-   
+
 
 def main():
     AprsSourceInput(filename).send()
 
 
 if __name__ == "__main__":
-    main()  
-
-
+    main()
