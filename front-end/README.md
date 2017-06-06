@@ -17,6 +17,7 @@ Rocket View 3000 is configurable through the configuration file config.js found 
 - Offline: Cesium can be used offline with lower resolution tilemaps by setting 'offline' to true. For higher fidelity tilemaps, follow the instructions at https://github.com/AnalyticalGraphicsInc/cesium/wiki/Offline-Guide to download the full set of offline tiles and place them in the app/bower_components/cesium.js/dist/Assets/Textures/ folder, overwriting the current NaturalEarthII folder.
 - Launch Location: The launch location can be set through the 'launchLocation' parameters.
 - Terrain Modeling: Cesium can model terrain by setting 'cesiumTerrain' to true.
+- Real Time Lighting: Cesium can use a real-time lighting engine that is recommended while Terrain Modeling is active. If using Rocket View 3000 offline, it is recommended that cesiumRTLighting be set to false to improve contrast of the lower resolution tiles available.
 - Rocket Position Modeling: The position of the rocket can be modeled with a blue sphere or a model rocket depending on the setting of 'cesiumRocket'.
 - Model/RecoveryCrew Size: The size of the model rocket and recovery crews can also be set
 2. PSAS Packet Configuration
