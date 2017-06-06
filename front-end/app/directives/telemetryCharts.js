@@ -168,7 +168,6 @@ app.directive("telemetryCharts", function() {
 
             // Assigning new colors to the X,Y,Z lines of the Accelerometer/Gyroscope charts
             // because the default colors had a hard to see color for the Y.
-            // TODO: Still needs to be set up with correct colors, current colors are just placeholders
             $scope.Acc_Gyro_Colors = [{
                 backgroundColor: 'rgba(132, 20, 50, 0.8)',
                 borderColor: 'rgba(132, 20, 50, 0.8)',
@@ -190,10 +189,6 @@ app.directive("telemetryCharts", function() {
             ];
 
             // Setting up the Ellipsoid Altitude strip-chart
-            // TODO: chart.js creates a curved line by default to connect data points.
-            // With the altitude chart it can sometimes cause the graph to indicate that the rocket has
-            // either gained or lost altitude when it did not. Need to find a way to disable this so
-            // the chart is not misleading.
             $scope.Altitude_Data = [[]];    // I don't know why, but Data needs to be an array of arrays or else
                                             // the Color attribute won't work
             $scope.Altitude_Labels = [];
