@@ -50,9 +50,11 @@ app.directive("attitude", function() {
                         $scope.TimeStamp = data[key][config.timestamp];
                         $scope.calculateData();
                     }
-                    // If check to reset the rocket when looping the replay log. Should be removed in final product
+                    // If check to reset the rocket when looping the replay log. Can be turned off by changing
+                    // AttitudeReplayMode variable in config.js in the app directory
                     if(config.AttitudeReplayMode == true){ 
                         if(key == config.SEQN){
+                            // Reset model rotation variables for beginning and end of replaylog
                             if(data[key][config.Sequence] == 93251 || data[key][config.Sequence] < 90510){
                                 $scope.mesh.rotation.x = 0;
                                 $scope.mesh.rotation.y = 0;
@@ -66,7 +68,7 @@ app.directive("attitude", function() {
                                 $scope.prevRotY = 0;
                                 $scope.prevRotZ = 0;
 
-                               $scope.diffX = 0;
+                                $scope.diffX = 0;
                                 $scope.diffY = 0;
                                 $scope.diffZ = 0;
                             }
@@ -106,6 +108,7 @@ app.directive("attitude", function() {
             // The inner function is not called until loadOBJ.load completes
             $scope.loadModelOBJ = function(modelUrl, mtlUrl){
                 $scope.loaderMTL.load(mtlUrl, function(materials){
+                    // Loads the bottom of the rocket so it isn't invisible
                     materials.side = THREE.DoubleSide;
                     materials.preload();
                     $scope.loaderOBJ = new THREE.OBJLoader();
@@ -173,6 +176,7 @@ app.directive("attitude", function() {
                 $scope.scene.add($scope.light);
             }
 
+            // Function to resize the attitude canvas
             $scope.resize = function () {
                 if ($scope.canvas.width != $scope.canvas.clientWidth || $scope.canvas.height != $scope.canvas.clientHeight) {
                     $scope.canvas.width = $scope.canvas.clientWidth;
@@ -217,7 +221,6 @@ app.directive("attitude", function() {
                 $scope.accPitch = 0;
                 $scope.accYaw = 0;
 
-                //$scope.deltaTime = $scope.time[i] - scope.time[i - 1];
                 $scope.deltaTime = $scope.TimeStamp - $scope.PreviousTimeStamp;
                 $scope.deltaTime = $scope.deltaTime * Math.pow(10, -9); // need to convert nanoseconds to seconds
 
@@ -225,14 +228,9 @@ app.directive("attitude", function() {
                 // Data is an angular displacement instead of an absolute angle, so data is
                 // added to target rotation instead of assigning the rotation.
                 // For some reason it appears that the y axis values are actually in the x axis column
-                // so I am switching them here.
-                // TODO: Currently do not know if x is really x axis or z axis because of the y values
-                // being in the x column. Need to investigate further. Currently looks fine
-                //targetRotX += Math.radians(x[1]) * dt;
+                // so switching them here.
                 $scope.targetRotX += Math.radians($scope.Gyro_Y) * $scope.deltaTime;
-                //targetRotY += Math.radians(x[0]) * dt;
                 $scope.targetRotY += Math.radians($scope.Gyro_X) * $scope.deltaTime;
-                //targetRotZ += Math.radians(x[2]) * dt;
                 $scope.targetRotZ += Math.radians($scope.Gyro_Z) * $scope.deltaTime;
 
                 // Uses data from the accelerometer to obtain a pitch and yaw angle. Note that accelerometer
@@ -249,15 +247,12 @@ app.directive("attitude", function() {
                 // A check to factor in the accelerometer data when only within a certain range. If the data is too large
                 // or too small it is not reliable since accelerometers are susceptible to outside forces which
                 // disturbs the data.
+                // Note: Only corrects for drift in Pitch and Yaw. Does not include Roll.
                 if($scope.accMagn > 8000 && $scope.accMagn < 32000){
                     // Combining values with a simple complimentary filter
                     $scope.targetRotX = (0.98 * $scope.targetRotX) + (0.02 * $scope.accPitch);
                     $scope.targetRotZ = (0.98 * $scope.targetRotZ) + (0.02 * $scope.accYaw);
                 }
-
-                // TODO: currently only correcting drift in the pitch and yaw axises and not the roll axis.
-                // This would get fixed by using magnometer data, however, initial search into these calculations
-                // seems exceedingly complex and I am not if it is worth the effort.
             }
 
             $scope.deltaTime = 0.0012;	// change in time between data packets
