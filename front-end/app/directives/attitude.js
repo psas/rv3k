@@ -206,11 +206,8 @@ app.directive("attitude", function() {
                 var line = new THREE.Line(lineGeometry, lineMaterial);
                 $scope.scene.add(line);
 
-                // Set background color to a nice neutral color with an opacity of 1
-                //$scope.renderer.setClearColor(0x87CEEB, 1);
+                // Set background color to a neutral color with an opacity of 1
                 $scope.renderer.setClearColor(0xB0E0E6, 1);
-                //$scope.renderer.setClearColor(0xAFEEEE, 1);
-                //$scope.renderer.setClearColor(0x483D8B, 1);
             }
 
             // This function will process a data packet and update the three $scope.targetRot variables
@@ -306,14 +303,8 @@ app.directive("attitude", function() {
              * arguments section of the appropriate load function.
              * ----------------------------------------------------------------------------------------------*/
 
-            // Create the rocket model using a three.js .js file
-            //$scope.loadModelJSON("assets/rocket_final_obj.js");
-
             // Create the rocket model using .obj and .mtl files
             $scope.loadModelOBJ("assets/rocket.obj", "assets/rocket.mtl");
-
-            // Create the rocket model using only a .obj file
-            //$scope.loadModelOBJOnly("assets/rocket.obj");
 
             // Render will call it self 30 times a second to render the scene and update the rocket's rotation
             $scope.render();
