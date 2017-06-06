@@ -20,13 +20,14 @@
 
 app.constant('config', {
     // Cesium Configuration
-    'offline': true,
+    'offline': false,           // set to true if using cesium offline
     'launchLocation': {
         'longitude':    -120.6517673,
         'latitude':     43.7961328,
         'altitude':     3000
     },
     'cesiumTerrain':    true,   // model cesium map with terrain
+    'cesiumRTLighting': true,   // turn real time lighting off and on (recommended for terrain)
     'cesiumRocket':     false,  // use rocket model in cesium
     'rocketSize':       500,    // min size in pixels
     'rocketScale':      100,    // max scale when at a distance

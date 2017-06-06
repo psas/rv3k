@@ -63,13 +63,17 @@ app.directive("earthFrameView", function() {
                     });
                 }
 
+                // Add terain to the cesium map if configuration is set to true.
                 if (config.cesiumTerrain) {
                     $scope.viewer.terrainProvider = new Cesium.CesiumTerrainProvider({
                         url : 'https://assets.agi.com/stk-terrain/world',
                         requestWaterMask : true,
                         requestVertexNormals : true
                     });
-                    // Activate directional lighting for terrain (globe will be dark at night)
+                }
+
+                // Activate directional lighting for terrain if configuration is set to true. (globe will be dark at night)
+                if (config.cesiumRTLighting) {
                     $scope.viewer.scene.globe.enableLighting = true;
                 }
 
