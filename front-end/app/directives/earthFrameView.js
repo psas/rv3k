@@ -92,9 +92,9 @@ app.directive("earthFrameView", function() {
                 // Positions the camera so that all entities are in view
                 $scope.viewer.zoomTo($scope.viewer.entities);
 
-                // Position the camera gradually with flyTo
+                // Or... Position the camera gradually with flyTo
                 // $scope.viewer.camera.flyTo({
-                //     destination: new Cesium.Cartesian3.fromDegrees(config.launchLocation.longitude, config.launchLocation.latitude, 1500)
+                //     destination: new Cesium.Cartesian3.fromDegrees(config.launchLocation.longitude, config.launchLocation.latitude, config.launchLocation.altitude)
                 // });
 
                 // Gets rid of a developer tools error and allows cesium to work
