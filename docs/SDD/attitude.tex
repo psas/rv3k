@@ -1,7 +1,8 @@
 \section{Rocket Attitude Module}
 
 \subsection{Rocket Attitude Display Module}
-The Rocket Attitude display takes in IMU data and a 3D model. It renders this 3D model, and then uses IMU data from the rocket to alter the orientation of the model to match that of the live rocket.
+The Rocket Attitude display takes in IMU data and a 3D model. It renders this 3D model, and then 
+uses IMU data from the rocket to alter the orientation of the model to match that of the live rocket.
 
 \subsubsection{Model Storage}
 There is an offline storage which stores the 3D model, as well as the material that is applied to the model.
@@ -10,10 +11,12 @@ There is an offline storage which stores the 3D model, as well as the material t
 The system performs any necessary computations on the IMU data to make it usable for the display module.
 
 \subsubsection{Smoothing Calculations}
-The default rotating of the rocket model sometimes causes choppy animation. As a result, the rotating goes through a smoothing process in order to ensure a smooth display.
+The default rotating of the rocket model sometimes causes choppy animation. As a result, the rotating
+goes through a smoothing process in order to ensure a smooth display.
 
 \subsection{Display Output}
-The module uses a rendered 3D model, along with the processed and smoothed data, to produce a live simulation of the real rocket's attitude during its flight.
+The module uses a rendered 3D model, along with the processed and smoothed data, to produce a live 
+simulation of the real rocket's attitude during its flight.
 
 \begin{figure}[ht!]
 \centering

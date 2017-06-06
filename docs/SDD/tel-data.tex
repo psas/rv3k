@@ -1,12 +1,17 @@
 \section{Telemetry Data Module}
 
 \subsection{Main View}
-  Receives data through a socket opened to the telemetry server module, and
-  pipes it to relevant directives that control visualization of the data on the
-  main view of the page.
+  Receives telemetry through a socket opened to the telemetry server module in the Telemetry Charts 
+  directive and displays it in the form of strip charts using angular-charts. The following data 
+  types are displayed in respective charts:
+  \begin{itemize}
+  	\item Acceleration
+  	\item Gyroscope Data
+  	\item Altitude
+  	\item Speed
+  \end{itemize}
 
 \subsection{At A Glance View}
-  Receives data through a socket opened to the telemetry server module 
-  to the At A Glance directive, which in turn uses Angular's 'ng-repeat' 
-  directive to cycle through the data and serve it to At A Glance view of the
-  page.
+  Receives data through a socket opened to the telemetry server module in the At A Glance directive,
+  which in turn uses Angular's 'ng-repeat' directive to cycle through the data and serve it to At A
+  Glance view of the page.
