@@ -53,6 +53,7 @@ app.constant('config', {
     'Latitude':     'Latitude',
     'Longitude':    'Longitude',
     'MSL_Altitude': 'MSL_Altitude',
+    'Ellipsoid_Altitude':   'Ellipsoid_Altitude',
     'Callsign':     'Callsign',
     'timestamp':    'timestamp',
     'recv':         'recv',
@@ -62,6 +63,7 @@ app.constant('config', {
     // Telemetry Graphs Configuration
     'numPointsADIS':        150,    // approx. # of data points expected per min
     'numPointsV8A8':        15,
+    'showTooltips':         false,  // turn off or on the Chart.js tooltips for mouse over
 
     // Vehicle Attitude Configuration
     'FOV':                  50,
