@@ -1,6 +1,5 @@
 /*
  * config.js creates a Constant variable for the app and allows its varaibles to be injected into each directive's scope
- * It will allow for the toggleVideo to stop the current feed and start a new feed with a new url from outside the directive
  * Copyright (C) 2017 Jeff Patterson, Amanda Murphy, Paolo Villanueva, Patrick Overton, Connor Picken, Yun Cong Chen, Seth Amundsen
  * Michael Ohl, Mathew Tighe
  *
@@ -77,9 +76,8 @@ app.constant('config', {
         'http://184.72.239.149/vod/smil:BigBuckBunny.smil/playlist.m3u8',
         'http://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8'
     ],
-    'defaultFeed':  0,                      // The index of the default (starting) video feed
-    'numFeeds':     5,
-    'feedsOn':     [true,true,true,true,true],
+    'defaultFeed':  0,                          // The index of the default (starting) video feed
+    'feedsOn':     [true,false,true,true,true], // Keep the urls you like in the videoFeeds array but turn them off and on here
 
     // HLS.js Video Player configuration
     'hlsConfig':   {

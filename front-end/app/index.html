@@ -39,9 +39,7 @@ distribution of this software for license terms.
   <script src="/bower_components/angular-animate/angular-animate.js"></script>
   <script src="/bower_components/angular-material/angular-material.js"></script>
 
-
   <!-- THREE.js Script for Vehichle Attitude -->
-
   <script src="bower_components/three.js/three.min.js"></script>
 
   <!-- Cesium Script for Earth Frame View -->
@@ -50,11 +48,11 @@ distribution of this software for license terms.
   <!-- Video Module Script for HLS.js Video Player -->
   <script src="bower_components/hls.js/dist/hls.min.js"></script>
 
-  <!-- Angular-Chart Scripts for Telemetry Charts-->
+  <!-- Angular-Chart Scripts for Telemetry Charts -->
   <script src="bower_components/chart.js/dist/Chart.min.js"></script>
   <script src="bower_components/angular-chart.js/dist/angular-chart.min.js"></script>
 
-  <!-- JQuery Script-->
+  <!-- JQuery Script -->
   <script src="bower_components/jquery/dist/jquery.min.js"></script>
 
     <!-- Angular App and Config-->
@@ -79,13 +77,13 @@ distribution of this software for license terms.
             <!-- PSAS Logo -->
             <img src="assets/PSASLogo2.png" style="width:50px;height:50px"></img>
             <!-- Toolbar Buttons -->
-            <md-button class="tool-bar-button" ng-click="switchFocus()">
+            <md-button class="tool-bar-button" ng-click="swapWindows()">
                 Swap Windows
             </md-button>
-            <md-button class="tool-bar-button" ng-click="toggleVideo()">
+            <md-button class="tool-bar-button" ng-click="changeVideoFeed()">
                 Change Video Feed
             </md-button>
-            <md-button class="tool-bar-button" ng-click="toggleView()">
+            <md-button class="tool-bar-button" ng-click="toggleAtAGlance()">
                 Toggle At-A-Glance View
             </md-button>
         </div>
@@ -94,7 +92,7 @@ distribution of this software for license terms.
 
 <md-content>
     <!-- This graphics board holds the EFV, video, and vehicle attitude.-->
-    <div class="view-container" ng-hide="hideView">
+    <div class="view-container">
         <!-- Streaming Video Content -->
         <md-content ng-class="videoFocus">
             <hlsjs-video></hlsjs-video>
