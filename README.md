@@ -3,6 +3,10 @@
 
 Software repository for winter-spring capstone project: Rocket View 3000
 
+## Installation and setup
+- For back-end instructions, see [back-end/README.md](https://github.com/patter5/rv3k/tree/dev/back-end#back-end-directory)
+- For front-end instructions, see [front-end/README.md](https://github.com/patter5/rv3k/tree/dev/front-end#front-end-preliminary-directory)
+
 ## Directory Structure
 
 ```
