@@ -1,6 +1,5 @@
 /*
  * config.js creates a Constant variable for the app and allows its varaibles to be injected into each directive's scope
- * It will allow for the toggleVideo to stop the current feed and start a new feed with a new url from outside the directive
  * Copyright (C) 2017 Jeff Patterson, Amanda Murphy, Paolo Villanueva, Patrick Overton, Connor Picken, Yun Cong Chen, Seth Amundsen
  * Michael Ohl, Mathew Tighe
  *
@@ -20,17 +19,18 @@
 
 app.constant('config', {
     // Cesium Configuration
+    'offline': false,           // set to true if using cesium offline
     'launchLocation': {
         'longitude':    -120.6517673,
         'latitude':     43.7961328,
         'altitude':     3000
     },
     'cesiumTerrain':    true,   // model cesium map with terrain
+    'cesiumRTLighting': true,   // turn real time lighting off and on (recommended for terrain)
     'cesiumRocket':     false,  // use rocket model in cesium
     'rocketSize':       500,    // min size in pixels
     'rocketScale':      100,    // max scale when at a distance
     'recoveryCrewSize': 3000,   // radius
-
 
     // PSAS Packet Types
     'ADIS':         'ADIS',
@@ -53,6 +53,7 @@ app.constant('config', {
     'Latitude':     'Latitude',
     'Longitude':    'Longitude',
     'MSL_Altitude': 'MSL_Altitude',
+    'Ellipsoid_Altitude':   'Ellipsoid_Altitude',
     'Callsign':     'Callsign',
     'timestamp':    'timestamp',
     'recv':         'recv',
@@ -62,11 +63,10 @@ app.constant('config', {
     // Telemetry Graphs Configuration
     'numPointsADIS':        150,    // approx. # of data points expected per min
     'numPointsV8A8':        15,
+    'showTooltips':         false,  // turn off or on the Chart.js tooltips for mouse over
 
     // Vehicle Attitude Configuration
     'FOV':                  50,
-    'AttitudeWidthRatio':   4.09,   // for 16:9
-    'AttitudeHeightRatio':  2.15,   // for 16:9
 
     // Video Configuration
     'videoFeeds':   [
@@ -76,9 +76,8 @@ app.constant('config', {
         'http://184.72.239.149/vod/smil:BigBuckBunny.smil/playlist.m3u8',
         'http://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8'
     ],
-    'defaultFeed':  0,                      // The index of the default (starting) video feed
-    'numFeeds':     5,
-    'feedsOn':     [true,true,true,true,true],
+    'defaultFeed':  0,                          // The index of the default (starting) video feed
+    'feedsOn':     [true,false,true,true,true], // Keep the urls you like in the videoFeeds array but turn them off and on here
 
     // HLS.js Video Player configuration
     'hlsConfig':   {

@@ -11,6 +11,7 @@
 /* Toolbar Styling */
 md-toolbar.control-bar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.md-menu-toolbar) {
     background-color: #607d2a; /* PSAS Green */ }
+/* Optional menu styling for future support of additional user options */
 md-menu-item:hover {
     cursor: pointer;
     background-color: #335100; /* PSAS Dark Green */ }
@@ -18,9 +19,10 @@ md-menu-content {
     font-variant: small-caps;
     color: white;
     background-color: #607d2a; }
+/* Toolbar Title Styling */
 .toolbar-title {
     font-variant: small-caps;
-    font-family: Akashi;
+    font-family: Akashi, Roboto, sans-serif;
     font-size: 125%;
     margin-left: 20px;
     white-space: nowrap;
@@ -176,12 +178,14 @@ md-menu-content {
     display: inline-block;
     height: 100%;
     width: 49%; }
+/* Firefox dependent sizing for graphs*/
 @-moz-document url-prefix() {
     .charts {
         display: inline-block;
         height: 100%;
         width: 49%; }
 }
+/* Chrome dependent sizing for graphs */
 @media screen and (-webkit-min-device-pixel-ratio:0) {
     .charts {
         display: inline-block;
@@ -189,7 +193,7 @@ md-menu-content {
         width: 49%; }
 }
 
-/* blue telemetry cards */
+/* Telemetry Cards Styling */
 .cards {
     min-width: 125px;
     background-color: #607d2a;
@@ -198,7 +202,7 @@ md-menu-content {
 .telemetry-holders {
     padding: 20px;
     text-align: center; }
-/* handles anything that needs to be an inline block */
+/* Handles anything that needs to be an inline block */
 .inline {
     vertical-align:top;
     display: inline-block; }

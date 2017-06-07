@@ -36,25 +36,44 @@ app.directive("earthFrameView", function() {
             // Initializes the Cesium Viewer, positions the camera, and adds entities
             $scope.init = function () {
                 // Create the viewer
-                $scope.viewer = new Cesium.Viewer('cesiumContainer', {
-                    // imageryProvider: imageryProvider,    // Activate imagery overlay
-                    baseLayerPicker: false,     // disables menu to choose map type
-                    homeButton: false,          // disables home button
-                    timeline: false,            // disables timeline
-                    animation: false,           // disables clock
-                    fullscreenButton: false,    // fullscreen doesn't work correctly
-                    geocoder: false,            // disables landmark detection
-                    selectionIndicator: false,  // disables indicator on selected object
-                    sceneModePicker: false      // disables default scene picker
-                });
+                if (config.offline) {
+                    $scope.viewer = new Cesium.Viewer('cesiumContainer', {
+                        imageryProvider : new Cesium.createTileMapServiceImageryProvider({
+                            url : Cesium.buildModuleUrl('Assets/Textures/NaturalEarthII'),
+                        }),
+                        baseLayerPicker: false,     // disables menu to choose map type
+                        homeButton: false,          // disables home button
+                        timeline: false,            // disables timeline
+                        animation: false,           // disables clock
+                        fullscreenButton: false,    // fullscreen doesn't work correctly
+                        geocoder: false,            // disables landmark detection
+                        selectionIndicator: false,  // disables indicator on selected object
+                        sceneModePicker: false      // disables default scene picker
+                    });
+                } else {
+                    $scope.viewer = new Cesium.Viewer('cesiumContainer', {
+                        baseLayerPicker: false,     // disables menu to choose map type
+                        homeButton: false,          // disables home button
+                        timeline: false,            // disables timeline
+                        animation: false,           // disables clock
+                        fullscreenButton: false,    // fullscreen doesn't work correctly
+                        geocoder: false,            // disables landmark detection
+                        selectionIndicator: false,  // disables indicator on selected object
+                        sceneModePicker: false      // disables default scene picker
+                    });
+                }
 
+                // Add terain to the cesium map if configuration is set to true.
                 if (config.cesiumTerrain) {
                     $scope.viewer.terrainProvider = new Cesium.CesiumTerrainProvider({
                         url : 'https://assets.agi.com/stk-terrain/world',
                         requestWaterMask : true,
                         requestVertexNormals : true
                     });
-                    // Activate directional lighting for terrain (globe will be dark at night)
+                }
+
+                // Activate directional lighting for terrain if configuration is set to true. (globe will be dark at night)
+                if (config.cesiumRTLighting) {
                     $scope.viewer.scene.globe.enableLighting = true;
                 }
 
@@ -92,9 +111,9 @@ app.directive("earthFrameView", function() {
                 // Positions the camera so that all entities are in view
                 $scope.viewer.zoomTo($scope.viewer.entities);
 
-                // Position the camera gradually with flyTo
+                // Or... Position the camera gradually with flyTo
                 // $scope.viewer.camera.flyTo({
-                //     destination: new Cesium.Cartesian3.fromDegrees(config.launchLocation.longitude, config.launchLocation.latitude, 1500)
+                //     destination: new Cesium.Cartesian3.fromDegrees(config.launchLocation.longitude, config.launchLocation.latitude, config.launchLocation.altitude)
                 // });
 
                 // Gets rid of a developer tools error and allows cesium to work

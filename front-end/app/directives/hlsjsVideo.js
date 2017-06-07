@@ -23,8 +23,9 @@ app.directive("hlsjsVideo", function() {
         restrict: 'E',
         transclude: false,  // Allows scope outside the directive to use directive variables and functions
         controller: ['$scope', 'config', function hlsjsVideoController($scope, config) {
-            // Set the current feed to the configured default feed index
+            // Set the current feed to the configured default feed index and get total number of feeds
             $scope.currentFeed = config.defaultFeed;
+            $scope.numFeeds = config.videoFeeds.length;
 
             // The video player is initialized and the default video is loaded and played
             if(Hls.isSupported()) {
@@ -40,13 +41,20 @@ app.directive("hlsjsVideo", function() {
             }
 
             // Loads a new video feed url from the array of feeds.
-            $scope.toggleVideo = function () {
+            $scope.changeVideoFeed = function () {
+                var count = $scope.numFeeds;
+                // Check if the feed is set to on (true in config.js)
+                do {
+                    $scope.currentFeed = ++$scope.currentFeed%$scope.numFeeds;
+                    count--;
+                } while (!config.feedsOn[$scope.currentFeed] && count > 0);
+                // Load the new feed
                 if(Hls.isSupported()) {
                     $scope.hls.destroy();
                     $scope.hls = new Hls(config.hlsConfig);
                     $scope.hls.attachMedia($scope.video);
                     $scope.hls.on(Hls.Events.MEDIA_ATTACHED,function() {
-                        $scope.hls.loadSource(config.videoFeeds[++$scope.currentFeed%config.numFeeds]);
+                        $scope.hls.loadSource(config.videoFeeds[$scope.currentFeed]);
                         $scope.hls.on(Hls.Events.MANIFEST_PARSED, function() {
                             video.play();
                         });
