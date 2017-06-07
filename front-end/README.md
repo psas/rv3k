@@ -1,4 +1,4 @@
-# Front End Preliminary Directory
+# Front End Information
 This directory contains the webserver and front-end rendering components for rv3k
 ## Requirements
 - Nodejs v.6.x.x (LTS)
