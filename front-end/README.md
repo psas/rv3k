@@ -29,7 +29,7 @@ Rocket View 3000 is configurable through the configuration file __config.js__ fo
 3. Server Configuration
 - The url location of the backend server can be modified through 'serverSource'
 4. Telemetry Graph Configuration
-- The Telemetry Graphs can be configured to the anticipated received data values per approximate minute
+- The Telemetry Graphs can be configured to show a specified number of samples per width. 
 5. Vehicle Attitude Configuration
 - The Vehicle Attitude Display FOV (field of view) can be configured by degrees with the 'FOV' value.
 6. HLS Video Player Configuration
