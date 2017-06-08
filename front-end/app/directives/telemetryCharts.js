@@ -169,8 +169,8 @@ app.directive("telemetryCharts", function() {
                 }
             };
 
-
             // Assigning the colors red for X, green for Y, and blue for Z for Accelerometer and Gyroscope charts
+
             $scope.Acc_Gyro_Colors = [{
                 backgroundColor: 'rgba(132, 20, 50, 0.8)',
                 borderColor: 'rgba(132, 20, 50, 0.8)',
@@ -193,6 +193,7 @@ app.directive("telemetryCharts", function() {
 
             // Ellipsoid Altitude chart attributes
             // Setting up the Ellipsoid Altitude strip-chart
+
             $scope.Altitude_Data = [[]];    // Altitude_Data needs to be defined this way in order to replace the color
                                             // of the chart's line 
             $scope.Altitude_Labels = [];
