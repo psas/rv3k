@@ -58,6 +58,7 @@ app.constant('config', {
     'Callsign':     'Callsign',
     'timestamp':    'timestamp',
     'recv':         'recv',
+    'Sequence':     'Sequence',
 
     'serverSource': document.domain, // 'paolo215.paolov435.com', //
 
@@ -68,6 +69,7 @@ app.constant('config', {
 
     // Vehicle Attitude Configuration
     'FOV':                  50,
+    'AttitudeReplayMode':   true,   // Used to testing purposes to reset the model for looping replaylog
 
     // Video Configuration
     // Allow for the toggleVideo() to stop the current feed and start a new feed with a new url from outside the directive.
