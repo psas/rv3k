@@ -1,5 +1,6 @@
 <!--
-  - This file is the template for the earth frame view. It works in conjunction with the earth frame view javaScript file to render a 3D map and all items that appear on that map. Any layout or html for the earth frame view will be in this file.
+  - earthFrameView.html provides the html template used in conjunction with earthFrameView.js to
+  - render the earth frame view module, including the 3D map and all items appearing on it.
   - Copyright (C) 2017 Jeff Patterson, Amanda Murphy, Paolo Villanueva, Patrick Overton, Connor Picken, Yun Cong Chen, Seth Amundsen
   - Michael Ohl, Mathew Tighe
   -
@@ -27,5 +28,5 @@
 <!-- Cesium replaces this div with the 3D map -->
 <div class="cesiumViewer" id="cesiumContainer"></div>
 
-<!-- This function resets hiding that permanently hides cesium on ng-click="hideEFV = !hideEFV"> -->
+<!-- This function resets hiding that permanently hides cesium -->
 <div ng-click="reset()">Reset Earth Frame View</div>

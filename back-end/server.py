@@ -7,6 +7,7 @@
 # [This program is licensed under the "GNU General Public License"]
 # Please see the file COPYING in the source distribution of this
 # software for license terms.
+
 from aprs import AprsReceiver
 from argparse import ArgumentParser
 from ConfigParser import ConfigParser
@@ -18,7 +19,6 @@ import threading
 import os
 from threading import Lock
 from telemetry import Telemetry
-
 
 # Create and configure the server socket
 sio = socketio.Server(logger=False, async_mode="threading", ping_timeout=3600)
@@ -44,17 +44,14 @@ def disconnect(sid):
     print("Client disconnected")
 
 
-
 # main() takes a number and a port as command line arguments
 # and based on the arguments from the command line will create a
 # back ground thread that runs the foo()
 def main():
-
     # parser is an object that holds the command line argument options
     parser = ArgumentParser()
 
-
-    # Enables to serve test web page for back-end. 
+    # Enables to serve test web page for back-end.
     parser.add_argument("-t", "--test", action="store_true")
 
     # Enables to boot up the APRS server
@@ -66,11 +63,9 @@ def main():
     # Parse command line arguments
     args = parser.parse_args()
 
-
     # Read configuration file
     config = ConfigParser()
     config.read("config.cfg")
-
 
     # Lock for synchronized logging
     lock = Lock()
@@ -81,15 +76,18 @@ def main():
         log_num += 1
 
     log = open("telemetry-%03d.log" % log_num, "w")
+    
+    # Start the apporpriate 
     threads = []
 
+    # Starts the appropriate server based on the command line arguments 
     if args.aprs:
         aprs_rx = int(config.get("Ports", "aprs_rx"))
         server = AprsReceiver("127.0.0.1", aprs_rx, sio, lock, log)
         thread = threading.Thread(target=server.listen)
         thread.daemon = True
         threads.append(thread)
-        
+
     if args.telemetry:
         telemetry_rx = int(config.get("Ports", "telemetry_rx"))
         server = Telemetry("127.0.0.1", telemetry_rx, sio, lock, log)
@@ -97,13 +95,10 @@ def main():
         thread.daemon = True
         threads.append(thread)
 
-
-    
     # Use socketio as middleware is test flag is false
     if args.test == False:
         global app
         app = socketio.Middleware(sio)
-
 
     # Start up all servers
     for thread in threads:
@@ -121,6 +116,8 @@ def main():
     log.close()
     print("end")
     return
+
+
 # Runs main()
 if __name__ == "__main__":
     main()

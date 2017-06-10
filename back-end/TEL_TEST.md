@@ -10,8 +10,9 @@
 9. Rename test.html to index.html. (ex: `mv test.html index.html`)
 10. Return to the back-end directory. (ex: `cd ..`)
 11. Run the telemetry server. (ex: `python server.py -t -T`)
-12. Repeat steps 3-5.
-13. When the replay finishes, save the download link as received.txt (in the back-end directory).
-14. Enter this command in the first terminal: `diff <(sed -r 's/"recv":[0-9]+\.[0-9]+/RECV/' sent.txt) <(sed -r 's/"recv":[0-9]+\.[0-9]+/RECV/' received.txt)`
+12. Open a browser and go to `http://0.0.0.0:8080`.
+13. Repeat steps 3-5.
+14. When the replay finishes, save the download link as received.txt (in the back-end directory).
+15. Enter this command in the first terminal: `diff <(sed -r 's/"recv":[0-9]+\.[0-9]+/RECV/' sent.txt) <(sed -r 's/"recv":[0-9]+\.[0-9]+/RECV/' received.txt)`
 - PASS: diff outputs zero differences
 - FAIL: diff outputs one or more differences

@@ -1,4 +1,6 @@
 /**
+ * app.js instantiates the global app variable as a module and injects necessary dependencies.
+ *
  * Copyright (c) 2017 Jeff Patterson, Amanda Murphy, Paolo Villanueva, Patrick Overton, Connor Picken, Yun Cong Chen, Seth Amundsen, Michael Ohl, Matthew Tighe
  * ALL RIGHTS RESERVED
  * [This program is licensed under the "GNU General Public License"]

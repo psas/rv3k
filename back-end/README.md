@@ -3,12 +3,13 @@ This directory contains the Socket.IO server and supporting server modules for r
 
 ## Requirements
 - Python 2.7
+- Linux environment
 
 ## Setup
 1. Clone the rv3k repository to a convenient working directory. (ex: `git clone https://github.com/patter5/rv3k.git`)
 2. Navigate to the back-end directory. (ex: `cd <path-to>/rv3k/back-end`)
 3. Install the dependencies for Telemetry and APRS modules specified in requirements.txt. (ex: `pip install -r requirements.txt`)
-4. Setup back-end video streaming by following the instructions in `VIDEO.md` 
+4. Setup back-end video streaming by following the instructions in `VIDEO.md`
 
 ### Running the Rocket View 3000 Socket.IO server
 `python2.7 startup.py -T -A`
@@ -16,9 +17,13 @@ This directory contains the Socket.IO server and supporting server modules for r
  - -A enables aprs data processing
 
 ### Logging
-Telemetry data and APRS data are logged synchronously in binary format to rv3k/back-end/telemetry.log
-aprs.py logs error messages in plain text format to aprs_error.log
-telemetry.py logs error message in plain text format to telemetry_error.log
+#### Data Logging
+ - Telemetry data and APRS data are logged synchronously in binary format to rv3k/back-end/telemetry.log.
+   A new log of telemetry data is genereated (with an incremented suffix) each time the server is run.
+
+#### Error Logging
+ - telemetry.py logs error message in plain text format to rv3k/back-end/telemetry_error.log
+ - aprs.py logs error messages in plain text format to rv3k/back-end/aprs_error.log
 
 ### Testing notes
 Including the flag `-t` tells startup.py to serve the testing webpage.
@@ -41,6 +46,3 @@ Including the flag `-t` tells startup.py to serve the testing webpage.
 1. In one terminal type `python startup.py -t -A`
 1. In another terminal type `python aprs_source_input.py`
 1. Open a browser to `localhost:8080`
-
-
-

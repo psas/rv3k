@@ -31,7 +31,7 @@ app.directive("atAGlance", function() {
 
             // Connect to the server.
             var namespace = '/main';
-            var socket = io.connect('http://' + document.domain + ':8080' + namespace);
+            var socket = io.connect('http://' + config.serverSource + ':8080' + namespace);
             socket.on('connect', function() {});
             socket.on('disconnect', function() {});
 

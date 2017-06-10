@@ -1,5 +1,5 @@
 /*
- * telemetryCharts.js will create an angular-chart.js bar chart with the Acc_eleration of each axix of the rocket.
+ * telemetryCharts.js creates strip charts for rocket's Accelerometer, Gyroscope, Speed, and Ellipsoide Altitude.
  * Copyright (C) 2017 Jeff Patterson, Amanda Murphy, Paolo Villanueva, Patrick Overton, Connor Picken, Yun Cong Chen, Seth Amundsen
  * Michael Ohl, Mathew Tighe
  *
@@ -36,8 +36,8 @@ app.directive("telemetryCharts", function() {
 
             // Note: Using a different number of data points for ADIS and V8A8 strip charts since
             // the number of data packets are significantly different between the two packet types.
-            // Can easily be changed if more V8A8 packets are sent during launch, which it sounds
-            // like this will be the case for their next launch.
+            // Can be changed if more V8A8 packets are sent during the next launch by changing
+            // the variable numPointsV8A8 in config.js in the app directory
 
             // Number of data points that will be graphed on the strip-chart at one time.
             // Applies to the Accelerometer and Gyroscope charts which come in the ADIS data packet
@@ -72,7 +72,7 @@ app.directive("telemetryCharts", function() {
                     }
                     else if(key == config.V8A8){
                         // Add new data point to Altitude chart
-                        $scope.Altitude_Data[0].push(data[key].Ellipsoid_Altitude);
+                        $scope.Altitude_Data[0].push(data[key][config.Ellipsoid_Altitude]);
 
                         // Add new data point to Speed chart by calculating the magnitude of the
                         // rocket's velocity
@@ -92,6 +92,9 @@ app.directive("telemetryCharts", function() {
                 }
             });
 
+            // Turn on or off tooltip based on the config variable showTooltips from config.js in the app directory
+            Chart.defaults.global.tooltips.enabled = config.showTooltips;
+    
             // Acceleration Chart Attributes
             $scope.Acc_Labels = [];
             $scope.Acc_Series = ['X', 'Y', 'Z'];
@@ -101,8 +104,8 @@ app.directive("telemetryCharts", function() {
                 scales: {
                     yAxes: [{
                         ticks: {
-                            min: -40,
-                            max: 140
+                            suggestedMin: -40,
+                            suggestedMax: 140
                         },
                         scaleLabel: {
                             display: true,
@@ -138,8 +141,8 @@ app.directive("telemetryCharts", function() {
                 scales: {
                     yAxes: [{
                         ticks: {
-                            min: -80,
-                            max: 80
+                            suggestedMin: -80,
+                            suggestedMax: 80
                         },
                         scaleLabel: {
                             display: true,
@@ -166,9 +169,8 @@ app.directive("telemetryCharts", function() {
                 }
             };
 
-            // Assigning new colors to the X,Y,Z lines of the Accelerometer/Gyroscope charts
-            // because the default colors had a hard to see color for the Y.
-            // TODO: Still needs to be set up with correct colors, current colors are just placeholders
+            // Assigning the colors red for X, green for Y, and blue for Z for Accelerometer and Gyroscope charts
+
             $scope.Acc_Gyro_Colors = [{
                 backgroundColor: 'rgba(132, 20, 50, 0.8)',
                 borderColor: 'rgba(132, 20, 50, 0.8)',
@@ -189,13 +191,11 @@ app.directive("telemetryCharts", function() {
                 }
             ];
 
+            // Ellipsoid Altitude chart attributes
             // Setting up the Ellipsoid Altitude strip-chart
-            // TODO: chart.js creates a curved line by default to connect data points.
-            // With the altitude chart it can sometimes cause the graph to indicate that the rocket has
-            // either gained or lost altitude when it did not. Need to find a way to disable this so
-            // the chart is not misleading.
-            $scope.Altitude_Data = [[]];    // I don't know why, but Data needs to be an array of arrays or else
-                                            // the Color attribute won't work
+
+            $scope.Altitude_Data = [[]];    // Altitude_Data needs to be defined this way in order to replace the color
+                                            // of the chart's line 
             $scope.Altitude_Labels = [];
             $scope.Altitude_Series = ["Ellipsoid Altitude"];
             $scope.Altitude_Options = {
@@ -226,9 +226,9 @@ app.directive("telemetryCharts", function() {
                 }
             };
 
-            // Setting up the Speed strip-chart
-            $scope.Speed_Data = [[]];   // I don't know why, but Data needs to be an array of arrays or else
-                                        // the Color attribute won't work
+            // Speed chart attributes
+            $scope.Speed_Data = [[]];   // Speed_Data needs to be defined this way in order to replace the color
+                                        // of the chart's line
             $scope.Speed_Labels = [];
             $scope.Speed_Series = ["Speed"];
             $scope.Speed_Options = {
@@ -260,7 +260,7 @@ app.directive("telemetryCharts", function() {
             }
 
             // Setting up color for Altitude and Speed chart
-            // Placeholder color
+            // Making line color black
             $scope.Altitude_Speed_Colors = [{
                 backgroundColor: 'rgba(80, 70, 60, 1)',
                 borderColor: 'rgba(80, 70, 60, 1)',
@@ -292,6 +292,7 @@ app.directive("telemetryCharts", function() {
 
             // Create empty array of charts. Array needed to update the charts
             $scope.charts = [];
+
             // When a new chart gets created, add it to the array.
             $scope.$on('chart-create', function(evt, chart){
                 $scope.charts.push(chart);
