@@ -1,5 +1,5 @@
 /*
- * telemetryCharts.js creates strip charts for rocket's Accelerometer, Gyroscope, Speed, and Ellipsoide Altitude
+ * telemetryCharts.js creates strip charts for rocket's Accelerometer, Gyroscope, Speed, and Ellipsoide Altitude.
  * Copyright (C) 2017 Jeff Patterson, Amanda Murphy, Paolo Villanueva, Patrick Overton, Connor Picken, Yun Cong Chen, Seth Amundsen
  * Michael Ohl, Mathew Tighe
  *

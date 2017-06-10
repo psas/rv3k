@@ -1,5 +1,6 @@
 /*
  * config.js creates a Constant variable for the app and allows its varaibles to be injected into each directive's scope
+ * 
  * Copyright (C) 2017 Jeff Patterson, Amanda Murphy, Paolo Villanueva, Patrick Overton, Connor Picken, Yun Cong Chen, Seth Amundsen
  * Michael Ohl, Mathew Tighe
  *
@@ -69,6 +70,7 @@ app.constant('config', {
     'FOV':                  50,
 
     // Video Configuration
+    // Allow for the toggleVideo() to stop the current feed and start a new feed with a new url from outside the directive.
     'videoFeeds':   [
         'http://meg-murry.ddns.net:3586/hls/lava.m3u8',
         'http://paolo215.paolov435.com/hls/live.m3u8',

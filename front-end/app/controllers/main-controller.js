@@ -1,4 +1,6 @@
 /**
+ * main-controller.js provides the controller for application and handles
+ * hiding different elements and swapping windows.
  * Copyright (c) 2017 Jeff Patterson, Amanda Murphy, Paolo Villanueva, Patrick Overton, Connor Picken, Yun Cong Chen, Seth Amundsen, Michael Ohl, Matthew Tighe
  * ALL RIGHTS RESERVED
  * [This program is licensed under the "GNU General Public License"]

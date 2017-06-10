@@ -1,6 +1,6 @@
 /*
- * hljsVideo.js initializes a hls.js video player to play streaming video from a video server url that is compatible with the html5 <video> tag
- * It will allow for the toggleVideo to stop the current feed and start a new feed with a new url from outside the directive
+ * hljsVideo.js initializes a hls.js video player to play streaming video from a video server url 
+ * that is compatible with the html5 <video> tag and allows for that feed to be switched.
  * Copyright (C) 2017 Jeff Patterson, Amanda Murphy, Paolo Villanueva, Patrick Overton, Connor Picken, Yun Cong Chen, Seth Amundsen
  * Michael Ohl, Mathew Tighe
  *

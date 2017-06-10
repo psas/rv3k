@@ -1,5 +1,6 @@
 /**
- * earthFrameView.js includes all the logic for the earth frame view. It works in conjuction with the earthFrameView.html page to render a 3D map that and objects on that map.
+ * earthFrameView.js includes all the logic for the earth frame view and works in conjuction with
+ * the earthFrameView.html page to render a 3D map that and objects on that map.
  * Copyright (C) 2017 Jeff Patterson, Amanda Murphy, Paolo Villanueva, Patrick Overton, Connor Picken, Yun Cong Chen, Seth Amundsen
  * Michael Ohl, Mathew Tighe
  *

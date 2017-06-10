@@ -1,5 +1,5 @@
 /*
- * attitude.js renders a 3d model of a rocket and rotates it so that the model's rotation matches the real rocket's rotation during a launch
+ * attitude.js renders a 3d model of a rocket and rotates it so that the model's rotation matches the real rocket's rotation during a launch.
  * Copyright (C) 2017 Jeff Patterson, Amanda Murphy, Paolo Villanueva, Patrick Overton, Connor Picken, Yun Cong Chen, Seth Amundsen
  * Michael Ohl, Mathew Tighe
  *
