@@ -25,7 +25,7 @@ app.directive("attitude", function() {
 
             var namespace = '/main';
             // this port connects to port broadcast by ../unified/app.py
-            var socket = io.connect('http://' + document.domain + ':8080' + namespace);
+            var socket = io.connect('http://' + config.serverSource + ':8080' + namespace);
             socket.on('connect', function() {});
             socket.on('disconnect', function() {});
 
