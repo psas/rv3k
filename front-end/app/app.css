@@ -10,7 +10,7 @@
 
 /* Toolbar Styling */
 md-toolbar.control-bar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.md-menu-toolbar) {
-    background-color: #607d2a; /* PSAS Green */ }
+    background-color: #5F8E00; /* PSAS Green */ }
 /* Optional menu styling for future support of additional user options */
 md-menu-item:hover {
     cursor: pointer;
@@ -196,7 +196,7 @@ md-menu-content {
 /* Telemetry Cards Styling */
 .cards {
     min-width: 125px;
-    background-color: #607d2a;
+    background-color: #5F8E00;
     padding: 30px;
     margin: 20px; }
 .telemetry-holders {
