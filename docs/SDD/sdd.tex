@@ -6,7 +6,8 @@
   %% Language and font encodings
   \usepackage[english]{babel}
   \usepackage[utf8x]{inputenc}
-  \usepackage[T1]{fontenc}
+  %\usepackage[T1]{fontenc}
+
   \usepackage{palatino}
 
   %% formatting packages
@@ -37,32 +38,32 @@
 \author{}
 \begin{document}
   \maketitle
-  
+
   %% License information & copyright notice
   {\small \input{cr-notice.tex}}
-  
+
   %% TOC
   \tableofcontents
   \newpage
-  
+
   %% FRONT END STUFF
-  \part {Front-end architecture and design}  
-  
+  \part {Front-end architecture and design}
+
   %% User interface
   \input{UI.tex}
-  
+
   %% Web server
   \input{web-server.tex}
   \newpage
-  
-  
+
+
   \bigskip
-  
+
   %% Earth frame view
   \input{efv.tex}
 
   \bigskip
-  
+
   %% Attitude
   \input{attitude.tex}
 
@@ -74,20 +75,20 @@
 
   \bigskip
 
- 
+
 
   \part{Back-end architecture and design}
-  
+
    %% Telemetry module
   \input{tel-server.tex}
 
   \bigskip
 
   %% video
-  \input{videoprocessing.tex}
-  
+  %\input{videoprocessing.tex}
+
   \input{back-end-server.tex}
-  
+
   %%aprs
   \input{aprs.tex}
 
