@@ -160,7 +160,15 @@ http {
       rtmp_control all;
     }
 ```
-3. Configure avconv for brodcasting
+
+3. Restart nginx
+    - To stop the nginx:
+      `sudo /usr/local/nginx/sbin/nginx -s stop`
+    - To run:
+      `sudo /usr/local/nginx/sbin/nginx`
+
+4. Configure avconv for brodcasting
+
 - This is easier to set up in a script. Either run the script in the background or initiate it in a tmux session.
 ```
 sudo avconv -v verbose     -f video4linux2     -s 640x480     -b 256k     -r 10 -i /dev/video0     -vcodec libx264     -preset ultrafast    -an -g .5 -f flv rtmp://0.0.0.0:3585/hls/lava 
