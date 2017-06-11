@@ -171,12 +171,12 @@ http {
 
 - This is easier to set up in a script. Either run the script in the background or initiate it in a tmux session.
 ```
-sudo avconv -v verbose     -f video4linux2     -s 640x480     -b 256k     -r 10 -i /dev/video0     -vcodec libx264     -preset ultrafast    -an -g .5 -f flv rtmp://0.0.0.0:3585/hls/lava 
+sudo avconv -v verbose     -f video4linux2     -s 640x480     -b 256k     -r 10 -i /dev/video0     -vcodec libx264     -preset ultrafast    -an -g .5 -f flv rtmp://0.0.0.0:<incoming port number>/hls/lava 
 ```
 - the `-g .5` sets hls slices
 
-4. Add video endpoint to the videoFeeds array in `rv3k/front-end/app/config.js`
-5. Configure hls for latency in the `hlsConfig` object in `rv3k/front-end/app/config.js` as follows (some adjustment may be necessary):
+5. Add video endpoint to the videoFeeds array in `rv3k/front-end/app/config.js` this should be the **outgoing port** on your domain or IP
+6. Configure hls for latency in the `hlsConfig` object in `rv3k/front-end/app/config.js` as follows (some adjustment may be necessary):
 ```
     // HLS.js Video Player configuration
     'hlsConfig':   {
