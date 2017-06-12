@@ -18,25 +18,25 @@ rv3k
 │   README.md
 │
 ├───back-end
-│   │   aprs.parsed
-│   │   aprs.py
-│   │   aprs.raw
-│   │   aprs_source_input.py
-│   │   config.cfg
+│   │   aprs.parsed                     --> Small collection of pre-parsed APRS signals
+│   │   aprs.py                         --> Serves APRS data to server.py
+│   │   aprs.raw                        --> Small collection of unparsed APRS signals
+│   │   aprs_source_input.py            --> Script used for testing that simulates incoming APRS data
+│   │   config.cfg                      --> Allows the configuration of which ports server.py uses
 │   │   README.md
-│   │   replaylog.sh
-│   │   replay_to_json.py
-│   │   requirements.txt
-│   │   server.py
-│   │   startup.py
-│   │   telemetry.py
+│   │   replaylog.sh                    --> Script used for testing that replays Launch-12 telemetry data
+│   │   replay_to_json.py               --> Script used for testing that converts recieved telemetry data to json objects
+│   │   requirements.txt                --> List of required libraries
+│   │   server.py                       --> Runs the APRS and Telemetry servers, listens for incoming data and sends it to the front end
+│   │   startup.py                      --> Runs server.py with the proper command line arguments to start the whole back-end system
+│   │   telemetry.py                    --> Serves telemetry data to server.py
 │   │   TEL_TEST.md
-│   │   test_aprs.py
+│   │   test_aprs.py                    --> A suite of test cases for the APRS module
 │   │   VIDEO.md
 │   │
 │   └───templates
-│           index.html
-│           test.html
+│           index.html                  --> A webpage used for testing back-end server functionality
+│           test.html                   --> Generates a text file which can be compared with Launch-12 telemetry data
 │
 ├───docs
 │   │   README.md
