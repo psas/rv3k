@@ -60,13 +60,11 @@ app.constant('config', {
     'serverSource': document.domain, // 'paolo215.paolov435.com', //
 
     // Telemetry Graphs Configuration
-    'numPointsADIS':        150,    // approx. # of data points expected per min
+    'numPointsADIS':        60,    // approx. # of data points expected per min
     'numPointsV8A8':        15,
 
     // Vehicle Attitude Configuration
     'FOV':                  50,
-    'AttitudeWidthRatio':   4.09,   // for 16:9
-    'AttitudeHeightRatio':  2.15,   // for 16:9
 
     // Video Configuration
     'videoFeeds':   [
@@ -77,7 +75,6 @@ app.constant('config', {
         'http://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8'
     ],
     'defaultFeed':  0,                      // The index of the default (starting) video feed
-    'numFeeds':     5,
     'feedsOn':     [true,true,true,true,true],
 
     // HLS.js Video Player configuration
@@ -85,13 +82,13 @@ app.constant('config', {
         'capLevelToPlayerSize': true,       // Caps resolution to video size (default: false)
         'debug': false,                     // Turn on and off debug logs on JS console (default: false)
         'initialLiveManifestSize': 1,       // Number of segments needed to start a playback of live stream (default: 1)
-        'maxBufferLength': 30,              // Max buffer length in seconds (default: 30)
+        'maxBufferLength': 180,             // Max buffer length in seconds (default: 30)
         'maxBufferSize': 60*1000*1000,      // Max buffer size in bytes (default 60 MB)
         'maxBufferHole': 0.5,               // Max inter-fragment buffer hole tolerance when searching for next fragment (default 0.5 sec)
         'maxSeekHole': 2,                   // Max buffer hole to jump if playback is stalled (default: 2 sec)
-        'liveSyncDurationCount': 1,         // Edge of live delay. Playback starts at N-X fragments.
+        'liveSyncDurationCount': 3,         // Edge of live delay. Playback starts at N-X fragments.
                                             // N is most recent fragment. Smaller number could introduce stalls (default: 3)
-        'liveMaxLatencyDurationCount': 5,   // Max number of fragments the player is allowed to get behind (default: Infinity)
+        'liveMaxLatencyDurationCount': Infinity,  // Max number of fragments the player is allowed to get behind (default: Infinity)
         'manifestLoadingMaxRetry': 2,       // Number of retries (default: 1)
         'levelLoadingMaxRetry': 4,          // (default: 4)
         'fragLoadingMaxRetry': 6,           // (default: 6)
